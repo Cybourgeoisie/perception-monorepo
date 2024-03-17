@@ -1,6 +1,6 @@
-import { RequestMessage } from "@gpt/src/classes/request/RequestMessage";
+import { RequestMessage } from "@openai";
 
-export default class State {
+export class State {
 	private requestMessage: RequestMessage;
 	private programState: { [program: string]: { [key: string]: any } };
 

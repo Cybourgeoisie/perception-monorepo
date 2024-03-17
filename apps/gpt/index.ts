@@ -1,6 +1,6 @@
-import { PromptCLI } from "@gpt/src/classes/prompt";
+import { PromptCLI } from "@prompt-cli";
 import { Adapters } from "@gpt/src/adapters";
-import State from "@gpt/src/classes/state/State";
+import { State } from "@openai";
 
 // Run the program
 (async (): Promise<void> => {

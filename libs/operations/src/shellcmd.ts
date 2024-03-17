@@ -1,4 +1,4 @@
-import BaseOperation, { OperationFormat } from "./base_operation";
+import BaseOperation, { OperationFormat } from "./base/base_operation";
 import util from "util";
 import child_process from "child_process";
 

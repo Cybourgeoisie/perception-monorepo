@@ -1,8 +1,8 @@
-import BaseOperation, { OperationFormat } from "./base_operation";
+import BaseOperation, { OperationFormat } from "./base/base_operation";
 import { Builder, By, WebDriver, WebElement, until } from "selenium-webdriver";
 import { Options as ChromeOptions } from "selenium-webdriver/chrome";
 import { JSDOM } from "jsdom";
-import { config as cfg } from "@gpt/src/config";
+import { config as cfg } from "@config";
 
 export default class Selenium extends BaseOperation {
 	public static getName(): string {

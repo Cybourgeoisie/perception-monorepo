@@ -1,5 +1,4 @@
-import DirectoryList from "@gpt/src/operations/directory_list";
-import AnalyzeTSFile, { TSFileStructure } from "@gpt/src/operations/analyze_ts_file";
+import { DirectoryList, AnalyzeTSFile, TSFileStructure } from "@operations";
 
 export default class CodeAnalysisRoutine {
 	private static rootDirectory: string;

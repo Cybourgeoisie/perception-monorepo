@@ -23,8 +23,12 @@
 		"strictNullChecks": false,
 		"baseUrl": ".",
 		"paths": {
-			"@gpt/*": ["apps/gpt/*"]
+			"@gpt/*": ["apps/gpt/*"],
+			"@config": ["libs/config/index"],
+			"@openai": ["libs/openai/index"],
+			"@prompt-cli": ["libs/prompt-cli/index"],
+			"@operations": ["libs/operations/index"]
 		}
 	},
-	"include": ["apps/**/*", "packages/**/*", "tools/**/*", "test/**/*"]
+	"include": ["apps/**/*", "packages/**/*", "tools/**/*", "test/**/*", "libs/**/*"]
 }

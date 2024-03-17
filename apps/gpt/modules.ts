@@ -1,6 +1,5 @@
 /* Classes */
-import { OpenAI } from "@gpt/src/classes/llm/OpenAI";
-import { RequestMessage } from "@gpt/src/classes/request/RequestMessage";
+import { OpenAI, RequestMessage } from "@openai";
 
 /* Routines */
 import AutobotRoutine from "@gpt/src/routines/autobot";

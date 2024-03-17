@@ -1,7 +1,7 @@
 import fs from "fs";
 import OpenAIRoutine from "@gpt/src/routines/openai";
-import Selenium from "@gpt/src/operations/selenium";
-import { PromptCLI } from "@gpt/src/classes/prompt";
+import { Selenium } from "@operations";
+import { PromptCLI } from "@prompt-cli";
 import { BaseBotAdapter } from "@gpt/src/adapters/BaseBotAdapter";
 
 export default class SummaryBotAdapter extends BaseBotAdapter {

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import fs from "fs";
 import path from "path";
-import Git from "@gpt/src/operations/git";
+import Git from "libs/operations/src/git";
 
 describe.skip("Operations: Git Operations", function () {
 	const repoUrl = "https://github.com/WolpertingerLabs/perception-ts-gpt.git";

@@ -1,4 +1,4 @@
-import BaseOperation, { OperationFormat } from "./base_operation";
+import BaseOperation, { OperationFormat } from "./base/base_operation";
 
 export default class TaskComplete extends BaseOperation {
 	public static getName(): string {

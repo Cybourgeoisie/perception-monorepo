@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import fs from "fs";
 import path from "path";
-import FileWrite from "@gpt/src/operations/file_write";
+import FileWrite from "libs/operations/src/file_write";
 
 describe("Operations: Write to file", () => {
 	const workingDirectory = path.resolve(process.cwd() + "/tmp/");

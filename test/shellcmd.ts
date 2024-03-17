@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import ShellCommand from "@gpt/src/operations/shellcmd";
+import ShellCommand from "libs/operations/src/shellcmd";
 
 describe("Operations: Execute Shell Command", function () {
 	it("should return stdout and stderr when given a valid command", async function () {

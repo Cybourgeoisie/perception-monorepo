@@ -1,4 +1,4 @@
-import BaseOperation, { OperationFormat } from "./base_operation";
+import BaseOperation, { OperationFormat } from "./base/base_operation";
 import fs from "fs";
 import path from "path";
 

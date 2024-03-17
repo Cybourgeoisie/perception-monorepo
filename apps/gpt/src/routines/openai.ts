@@ -1,9 +1,8 @@
-import { config as cfg } from "@gpt/src/config";
-import { OpenAI } from "@gpt/src/classes/llm";
-import { PromptCLI } from "@gpt/src/classes/prompt";
+import { config as cfg } from "@config";
+import { OpenAI, State } from "@openai";
+import { PromptCLI } from "@prompt-cli";
 import OpenAIClass from "openai";
 import natural from "natural";
-import State from "@gpt/src/classes/state/State";
 
 export default class OpenAIRoutine {
 	public static getName(): string {

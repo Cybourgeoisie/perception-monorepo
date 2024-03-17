@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Google, { GoogleSearchResult } from "@gpt/src/operations/google";
+import Google, { GoogleSearchResult } from "libs/operations/src/google";
 
 describe("Operation: Google Official Search", () => {
 	it("should return search result URLs", async () => {

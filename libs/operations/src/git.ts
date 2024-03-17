@@ -1,4 +1,4 @@
-import BaseOperation, { OperationFormat } from "./base_operation";
+import BaseOperation, { OperationFormat } from "./base/base_operation";
 import simpleGit, { SimpleGit, ResetOptions, StatusResult, BranchSummary, TaskOptions } from "simple-git";
 
 /**

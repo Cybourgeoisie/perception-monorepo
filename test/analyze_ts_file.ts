@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import AnalyzeTSFile from "@gpt/src/operations/analyze_ts_file";
+import AnalyzeTSFile from "libs/operations/src/analyze_ts_file";
 
 describe("Operations: Analyze TypeScript File", function () {
 	it("should return the correct name", function () {

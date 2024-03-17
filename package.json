@@ -24,6 +24,7 @@
 	},
 	"workspaces": [
 		"apps/*",
+		"libs/*",
 		"tools/*",
 		"packages/*"
 	],

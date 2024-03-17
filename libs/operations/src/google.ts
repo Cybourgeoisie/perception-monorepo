@@ -1,6 +1,6 @@
-import BaseOperation, { OperationFormat } from "./base_operation";
+import BaseOperation, { OperationFormat } from "./base/base_operation";
 import { google } from "googleapis";
-import { config as cfg } from "@gpt/src/config";
+import { config as cfg } from "@config";
 
 export type GoogleSearchResult = string | string[];
 

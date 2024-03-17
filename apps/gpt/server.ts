@@ -1,6 +1,6 @@
 import cors from "cors";
 import express, { json } from "express";
-import { config as cfg } from "./src/config";
+import { config as cfg } from "../../libs/config";
 import { Adapters } from "./src/adapters";
 
 const server: express.Application = express();

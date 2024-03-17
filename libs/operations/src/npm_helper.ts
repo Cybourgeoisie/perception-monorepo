@@ -1,4 +1,4 @@
-import BaseOperation from "./base_operation";
+import BaseOperation from "./base/base_operation";
 import fs from "fs";
 
 export default class NpmHelper extends BaseOperation {
@@ -11,7 +11,6 @@ export default class NpmHelper extends BaseOperation {
 	}
 
 	public static getBuiltInNodeModules(): string[] {
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		return require("repl")._builtinLibs;
 	}
 

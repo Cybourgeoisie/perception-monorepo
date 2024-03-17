@@ -1,4 +1,4 @@
-import BaseOperation, { OperationFormat } from "./base_operation";
+import BaseOperation, { OperationFormat } from "./base/base_operation";
 import fs from "fs";
 import path from "path";
 
@@ -91,16 +91,7 @@ export default class DirectoryList extends BaseOperation {
 	}
 
 	private static ignoreFiles(directory: string): boolean {
-		const ignoreDirectories = [
-			".env",
-			"package-lock.json",
-			"yarn.lock",
-			".editorconfig",
-			".gitignore",
-			".prettierrc",
-			".eslintrc.json",
-			".DS_Store",
-		];
+		const ignoreDirectories = [".env", "package-lock.json", "yarn.lock", ".editorconfig", ".gitignore", ".prettierrc", ".eslintrc.json", ".DS_Store"];
 		return ignoreDirectories.includes(directory);
 	}
 }

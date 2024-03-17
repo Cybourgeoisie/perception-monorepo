@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import DirectoryList from "@gpt/src/operations/directory_list";
+import { DirectoryList } from "@operations";
 import fs from "fs";
 import path from "path";
 

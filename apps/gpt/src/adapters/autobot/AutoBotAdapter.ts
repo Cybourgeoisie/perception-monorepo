@@ -1,9 +1,9 @@
-import { OpenAI } from "@gpt/src/classes/llm";
+import { OpenAI } from "@openai";
 import OpenAIClass from "openai";
-import { PromptCLI } from "@gpt/src/classes/prompt";
-import { Operations } from "@gpt/src/operations";
+import { PromptCLI } from "@prompt-cli";
+import { Operations } from "@operations";
 import { BaseBotAdapter } from "@gpt/src/adapters/BaseBotAdapter";
-import { config as cfg } from "@gpt/src/config";
+import { config as cfg } from "@config";
 import dJSON from "dirty-json";
 import AutobotRoutine from "@gpt/src/routines/autobot";
 

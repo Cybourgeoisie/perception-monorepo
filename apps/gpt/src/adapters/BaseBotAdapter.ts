@@ -1,4 +1,4 @@
-import State from "@gpt/src/classes/state/State";
+import { State } from "@openai";
 import express from "express";
 
 export type AdapterRoute = {

@@ -1,7 +1,7 @@
-import BaseOperation from "../operations/base_operation";
+import { BaseOperation } from "@operations";
 import OpenAiRoutine from "./openai";
-import { PromptCLI } from "@gpt/src/classes/prompt";
-import State from "@gpt/src/classes/state/State";
+import { PromptCLI } from "@prompt-cli";
+import { State } from "@openai";
 
 export default class AutobotRoutine {
 	public static getName(): string {

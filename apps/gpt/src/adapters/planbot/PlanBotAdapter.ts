@@ -1,9 +1,8 @@
-import { PromptCLI } from "@gpt/src/classes/prompt";
+import { PromptCLI } from "@prompt-cli";
 import { BaseBotAdapter } from "@gpt/src/adapters/BaseBotAdapter";
-import { OpenAI } from "@gpt/src/classes/llm";
+import { OpenAI, RequestMessage } from "@openai";
 import OpenAIClass from "openai";
-import { RequestMessage } from "@gpt/src/classes/request";
-import { config as cfg } from "@gpt/src/config";
+import { config as cfg } from "@config";
 
 export default class PlanBotAdapter extends BaseBotAdapter {
 	public static getName(): string {

@@ -1,17 +1,15 @@
 import fs from "fs";
-import { config as cfg } from "@gpt/src/config";
-import { PromptCLI } from "@gpt/src/classes/prompt";
-import DirectoryList from "@gpt/src/operations/directory_list";
+import { config as cfg } from "@config";
+import { PromptCLI } from "@prompt-cli";
+import { DirectoryList, Git, FileWrite } from "@operations";
 import CodeAnalysisRoutine from "@gpt/src/routines/code_analysis";
-import Git from "@gpt/src/operations/git";
 import { BaseBotAdapter } from "@gpt/src/adapters/BaseBotAdapter";
-import { OpenAI } from "@gpt/src/classes/llm";
-import { RequestMessage } from "@gpt/src/classes/request";
+import { OpenAI } from "@openai";
+import { RequestMessage } from "libs/openai/src/request";
 import OpenAIClass from "openai";
 import { FILE_LIST, FILE_CONTENTS, CREATE_OPERATION, EDIT_OPERATION } from "./config/prompts";
 import highlight from "cli-highlight";
 import path from "path";
-import { FileWrite } from "@gpt/src/operations";
 
 export default class PerceptionBotAdapter extends BaseBotAdapter {
 	public static getName(): string {

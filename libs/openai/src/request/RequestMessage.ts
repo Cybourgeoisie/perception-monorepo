@@ -1,5 +1,4 @@
-import { config as cfg } from "@gpt/src/config";
-//import OpenAIClass { ChatCompletionRequestMessage, ChatCompletionResponseMessage, ChatCompletionRequestMessageRoleEnum } from "openai";
+import { config as cfg } from "@config";
 import OpenAIClass from "openai";
 
 type PromptRecord = OpenAIClass.ChatCompletionMessageParam | string;

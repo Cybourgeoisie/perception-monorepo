@@ -1,6 +1,5 @@
-//import { Configuration, OpenAIApi, ChatCompletionRequestMessage, ChatCompletionResponseMessage, ChatCompletionRequestMessageRoleEnum } from "openai";
 import OpenAIClass from "openai";
-import { config as cfg } from "@gpt/src/config";
+import { config as cfg } from "@config";
 import { IncomingMessage } from "http";
 
 export type OpenAICompletionArguments = {
