@@ -1,0 +1,71 @@
+{
+	"name": "perception-monorepo",
+	"version": "1.0.0",
+	"description": "",
+	"directories": {
+		"test": "test"
+	},
+	"main": "./build/src/modules.js",
+	"types": "./build/src/modules.d.ts",
+	"engines": {
+		"node": ">= 18.12 <19"
+	},
+	"scripts": {
+		"start": "node build/src/index.js",
+		"server": "node build/src/server.js",
+		"start:dev": "ts-node -r tsconfig-paths/register apps/gpt/index.ts",
+		"server:dev": "ts-node -r tsconfig-paths/register src/server.ts",
+		"lint": "eslint . --ext .ts --ext .mts",
+		"prettier": "prettier --config .prettierrc --write .",
+		"test": "ts-mocha -r tsconfig-paths/register -p tsconfig.json --bail --timeout 5000 --recursive test/*",
+		"clean": "rm -rf coverage build tmp",
+		"prebuild": "npm run lint",
+		"build": "npm run clean && tsc -p tsconfig.release.json && tsc-alias -p tsconfig.release.json"
+	},
+	"workspaces": [
+		"apps/*",
+		"tools/*",
+		"packages/*"
+	],
+	"author": "Ben Heidorn",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/chai": "^4.3.12",
+		"@types/express": "^4.17.21",
+		"@types/mocha": "^10.0.6",
+		"@types/node": "^20.11.28",
+		"@typescript-eslint/eslint-plugin": "^7.2.0",
+		"@typescript-eslint/parser": "^7.2.0",
+		"chai": "^5.1.0",
+		"eslint": "^8.57.0",
+		"eslint-config-custom": "^0.0.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-mocha": "^10.4.1",
+		"mocha": "^10.3.0",
+		"nodemon": "^3.1.0",
+		"prettier": "^3.2.5",
+		"ts-mocha": "^10.0.0",
+		"ts-node": "^10.9.2",
+		"tsc-alias": "^1.8.8",
+		"tsconfig-paths": "^4.2.0",
+		"typescript": "^5.4.2"
+	},
+	"dependencies": {
+		"@types/prompts": "^2.4.9",
+		"axios": "^1.6.8",
+		"cli-highlight": "^2.1.11",
+		"cors": "^2.8.5",
+		"dirty-json": "^0.9.2",
+		"dotenv": "^16.4.5",
+		"express": "^4.18.3",
+		"googleapis": "^134.0.0",
+		"jsdom": "^24.0.0",
+		"natural": "^6.12.0",
+		"openai": "^4.29.1",
+		"prompts": "^2.4.2",
+		"selenium-webdriver": "^4.18.1",
+		"simple-git": "^3.23.0",
+		"ts-morph": "^22.0.0",
+		"tslib": "^2.6.2"
+	}
+}

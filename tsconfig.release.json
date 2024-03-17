@@ -1,0 +1,12 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"sourceMap": false,
+		"removeComments": true,
+		"baseUrl": ".",
+		"paths": {
+			"@gpt/*": ["./apps/gpt/*"]
+		}
+	},
+	"include": ["apps/**/*", "packages/**/*", "tools/**/*", "test/**/*"]
+}
