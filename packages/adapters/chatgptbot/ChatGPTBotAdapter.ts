@@ -1,5 +1,5 @@
-import OpenAIRoutine from "@gpt/src/routines/openai";
-import { BaseBotAdapter } from "@gpt/src/adapters/BaseBotAdapter";
+import { OpenAIRoutine } from "@routines";
+import { BaseBotAdapter } from "../BaseBotAdapter";
 
 export default class ChatGPTBotAdapter extends BaseBotAdapter {
 	public static getName(): string {

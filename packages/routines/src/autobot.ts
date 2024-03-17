@@ -1,9 +1,9 @@
 import { BaseOperation } from "@operations";
-import OpenAiRoutine from "./openai";
+import { OpenAIRoutine } from "./openai";
 import { PromptCLI } from "@prompt-cli";
 import { State } from "@openai";
 
-export default class AutobotRoutine {
+export class AutobotRoutine {
 	public static getName(): string {
 		return "Autobot supportive routines";
 	}
@@ -140,7 +140,7 @@ export default class AutobotRoutine {
 					// If the content is too long, iterate through summarization
 					if (output.length > 2048) {
 						console.log(`Output was too long, summarizing...`);
-						const summary = await OpenAiRoutine.getSummarization(state, output, objective);
+						const summary = await OpenAIRoutine.getSummarization(state, output, objective);
 						console.log(`Summary:\n${summary}\n`);
 						callbackResponse = `You just ran the command "${_commandName}" with the arguments ${JSON.stringify(
 							_commandArgs,

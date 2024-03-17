@@ -2,10 +2,10 @@ import { OpenAI } from "@openai";
 import OpenAIClass from "openai";
 import { PromptCLI } from "@prompt-cli";
 import { Operations } from "@operations";
-import { BaseBotAdapter } from "@gpt/src/adapters/BaseBotAdapter";
+import { BaseBotAdapter } from "../BaseBotAdapter";
 import { config as cfg } from "@config";
 import dJSON from "dirty-json";
-import AutobotRoutine from "@gpt/src/routines/autobot";
+import { AutobotRoutine } from "@routines";
 
 // Local imports
 import { PERCEPTION_SYSTEM_PROMPT, CLASSIC_SYSTEM_PROMPT } from "./config/prompts";

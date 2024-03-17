@@ -1,10 +1,10 @@
 import { OpenAI } from "@openai";
 import { PromptCLI } from "@prompt-cli";
 import { WebOperations } from "@operations";
-import { BaseBotAdapter } from "@gpt/src/adapters/BaseBotAdapter";
+import { BaseBotAdapter } from "../BaseBotAdapter";
 import { config as cfg } from "@config";
 import OpenAIClass from "openai";
-import AutobotRoutine from "@gpt/src/routines/autobot";
+import { AutobotRoutine } from "@routines";
 import dJSON from "dirty-json";
 
 // Local imports

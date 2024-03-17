@@ -1,5 +1,5 @@
 import { PromptCLI } from "@prompt-cli";
-import { BaseBotAdapter } from "@gpt/src/adapters/BaseBotAdapter";
+import { BaseBotAdapter } from "../BaseBotAdapter";
 import { OpenAI, RequestMessage } from "@openai";
 import OpenAIClass from "openai";
 import { config as cfg } from "@config";

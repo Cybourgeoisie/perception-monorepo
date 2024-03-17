@@ -1,6 +1,6 @@
 import { DirectoryList, AnalyzeTSFile, TSFileStructure } from "@operations";
 
-export default class CodeAnalysisRoutine {
+export class CodeAnalysisRoutine {
 	private static rootDirectory: string;
 
 	public static getName(): string {

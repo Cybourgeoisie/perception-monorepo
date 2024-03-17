@@ -5,16 +5,16 @@
 	"directories": {
 		"test": "test"
 	},
-	"main": "./build/src/modules.js",
-	"types": "./build/src/modules.d.ts",
+	"main": "./build/apps/modules/index.js",
+	"types": "./build/apps/modules/index.d.ts",
 	"engines": {
 		"node": ">= 18.12 <19"
 	},
 	"scripts": {
-		"start": "node build/src/index.js",
-		"server": "node build/src/server.js",
-		"start:dev": "ts-node -r tsconfig-paths/register apps/gpt/index.ts",
-		"server:dev": "ts-node -r tsconfig-paths/register src/server.ts",
+		"start:cli": "node build/src/index.js",
+		"start:server": "node build/src/server.js",
+		"dev:cli": "ts-node -r tsconfig-paths/register apps/cli/index.ts",
+		"dev:server": "ts-node -r tsconfig-paths/register apps/server/index.ts",
 		"lint": "eslint . --ext .ts --ext .mts",
 		"prettier": "prettier --config .prettierrc --write .",
 		"test": "ts-mocha -r tsconfig-paths/register -p tsconfig.json --bail --timeout 5000 --recursive test/*",

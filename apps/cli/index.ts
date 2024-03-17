@@ -1,5 +1,5 @@
 import { PromptCLI } from "@prompt-cli";
-import { Adapters } from "@gpt/src/adapters";
+import { Adapters } from "packages/adapters";
 import { State } from "@openai";
 
 // Run the program

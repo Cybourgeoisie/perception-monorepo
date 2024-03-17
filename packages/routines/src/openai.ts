@@ -4,7 +4,7 @@ import { PromptCLI } from "@prompt-cli";
 import OpenAIClass from "openai";
 import natural from "natural";
 
-export default class OpenAIRoutine {
+export class OpenAIRoutine {
 	public static getName(): string {
 		return "OpenAI chat completion";
 	}

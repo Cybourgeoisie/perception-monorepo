@@ -1,7 +1,7 @@
 import cors from "cors";
 import express, { json } from "express";
-import { config as cfg } from "../../libs/config";
-import { Adapters } from "./src/adapters";
+import { config as cfg } from "@config";
+import { Adapters } from "@adapters";
 
 const server: express.Application = express();
 
