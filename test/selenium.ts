@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Selenium from "libs/operations/src/selenium";
+import { Selenium } from "@operations";
 
 describe("Operation: Browse web page text with Selenium", () => {
 	it("should return scraped text from a website", async () => {

@@ -4,7 +4,7 @@ import DirectoryList from "./src/directory_list";
 import FileRead from "./src/file_read";
 import FileWrite from "./src/file_write";
 import Git from "./src/git";
-import Google from "./src/google";
+import Google, { GoogleSearchResult } from "./src/google";
 import NpmHelper from "./src/npm_helper";
 import Selenium from "./src/selenium";
 import ShellCommand from "./src/shellcmd";
@@ -25,6 +25,7 @@ export {
 	FileWrite,
 	Git,
 	Google,
+	GoogleSearchResult,
 	NpmHelper,
 	Selenium,
 	ShellCommand,

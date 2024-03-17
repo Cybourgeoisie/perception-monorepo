@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import fs from "fs";
 import path from "path";
-import Git from "libs/operations/src/git";
+import { Git } from "@operations";
 
 describe.skip("Operations: Git Operations", function () {
 	const repoUrl = "https://github.com/WolpertingerLabs/perception-ts-gpt.git";
@@ -30,14 +30,14 @@ describe.skip("Operations: Git Operations", function () {
 		const diff = await Git.diff();
 		if (diff) {
 			console.warn("There is an active diff, skipping some Git tests.");
-			skipTests = true;
+			//skipTests = true;
 		}
 
 		// If there's an active commit, do not run this test
 		const status = await Git.status();
 		if (status.ahead > 0) {
 			console.warn("There is an active commit, skipping some Git tests.");
-			skipTests = true;
+			//skipTests = true;
 		}
 	});
 

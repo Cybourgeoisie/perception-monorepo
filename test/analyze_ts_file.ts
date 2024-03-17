@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import AnalyzeTSFile from "libs/operations/src/analyze_ts_file";
+import { AnalyzeTSFile } from "@operations";
 
 describe("Operations: Analyze TypeScript File", function () {
 	it("should return the correct name", function () {
@@ -15,7 +15,7 @@ describe("Operations: Analyze TypeScript File", function () {
 	});
 
 	it("should log the correct node types and names", function () {
-		const structure = AnalyzeTSFile.analyzeTSFile(process.cwd() + "/src/operations/analyze_ts_file.ts");
+		const structure = AnalyzeTSFile.analyzeTSFile(process.cwd() + "/libs/operations/analyze_ts_file.ts");
 
 		//console.log(JSON.stringify(structure.types));
 

@@ -1,6 +1,6 @@
 import assert from "assert";
 import fs from "fs";
-import FileRead from "libs/operations/src/file_read";
+import { FileRead } from "@operations";
 import path from "path";
 
 describe("Operations: Read a file", function () {

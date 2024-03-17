@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import NpmHelper from "libs/operations/src/npm_helper";
+import { NpmHelper } from "@operations";
 import fs from "fs";
 
 describe("Operations: NpmHelper", function () {
