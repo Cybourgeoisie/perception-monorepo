@@ -3,6 +3,7 @@ import OpenAIClass from "openai";
 import { PromptCLI } from "@prompt-cli";
 import { Operations } from "@operations";
 import { BaseBotAdapter } from "../BaseBotAdapter";
+import { Models } from "@models";
 import { config as cfg } from "@config";
 import dJSON from "dirty-json";
 import { AutobotRoutine } from "@routines";
@@ -97,7 +98,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: cfg.FAST_LLM_MODEL,
+			model: Models.gpt3.model,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},
@@ -194,7 +195,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: cfg.FAST_LLM_MODEL,
+			model: Models.gpt3.model,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

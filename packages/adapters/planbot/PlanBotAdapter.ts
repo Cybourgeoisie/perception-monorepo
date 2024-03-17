@@ -1,6 +1,7 @@
 import { PromptCLI } from "@prompt-cli";
 import { BaseBotAdapter } from "../BaseBotAdapter";
 import { OpenAI, RequestMessage } from "@openai";
+import { Models } from "@models";
 import OpenAIClass from "openai";
 import { config as cfg } from "@config";
 
@@ -35,7 +36,7 @@ export default class PlanBotAdapter extends BaseBotAdapter {
 		// Get the response and handle it
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: cfg.SMART_LLM_MODEL,
+			model: Models.gpt4.model,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

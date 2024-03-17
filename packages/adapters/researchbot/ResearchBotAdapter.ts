@@ -5,6 +5,7 @@ import { BaseBotAdapter } from "../BaseBotAdapter";
 import { config as cfg } from "@config";
 import OpenAIClass from "openai";
 import { AutobotRoutine } from "@routines";
+import { Models } from "@models";
 import dJSON from "dirty-json";
 
 // Local imports
@@ -71,7 +72,7 @@ export default class ResearchBotAdapter extends BaseBotAdapter {
 
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: cfg.FAST_LLM_MODEL,
+			model: Models.gpt3.model,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

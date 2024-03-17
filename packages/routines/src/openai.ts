@@ -1,6 +1,7 @@
 import { config as cfg } from "@config";
 import { OpenAI, State } from "@openai";
 import { PromptCLI } from "@prompt-cli";
+import { Models } from "@models";
 import OpenAIClass from "openai";
 import natural from "natural";
 
@@ -37,7 +38,7 @@ export class OpenAIRoutine {
 
 		openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: cfg.USE_OPENROUTER ? cfg.OPENROUTER_LLM_MODEL : cfg.SMART_LLM_MODEL,
+			model: cfg.USE_OPENROUTER ? Models["claude3-haiku"].model : Models.gpt4.model,
 			onMessageCallback: (content: string) => {
 				process.stdout.write(content);
 			},
@@ -73,7 +74,7 @@ export class OpenAIRoutine {
 			console.log(`Submitting chunk ${parseInt(index, 10) + 1} of ${chunks.length} to OpenAI...`);
 			const response = await openAI.getCompletion({
 				messages: messages as OpenAIClass.ChatCompletionMessage[],
-				model: cfg.SMART_LLM_MODEL,
+				model: Models.gpt4.model,
 				onMessageCallback: (response) => {
 					process.stdout.write(response);
 				},
@@ -100,7 +101,7 @@ export class OpenAIRoutine {
 		console.log(`Summarizing all chunk summaries with OpenAI...`);
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: cfg.SMART_LLM_MODEL,
+			model: Models.gpt4.model,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

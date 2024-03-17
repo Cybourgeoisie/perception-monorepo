@@ -7,6 +7,7 @@ import { BaseBotAdapter } from "../BaseBotAdapter";
 import { OpenAI } from "@openai";
 import { RequestMessage } from "libs/openai/src/request";
 import OpenAIClass from "openai";
+import { Models } from "@models";
 import { FILE_LIST, FILE_CONTENTS, CREATE_OPERATION, EDIT_OPERATION } from "./config/prompts";
 import highlight from "cli-highlight";
 import path from "path";
@@ -433,7 +434,7 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 		// Get the response and handle it
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: cfg.FAST_LLM_MODEL,
+			model: Models.gpt3.model,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

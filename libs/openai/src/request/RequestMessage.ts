@@ -1,4 +1,3 @@
-import { config as cfg } from "@config";
 import OpenAIClass from "openai";
 
 type PromptRecord = OpenAIClass.ChatCompletionMessageParam | string;
@@ -19,7 +18,7 @@ export class RequestMessage {
 	private currentPrompts: RequestMessageHistoryBlock = { prompts: [] };
 	private history: RequestMessageHistory = [];
 	private includeHistory: boolean = false;
-	private tokenLimit: number = cfg.FAST_TOKEN_LIMIT;
+	private tokenLimit: number = 32000;
 
 	public setTokenLimit(limit: number): void {
 		this.tokenLimit = limit;
