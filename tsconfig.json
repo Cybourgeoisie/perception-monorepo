@@ -27,7 +27,6 @@
 			"@cli/*": ["apps/cli/*"],
 			"@server/*": ["apps/server/*"],
 			"@config": ["libs/config/index"],
-			"@models": ["libs/models/index"],
 			"@openai": ["libs/openai/index"],
 			"@prompt-cli": ["libs/prompt-cli/index"],
 			"@operations": ["libs/operations/index"],

@@ -1,6 +1,6 @@
 import cors from "cors";
 import express, { json } from "express";
-import { config as cfg } from "@config";
+import { Config } from "@config";
 import { Adapters } from "@adapters";
 
 const server: express.Application = express();
@@ -22,6 +22,6 @@ AdapterRoutes.forEach((routes) => {
 	});
 });
 
-server.listen(cfg.SERVER_PORT, async () => {
-	console.log(`Server is running at port ${cfg.SERVER_PORT}`);
+server.listen(Config.SERVER_PORT, async () => {
+	console.log(`Server is running at port ${Config.SERVER_PORT}`);
 });

@@ -3,8 +3,7 @@ import OpenAIClass from "openai";
 import { PromptCLI } from "@prompt-cli";
 import { Operations } from "@operations";
 import { BaseBotAdapter } from "../BaseBotAdapter";
-import { Models } from "@models";
-import { config as cfg } from "@config";
+import { Config, Models } from "@config";
 import dJSON from "dirty-json";
 import { AutobotRoutine } from "@routines";
 
@@ -93,7 +92,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 
 		// Get the response and handle it
 		const openAI = new OpenAI({
-			apiKey: cfg.OPENAI_API_KEY,
+			apiKey: Config.OPENAI_API_KEY,
 		});
 
 		const response = await openAI.getCompletion({
@@ -190,7 +189,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 
 		// Get the response and handle it
 		const openAI = new OpenAI({
-			apiKey: cfg.OPENAI_API_KEY,
+			apiKey: Config.OPENAI_API_KEY,
 		});
 
 		const response = await openAI.getCompletion({

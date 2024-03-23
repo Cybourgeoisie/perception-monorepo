@@ -1,6 +1,5 @@
 import OpenAIClass from "openai";
-import { config as cfg } from "@config";
-import { Models } from "@models";
+import { Config, Models } from "@config";
 import { IncomingMessage } from "http";
 
 export type OpenAICompletionArguments = {
@@ -39,7 +38,7 @@ export class OpenAI {
 		const {
 			messages,
 			model = args.model || Models.gpt3.model,
-			temperature = args.temperature || cfg.OPENAI_TEMPERATURE,
+			temperature = args.temperature || Config.OPENAI_TEMPERATURE,
 			n = 1,
 			onMessageCallback,
 			onCompleteCallback,

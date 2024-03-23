@@ -2,10 +2,9 @@ import { OpenAI } from "@openai";
 import { PromptCLI } from "@prompt-cli";
 import { WebOperations } from "@operations";
 import { BaseBotAdapter } from "../BaseBotAdapter";
-import { config as cfg } from "@config";
+import { Config, Models } from "@config";
 import OpenAIClass from "openai";
 import { AutobotRoutine } from "@routines";
-import { Models } from "@models";
 import dJSON from "dirty-json";
 
 // Local imports
@@ -67,7 +66,7 @@ export default class ResearchBotAdapter extends BaseBotAdapter {
 
 		// Get the response and handle it
 		const openAI = new OpenAI({
-			apiKey: cfg.OPENAI_API_KEY,
+			apiKey: Config.OPENAI_API_KEY,
 		});
 
 		const response = await openAI.getCompletion({

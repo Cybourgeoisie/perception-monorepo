@@ -1,6 +1,6 @@
 import BaseOperation, { OperationFormat } from "./base/base_operation";
 import { google } from "googleapis";
-import { config as cfg } from "@config";
+import { Config } from "@config";
 
 export type GoogleSearchResult = string | string[];
 
@@ -31,8 +31,8 @@ export default class Google extends BaseOperation {
 	public static async run(query: string, numResults: number = 8): Promise<GoogleSearchResult> {
 		try {
 			// Get the Google API key and Custom Search Engine ID from the config file
-			const apiKey = cfg.GOOGLE_API_KEY;
-			const customSearchEngineId = cfg.CUSTOM_SEARCH_ENGINE_ID;
+			const apiKey = Config.GOOGLE_API_KEY;
+			const customSearchEngineId = Config.CUSTOM_SEARCH_ENGINE_ID;
 
 			// Initialize the Custom Search API service
 			const customSearch = google.customsearch("v1");

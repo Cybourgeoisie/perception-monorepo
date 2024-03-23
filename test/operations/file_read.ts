@@ -10,8 +10,8 @@ describe("Operations: Read a file", function () {
 	});
 
 	it("should read a file and return its contents", function () {
-		const expectedContent = fs.readFileSync(path.resolve(process.cwd() + "/test/file_read.ts"), "utf-8");
-		const actualContent = FileRead.run(path.resolve(process.cwd() + "/test/file_read.ts"));
+		const expectedContent = fs.readFileSync(path.resolve(process.cwd() + "/test/operations/file_read.ts"), "utf-8");
+		const actualContent = FileRead.run(path.resolve(process.cwd() + "/test/operations/file_read.ts"));
 		assert.strictEqual(actualContent, expectedContent);
 	});
 

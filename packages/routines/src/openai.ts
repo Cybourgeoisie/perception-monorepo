@@ -1,7 +1,6 @@
-import { config as cfg } from "@config";
+import { Config, Models } from "@config";
 import { OpenAI, State } from "@openai";
 import { PromptCLI } from "@prompt-cli";
-import { Models } from "@models";
 import OpenAIClass from "openai";
 import natural from "natural";
 
@@ -32,13 +31,13 @@ export class OpenAIRoutine {
 		const messages = requestMessage.generateMessages();
 
 		const openAI = new OpenAI({
-			baseUrl: cfg.USE_OPENROUTER ? "https://openrouter.ai/api/v1" : undefined,
-			apiKey: cfg.USE_OPENROUTER ? cfg.OPENROUTER_API_KEY : cfg.OPENAI_API_KEY,
+			baseUrl: Config.USE_OPENROUTER ? "https://openrouter.ai/api/v1" : undefined,
+			apiKey: Config.USE_OPENROUTER ? Config.OPENROUTER_API_KEY : Config.OPENAI_API_KEY,
 		});
 
 		openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: cfg.USE_OPENROUTER ? Models["claude3-haiku"].model : Models.gpt4.model,
+			model: Config.USE_OPENROUTER ? Models["claude3-haiku"].model : Models.gpt4.model,
 			onMessageCallback: (content: string) => {
 				process.stdout.write(content);
 			},
@@ -52,7 +51,7 @@ export class OpenAIRoutine {
 	public static async getSummarization(state: State, text: string, question: string): Promise<string> {
 		const openAI = new OpenAI({
 			baseUrl: "https://openrouter.ai/api/v1",
-			apiKey: cfg.OPENROUTER_API_KEY,
+			apiKey: Config.OPENROUTER_API_KEY,
 		});
 
 		// Get the request message from the state

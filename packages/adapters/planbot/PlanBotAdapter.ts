@@ -1,9 +1,8 @@
 import { PromptCLI } from "@prompt-cli";
 import { BaseBotAdapter } from "../BaseBotAdapter";
 import { OpenAI, RequestMessage } from "@openai";
-import { Models } from "@models";
 import OpenAIClass from "openai";
-import { config as cfg } from "@config";
+import { Config, Models } from "@config";
 
 export default class PlanBotAdapter extends BaseBotAdapter {
 	public static getName(): string {
@@ -17,7 +16,7 @@ export default class PlanBotAdapter extends BaseBotAdapter {
 	public static async run(): Promise<void> {
 		// Initalize OpenAI helper and the request message
 		const openAI = new OpenAI({
-			apiKey: cfg.OPENAI_API_KEY,
+			apiKey: Config.OPENAI_API_KEY,
 		});
 
 		const requestMessage = new RequestMessage();

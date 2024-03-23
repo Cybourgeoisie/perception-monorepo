@@ -1,5 +1,5 @@
 import fs from "fs";
-import { config as cfg } from "@config";
+import { Config, Models } from "@config";
 import { PromptCLI } from "@prompt-cli";
 import { DirectoryList, Git, FileWrite } from "@operations";
 import { CodeAnalysisRoutine } from "@routines";
@@ -7,7 +7,6 @@ import { BaseBotAdapter } from "../BaseBotAdapter";
 import { OpenAI } from "@openai";
 import { RequestMessage } from "libs/openai/src/request";
 import OpenAIClass from "openai";
-import { Models } from "@models";
 import { FILE_LIST, FILE_CONTENTS, CREATE_OPERATION, EDIT_OPERATION } from "./config/prompts";
 import highlight from "cli-highlight";
 import path from "path";
@@ -411,7 +410,7 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 
 	private static async callOpenAi(systemPrompts: string[], userPrompt: string): Promise<OpenAIClass.ChatCompletionMessage> {
 		const openAI = new OpenAI({
-			apiKey: cfg.OPENAI_API_KEY,
+			apiKey: Config.OPENAI_API_KEY,
 		});
 
 		const requestMessage = new RequestMessage();
