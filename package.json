@@ -9,6 +9,7 @@
 		"start:server": "node build/src/server.js",
 		"dev:cli": "ts-node -r tsconfig-paths/register apps/cli/index.ts",
 		"dev:server": "ts-node -r tsconfig-paths/register apps/server/index.ts",
+		"script": "ts-node -r tsconfig-paths/register scripts/index.ts",
 		"lint": "eslint . --ext .ts --ext .mts",
 		"prettier": "prettier --config .prettierrc --write .",
 		"test": "ts-mocha -r tsconfig-paths/register --bail --timeout 5000 --recursive test/**/*.ts",
@@ -20,7 +21,8 @@
 		"apps/*",
 		"libs/*",
 		"tools/*",
-		"packages/*"
+		"packages/*",
+		"scripts/*"
 	],
 	"devDependencies": {
 		"@types/chai": "^4.3.12",

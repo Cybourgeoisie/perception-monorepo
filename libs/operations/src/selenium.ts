@@ -2,7 +2,7 @@ import BaseOperation, { OperationFormat } from "./base/base_operation";
 import { Builder, By, WebDriver, WebElement, until } from "selenium-webdriver";
 import { Options as ChromeOptions } from "selenium-webdriver/chrome";
 import { JSDOM } from "jsdom";
-import { Config } from "@config";
+import { UserAgents } from "@config";
 
 export default class Selenium extends BaseOperation {
 	public static getName(): string {
@@ -31,7 +31,7 @@ export default class Selenium extends BaseOperation {
 	public static async run(url: string): Promise<string> {
 		try {
 			const options = new ChromeOptions();
-			options.addArguments(Config.USER_AGENT);
+			options.addArguments(UserAgents.MozillaMacOSX);
 			options.addArguments("--no-sandbox");
 			options.addArguments("--headless");
 			options.addArguments("--disable-gpu");

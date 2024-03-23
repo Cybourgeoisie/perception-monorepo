@@ -19,6 +19,7 @@ export type OpenAIConfig = {
 
 export class OpenAI {
 	private openai: OpenAIClass;
+	private apiKey: string;
 	private maxCompletionAttempts: number = 3;
 
 	constructor(config: OpenAIConfig) {
@@ -27,6 +28,7 @@ export class OpenAI {
 			throw new Error('OpenAI config "apiKey" must be set to start the program.');
 		}
 
+		this.apiKey = config.apiKey;
 		this.openai = new OpenAIClass({
 			baseURL: config.baseUrl,
 			apiKey: config.apiKey,
@@ -122,5 +124,27 @@ export class OpenAI {
 			// Try to run again
 			return this.getCompletion({ ...args, numCompletionAttempts: (args.numCompletionAttempts || 0) + 1 });
 		}
+	}
+
+	public async getOpenRouterLimits(): Promise<any> {
+		const response = await fetch("https://openrouter.ai/api/v1/auth/key", {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${this.apiKey}`,
+			},
+		});
+
+		return response.json();
+	}
+
+	public async getOpenRouterModels(): Promise<any> {
+		const response = await fetch("https://openrouter.ai/api/v1/models", {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${this.apiKey}`,
+			},
+		});
+
+		return response.json();
 	}
 }
