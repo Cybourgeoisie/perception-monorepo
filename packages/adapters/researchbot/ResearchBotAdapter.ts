@@ -2,7 +2,7 @@ import { OpenAI } from "@openai";
 import { PromptCLI } from "@prompt-cli";
 import { WebOperations } from "@operations";
 import { BaseBotAdapter } from "../BaseBotAdapter";
-import { Config, Models } from "@config";
+import { Config } from "@config";
 import OpenAIClass from "openai";
 import { AutobotRoutine } from "@routines";
 import dJSON from "dirty-json";
@@ -71,7 +71,6 @@ export default class ResearchBotAdapter extends BaseBotAdapter {
 
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: Models["openai/gpt-3.5-turbo-16k"].id,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

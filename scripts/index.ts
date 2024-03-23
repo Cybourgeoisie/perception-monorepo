@@ -1,4 +1,4 @@
-import { getOpenRouterModels, getOpenRouterLimits, updateOpenRouterModels } from "./openai/get-openrouter-models-limits";
+import { getOpenRouterModels, getOpenRouterLimits, updateOpenRouterModels } from "./openrouter/get-openrouter-models-limits";
 
 // From the command line arguments, determine which script to run
 const script = process.argv[2];

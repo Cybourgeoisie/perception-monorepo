@@ -35,7 +35,7 @@ export function updateOpenRouterModels() {
 			const formattedModels = ((models && models.data) || {}).reduce((acc, model) => {
 				return { ...acc, [`${model.id}`]: model };
 			}, {});
-			fs.writeFileSync("libs/config/src/models.ts", `export const Models = ${JSON.stringify(formattedModels, null, 4)};`);
+			fs.writeFileSync("libs/config/src/models/openrouter.ts", `export const OpenRouterModels = ${JSON.stringify(formattedModels, null, 4)};`);
 		})
 		.catch((error) => {
 			console.error(error);

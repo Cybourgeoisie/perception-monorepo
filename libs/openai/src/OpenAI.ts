@@ -20,6 +20,7 @@ export type OpenAIConfig = {
 export class OpenAI {
 	private openai: OpenAIClass;
 	private apiKey: string;
+	private service: "OpenAI" | "OpenRouter" = "OpenAI";
 	private maxCompletionAttempts: number = 3;
 
 	constructor(config: OpenAIConfig) {
@@ -28,6 +29,7 @@ export class OpenAI {
 			throw new Error('OpenAI config "apiKey" must be set to start the program.');
 		}
 
+		this.service = config.baseUrl?.includes("openrouter") ? "OpenRouter" : "OpenAI";
 		this.apiKey = config.apiKey;
 		this.openai = new OpenAIClass({
 			baseURL: config.baseUrl,
@@ -35,11 +37,30 @@ export class OpenAI {
 		});
 	}
 
+	public getDefaultModel(): string {
+		return this.getDefaultFastModel();
+	}
+
+	public getDefaultFastModel(): string {
+		if (this.service === "OpenRouter") {
+			return Models.openrouter["openai/gpt-3.5-turbo-16k"].id;
+		}
+
+		return Models.openai["gpt-3.5-turbo-16k"].id;
+	}
+
+	public getDefaultBestModel(): string {
+		if (this.service === "OpenRouter") {
+			return Models.openrouter["openai/gpt-4"].id;
+		}
+
+		return Models.openai["gpt-4"].id;
+	}
+
 	public async getCompletion(args: OpenAICompletionArguments): Promise<OpenAIClass.ChatCompletionMessage> {
 		// Retrieve the arguments
 		const {
 			messages,
-			model = args.model || Models["openai/gpt-3.5-turbo-16k"].id,
 			temperature = args.temperature || Config.OPENAI_TEMPERATURE,
 			n = 1,
 			onMessageCallback,
@@ -47,7 +68,16 @@ export class OpenAI {
 			numCompletionAttempts = 0,
 		} = args;
 
-		console.log(`Using OpenAI (${model}, T=${temperature}) to respond...`);
+		let { model = args.model || this.getDefaultModel() } = args;
+
+		// Parse the model further
+		if (model === "best") {
+			model = this.getDefaultBestModel();
+		} else if (model === "fast") {
+			model = this.getDefaultFastModel();
+		}
+
+		console.log(`Using ${this.service} (${model}, T=${temperature}) to respond...`);
 
 		try {
 			const response = await this.openai.chat.completions.create({

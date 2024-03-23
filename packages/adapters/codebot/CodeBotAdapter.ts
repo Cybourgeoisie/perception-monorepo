@@ -1,5 +1,5 @@
 import fs from "fs";
-import { Config, Models } from "@config";
+import { Config } from "@config";
 import { PromptCLI } from "@prompt-cli";
 import { DirectoryList, Git, FileWrite } from "@operations";
 import { CodeAnalysisRoutine } from "@routines";
@@ -433,7 +433,6 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 		// Get the response and handle it
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: Models["openai/gpt-3.5-turbo-16k"].id,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

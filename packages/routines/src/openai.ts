@@ -1,4 +1,4 @@
-import { Config, Models } from "@config";
+import { Config } from "@config";
 import { OpenAI, State } from "@openai";
 import { PromptCLI } from "@prompt-cli";
 import OpenAIClass from "openai";
@@ -37,7 +37,7 @@ export class OpenAIRoutine {
 
 		openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: Config.USE_OPENROUTER ? Models["anthropic/claude-3-haiku"].id : Models["openai/gpt-4"].id,
+			model: "best",
 			onMessageCallback: (content: string) => {
 				process.stdout.write(content);
 			},
@@ -73,7 +73,7 @@ export class OpenAIRoutine {
 			console.log(`Submitting chunk ${parseInt(index, 10) + 1} of ${chunks.length} to OpenAI...`);
 			const response = await openAI.getCompletion({
 				messages: messages as OpenAIClass.ChatCompletionMessage[],
-				model: Models["openai/gpt-4"].id,
+				model: "best",
 				onMessageCallback: (response) => {
 					process.stdout.write(response);
 				},
@@ -100,7 +100,7 @@ export class OpenAIRoutine {
 		console.log(`Summarizing all chunk summaries with OpenAI...`);
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: Models["openai/gpt-4"].id,
+			model: "best",
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

@@ -2,7 +2,7 @@ import { PromptCLI } from "@prompt-cli";
 import { BaseBotAdapter } from "../BaseBotAdapter";
 import { OpenAI, RequestMessage } from "@openai";
 import OpenAIClass from "openai";
-import { Config, Models } from "@config";
+import { Config } from "@config";
 
 export default class PlanBotAdapter extends BaseBotAdapter {
 	public static getName(): string {
@@ -35,7 +35,7 @@ export default class PlanBotAdapter extends BaseBotAdapter {
 		// Get the response and handle it
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: Models["openai/gpt-4"].id,
+			model: "best",
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},
