@@ -39,7 +39,7 @@ export class OpenAI {
 		// Retrieve the arguments
 		const {
 			messages,
-			model = args.model || Models.gpt3.model,
+			model = args.model || Models["openai/gpt-3.5-turbo-16k"].id,
 			temperature = args.temperature || Config.OPENAI_TEMPERATURE,
 			n = 1,
 			onMessageCallback,

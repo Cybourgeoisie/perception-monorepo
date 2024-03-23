@@ -37,7 +37,7 @@ export class OpenAIRoutine {
 
 		openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: Config.USE_OPENROUTER ? Models["claude3-haiku"].model : Models.gpt4.model,
+			model: Config.USE_OPENROUTER ? Models["anthropic/claude-3-haiku"].id : Models["openai/gpt-4"].id,
 			onMessageCallback: (content: string) => {
 				process.stdout.write(content);
 			},
@@ -73,7 +73,7 @@ export class OpenAIRoutine {
 			console.log(`Submitting chunk ${parseInt(index, 10) + 1} of ${chunks.length} to OpenAI...`);
 			const response = await openAI.getCompletion({
 				messages: messages as OpenAIClass.ChatCompletionMessage[],
-				model: Models.gpt4.model,
+				model: Models["openai/gpt-4"].id,
 				onMessageCallback: (response) => {
 					process.stdout.write(response);
 				},
@@ -100,7 +100,7 @@ export class OpenAIRoutine {
 		console.log(`Summarizing all chunk summaries with OpenAI...`);
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: Models.gpt4.model,
+			model: Models["openai/gpt-4"].id,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

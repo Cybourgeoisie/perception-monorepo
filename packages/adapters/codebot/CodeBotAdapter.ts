@@ -433,7 +433,7 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 		// Get the response and handle it
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: Models.gpt3.model,
+			model: Models["openai/gpt-3.5-turbo-16k"].id,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

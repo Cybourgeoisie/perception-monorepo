@@ -35,7 +35,7 @@ export default class PlanBotAdapter extends BaseBotAdapter {
 		// Get the response and handle it
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: Models.gpt4.model,
+			model: Models["openai/gpt-4"].id,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},
