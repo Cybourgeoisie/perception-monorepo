@@ -15,10 +15,12 @@ You should only respond in the JSON format as described below
 Response Format:
 """
 {
-	"command": <command name>
-	"args": {
-		<arg name>: <value>
-	}
+	"command": {
+        "name": "command name",
+        "args": {
+            "arg name": "value"
+        }
+    }
 }
 """
 

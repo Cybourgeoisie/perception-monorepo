@@ -1,14 +1,11 @@
 import { OpenAI } from "@openai";
 import OpenAIClass from "openai";
 import { PromptCLI } from "@prompt-cli";
-import { Operations } from "@operations";
+import { Operations, WebOperations } from "@operations";
 import { BaseBotAdapter } from "../BaseBotAdapter";
-import { Config } from "@config";
+import { Config, Prompts } from "@config";
 import dJSON from "dirty-json";
 import { AutobotRoutine } from "@routines";
-
-// Local imports
-import { PERCEPTION_SYSTEM_PROMPT, CLASSIC_SYSTEM_PROMPT } from "./config/prompts";
 
 export default class AutoBotAdapter extends BaseBotAdapter {
 	public static getName(): string {
@@ -31,6 +28,10 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 				value: "classic",
 			},
 			{
+				title: "Researcher",
+				value: "researcher",
+			},
+			{
 				title: "↩ Exit",
 				value: "back",
 			},
@@ -39,13 +40,15 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		if (version == "back") {
 			process.exit();
 		} else if (version == "perception") {
-			return this.start(PERCEPTION_SYSTEM_PROMPT);
-		} else {
-			return this.start(CLASSIC_SYSTEM_PROMPT);
+			return this.start(Operations, Prompts.autobot.PERCEPTION_SYSTEM_PROMPT);
+		} else if (version == "classic") {
+			return this.start(Operations, Prompts.autobot.CLASSIC_SYSTEM_PROMPT);
+		} else if (version == "researcher") {
+			return this.start(WebOperations, Prompts.research.SYSTEM_PROMPT);
 		}
 	}
 
-	private static async start(prompt: string): Promise<void> {
+	private static async start(operations: any, prompt: string): Promise<void> {
 		// Get the user's prompt
 		const objective = await PromptCLI.text(`What objective would you like your AutoBot to perform for you?:`);
 		if (PromptCLI.quitCommands.includes(objective)) {
@@ -53,7 +56,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		}
 
 		// Collect all of the commands from the operations folder
-		const commands = AutobotRoutine.listOperations(Operations);
+		const commands = AutobotRoutine.listOperations(operations);
 
 		// Report the state of the program to the user
 		console.log(`\nCommands enabled:\n${commands.join("\n")}`);
@@ -62,16 +65,16 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		// Store the objective in the program state
 		this.state.setProgramState("autobot", { objective });
 
-		this.runPrompt(prompt);
+		this.runPrompt(operations, prompt);
 	}
 
-	private static async runPrompt(prompt: string, operationResult?: string): Promise<void> {
+	private static async runPrompt(operations: any, prompt: string, operationResult?: string): Promise<void> {
 		// Get the requestMessage and the program state data
 		const { objective } = this.state.getProgramState("autobot");
 		const requestMessage = this.state.getRequestMessage();
 
 		// Collect all of the commands from the operations folder
-		const commands = AutobotRoutine.listOperations(Operations);
+		const commands = AutobotRoutine.listOperations(operations);
 
 		// Set up the system prompts
 		requestMessage.addSystemPrompt(prompt.replaceAll("{{OBJECTIVE}}", objective).replaceAll("{{COMMANDS}}", commands.join("\n")));
@@ -127,17 +130,17 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 
 			requestMessage.addSystemPrompt(`Your response must follow the JSON format.`);
 
-			return this.runPrompt(prompt);
+			return this.runPrompt(operations, prompt);
 		}
 
 		// Prompt the user if they'd like to continue
 		const _continue = await AutobotRoutine.promptOperation(this.state, parsedCommandName, parsedCommandArgs);
 
 		if (!_continue) {
-			return this.runPrompt(prompt);
+			return this.runPrompt(operations, prompt);
 		}
 
 		// Attempt to run the command
-		return AutobotRoutine.issueOperation(this.state, parsedCommandName, parsedCommandArgs, Operations, this.runPrompt.bind(this, prompt));
+		return AutobotRoutine.issueOperation(this.state, parsedCommandName, parsedCommandArgs, operations, this.runPrompt.bind(this, operations, prompt));
 	}
 }
