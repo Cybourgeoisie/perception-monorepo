@@ -1,8 +1,14 @@
 import { Config } from "@config";
 import { OpenAI, State } from "@openai";
-import { PromptCLI } from "@prompt-cli";
 import OpenAIClass from "openai";
 import natural from "natural";
+
+export type OpenAIRoutinePromptArgs = {
+	state: State;
+	systemPrompts?: string[];
+	userPrompt: string;
+	callback: (s: OpenAIClass.ChatCompletionMessageParam) => void;
+};
 
 export class OpenAIRoutine {
 	public static getName(): string {
@@ -13,19 +19,25 @@ export class OpenAIRoutine {
 		return "Submit prompts to OpenAI's chat completion API";
 	}
 
-	public static async promptWithHistory(state: State, callback: (s: OpenAIClass.ChatCompletionMessageParam) => void): Promise<void> {
-		// Get the user's prompt
-		const prompt = await PromptCLI.text(`Prompt (type "q" to exit):`);
-		if (PromptCLI.quitCommands.includes(prompt)) {
-			process.exit();
-		}
+	public static async promptWithHistory(args: OpenAIRoutinePromptArgs): Promise<void> {
+		// Get the arguments
+		const { state, systemPrompts, userPrompt, callback } = args;
 
 		// Get the request message from the state
 		const requestMessage = state.getRequestMessage();
 
-		// Construct the request message based on history
+		// Set up the system prompts
+		if (systemPrompts) {
+			for (const systemPrompt of systemPrompts) {
+				requestMessage.addSystemPrompt(systemPrompt);
+			}
+		}
+
+		// Add the history context
 		requestMessage.addHistoryContext();
-		requestMessage.addUserPrompt(prompt);
+
+		// Add the user prompt
+		requestMessage.addUserPrompt(userPrompt);
 
 		// Submit the request to OpenAI, and cycle back to handle the response
 		const messages = requestMessage.generateMessages();
@@ -41,9 +53,9 @@ export class OpenAIRoutine {
 			onMessageCallback: (content: string) => {
 				process.stdout.write(content);
 			},
-			onCompleteCallback: (content: OpenAIClass.ChatCompletionMessage) => {
-				requestMessage.addGPTResponse(content);
-				callback(content);
+			onCompleteCallback: (response: OpenAIClass.ChatCompletionMessage) => {
+				requestMessage.addGPTResponse(response);
+				callback(response);
 			},
 		});
 	}
