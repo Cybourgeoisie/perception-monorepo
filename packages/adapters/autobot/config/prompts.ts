@@ -34,11 +34,13 @@ You should only respond in the JSON format as described below
 Response Format:
 """
 {
-	"thoughts": <thoughts, reasoning, and criticism>
-	"command": <command name>
-	"args": {
-		<arg name>: <value>
-	}
+	"thoughts": <thoughts, reasoning, and criticism>,
+	"command": {
+        "name": "command name",
+        "args": {
+            "arg name": "value"
+        }
+    }
 }
 """
 
