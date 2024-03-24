@@ -31,8 +31,8 @@ export class OpenAIRoutine {
 		const messages = requestMessage.generateMessages();
 
 		const openAI = new OpenAI({
-			baseUrl: Config.USE_OPENROUTER ? "https://openrouter.ai/api/v1" : undefined,
-			apiKey: Config.USE_OPENROUTER ? Config.OPENROUTER_API_KEY : Config.OPENAI_API_KEY,
+			baseUrl: Config.LLM_API_ENDPOINT === "OpenRouter" ? "https://openrouter.ai/api/v1" : undefined,
+			apiKey: Config.LLM_API_ENDPOINT === "OpenRouter" ? Config.OPENROUTER_API_KEY : Config.OPENAI_API_KEY,
 		});
 
 		openAI.getCompletion({

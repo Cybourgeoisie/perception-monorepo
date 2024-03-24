@@ -1,5 +1,5 @@
 import OpenAIClass from "openai";
-import { Config, Models } from "@config";
+import { Models, LLMConfigs } from "@config";
 import { IncomingMessage } from "http";
 
 export type OpenAICompletionArguments = {
@@ -31,6 +31,7 @@ export class OpenAI {
 
 		this.service = config.baseUrl?.includes("openrouter") ? "OpenRouter" : "OpenAI";
 		this.apiKey = config.apiKey;
+		this.maxCompletionAttempts = LLMConfigs.default.maxCompletionAttempts || 3;
 		this.openai = new OpenAIClass({
 			baseURL: config.baseUrl,
 			apiKey: config.apiKey,
@@ -43,29 +44,29 @@ export class OpenAI {
 
 	public getDefaultFastModel(): string {
 		if (this.service === "OpenRouter") {
-			return Models.openrouter["openai/gpt-3.5-turbo-16k"].id;
+			return Models.openrouter[LLMConfigs.default.models.openrouter.fast].id;
 		}
 
-		return Models.openai["gpt-3.5-turbo-16k"].id;
+		return Models.openai[LLMConfigs.default.models.openai.fast].id;
 	}
 
 	public getDefaultBestModel(): string {
 		if (this.service === "OpenRouter") {
-			return Models.openrouter["openai/gpt-4"].id;
+			return Models.openrouter[LLMConfigs.default.models.openrouter.best].id;
 		}
 
-		return Models.openai["gpt-4"].id;
+		return Models.openai[LLMConfigs.default.models.openai.best].id;
 	}
 
 	public async getCompletion(args: OpenAICompletionArguments): Promise<OpenAIClass.ChatCompletionMessage> {
 		// Retrieve the arguments
 		const {
 			messages,
-			temperature = args.temperature || Config.OPENAI_TEMPERATURE,
-			n = 1,
+			numCompletionAttempts = 0,
+			temperature = args.temperature || LLMConfigs.default.temperature,
+			n = args.n || LLMConfigs.default.n,
 			onMessageCallback,
 			onCompleteCallback,
-			numCompletionAttempts = 0,
 		} = args;
 
 		let { model = args.model || this.getDefaultModel() } = args;
