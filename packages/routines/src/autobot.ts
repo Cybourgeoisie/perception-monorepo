@@ -33,7 +33,7 @@ export class AutobotRoutine {
 			.filter((command) => command.length);
 	}
 
-	public static async promptOperation(state: State, _commandName: string, _commandArgs: string[]): Promise<boolean> {
+	public static async promptOperation(state: State, _commandName: string, _commandArgs: Record<string, string>): Promise<boolean> {
 		// Get the prompts to run remaining from the state
 		let { promptsToRunRemaining = 0 } = state.getProgramState("autobot");
 

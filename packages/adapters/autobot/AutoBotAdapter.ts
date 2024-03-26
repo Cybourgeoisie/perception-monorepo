@@ -43,64 +43,74 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 
 		if (version == "back") {
 			process.exit();
-		} else if (version == "perception") {
-			const prompts = {
-				system: Prompts.autobot.PERCEPTION_SYSTEM_PROMPT,
-				user: "Determine which next command to use, and respond ONLY using the JSON format specified. No other response format is permitted.",
-			};
-
-			return this.start(Operations, prompts);
-		} else if (version == "classic") {
-			const prompts = {
-				system: Prompts.autobot.CLASSIC_SYSTEM_PROMPT,
-				user: "Determine which next command to use, and respond ONLY using the JSON format specified. No other response format is permitted.",
-			};
-
-			return this.start(Operations, prompts);
-		} else if (version == "researcher") {
-			const prompts = {
-				system: Prompts.research.SYSTEM_PROMPT,
-				user: "Determine which next command to use, and respond ONLY using the JSON format specified. No other response format is permitted.",
-			};
-
-			return this.start(WebOperations, prompts);
-		} else if (version == "chat") {
-			return this.runChat();
-		}
-	}
-
-	private static async runChat(): Promise<void> {
-		// Get the user's prompt
-		const prompt = await PromptCLI.text(`Prompt (type "q" to exit):`);
-		if (PromptCLI.quitCommands.includes(prompt)) {
-			process.exit();
 		}
 
 		const prompts = {
-			user: prompt,
+			system: Prompts.autobot[version].system,
+			user: Prompts.autobot[version].user,
 		};
 
-		return this.runPrompt([], prompts, this.runChat.bind(this));
-	}
-
-	private static async start(operations: Array<typeof BaseOperation>, prompts: { user: string; system?: string }): Promise<void> {
-		// Get the user's prompt
-		const objective = await PromptCLI.text(`What objective would you like your AutoBot to perform for you?:`);
-		if (PromptCLI.quitCommands.includes(objective)) {
-			process.exit();
+		let operations = [];
+		switch (Prompts.autobot[version].operations) {
+			case "web":
+				operations = WebOperations;
+				break;
+			case "all":
+				operations = Operations;
+				break;
+			default:
+				operations = [];
+				break;
 		}
 
-		// Collect all of the commands from the operations folder
-		const commands = AutobotRoutine.listOperations(operations);
+		// Report the commands from the operations folder
+		if (operations && operations.length > 0) {
+			const commands = AutobotRoutine.listOperations(operations);
 
-		// Report the state of the program to the user
-		console.log(`\nCommands enabled:\n${commands.join("\n")}`);
-		console.log(`\nObjective: ${objective}\n`);
+			// Report the state of the program to the user
+			console.log(`Commands enabled:\n${commands.join("\n")}`);
+		}
 
-		// Store the objective in the program state
-		this.state.setProgramState("autobot", { objective });
+		// Start the AutoBot routine
+		return this.loop(Prompts.autobot[version].input, operations, prompts);
+	}
 
-		this.runPrompt(operations, prompts, this.callback.bind(this, operations, prompts));
+	private static async loop(
+		input?: Record<string, string>,
+		operations?: Array<typeof BaseOperation>,
+		prompts?: { user: string; system?: string },
+	): Promise<void> {
+		const responses = await this.promptInputs(input);
+
+		// If we have an override for the user prompt, use that instead
+		if (responses && responses.user) {
+			prompts.user = responses.user;
+		}
+
+		// Start the AutoBot routine
+		return this.runPrompt(operations, prompts, this.callback.bind(this, input, operations, prompts));
+	}
+
+	private static async promptInputs(input: Record<string, string>): Promise<Record<string, string>> {
+		// Get the user's inputs
+		const responses = {};
+		for (const key in input) {
+			const question = input[key];
+			const response = await PromptCLI.text(question);
+			if (PromptCLI.quitCommands.includes(response)) {
+				process.exit();
+			}
+
+			console.log(`\n${key}: ${response}\n`);
+
+			// Store the input in the program state
+			this.state.setProgramState("autobot", { [key]: response });
+
+			// Save the response
+			responses[key] = response;
+		}
+
+		return responses;
 	}
 
 	private static async runPrompt(
@@ -109,16 +119,16 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		callback: (s: OpenAIClass.ChatCompletionMessageParam) => void,
 		operationResult?: string,
 	): Promise<void> {
-		// Get the requestMessage and the program state data
-		const { objective } = this.state.getProgramState("autobot");
-
-		// Collect all of the commands from the operations folder
-		const commands = AutobotRoutine.listOperations(operations);
-
 		// Set up the system prompts
 		const systemPrompts = [];
 
 		if (prompts.system) {
+			// Get the program state data
+			const { objective } = this.state.getProgramState("autobot");
+
+			// Collect all of the commands from the operations folder
+			const commands = AutobotRoutine.listOperations(operations);
+
 			systemPrompts.push(prompts.system.replaceAll("{{OBJECTIVE}}", objective).replaceAll("{{COMMANDS}}", commands.join("\n")));
 			systemPrompts.push(`The current time is ${new Date().toLocaleString()}.`);
 
@@ -137,48 +147,74 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		OpenAIRoutine.promptWithHistory(args);
 	}
 
-	private static async callback(operations, prompt, response: OpenAIClass.ChatCompletionMessage) {
+	private static async callback(
+		input: Record<string, string> | undefined,
+		operations: Array<typeof BaseOperation>,
+		prompts: { user: string; system?: string },
+		response: OpenAIClass.ChatCompletionMessage,
+	) {
 		let content = response.content;
 
-		// Report the response to the user
-		//console.log(`\nGPT Response:\n${content}\n`);
+		// If we received a JSON response with a command back, parse it
+		const responseCommand = this.getResponseCommand(content);
 
-		// Parse the JSON response
-		let parsedCommandName, parsedCommandArgs;
+		if (responseCommand && responseCommand.name) {
+			// For now, for simplicity, just run the first command we find
+			const { name: parsedCommandName, args: parsedCommandArgs } = responseCommand;
+
+			// Prompt the user if they'd like to continue
+			const _continue = await AutobotRoutine.promptOperation(this.state, parsedCommandName, parsedCommandArgs);
+
+			if (!_continue) {
+				return this.runPrompt(operations, prompts, this.callback.bind(this, input, operations, prompts));
+			}
+
+			// Attempt to run the command
+			return AutobotRoutine.issueOperation(
+				this.state,
+				parsedCommandName,
+				parsedCommandArgs,
+				operations,
+				this.runPrompt.bind(this, operations, prompts, this.callback.bind(this, input, operations, prompts)),
+			);
+		}
+
+		// Back to the user
+		this.loop(input, operations, prompts);
+	}
+
+	private static getResponseCommand(content: string): { name?: string; args?: Record<string, string> } {
+		// Iterate through all JSON objects returned in this response,
+		// and check if the response includes a command, in JSON format
+		const command = {
+			name: undefined,
+			args: {},
+		};
+
+		// Find the first and last curly bracket to denote the JSON object
+		const firstBracket = content.indexOf("{");
+		const lastBracket = content.lastIndexOf("}");
+		if (firstBracket === -1 || lastBracket === -1) {
+			return command;
+		}
+
+		// Extract the JSON object
+		const jsonObject = content.substring(firstBracket, lastBracket + 1);
+
 		try {
-			// Remove any pre or post-text around the JSON
-			const jsonStartIndex = content.indexOf("{");
-			const jsonEndIndex = content.lastIndexOf("}");
-			content = content.substring(jsonStartIndex, jsonEndIndex + 1);
-
 			// Parse and clean the JSON
-			const parsedResponse = dJSON.parse(content.replaceAll("\n", " "));
+			const parsedResponse = dJSON.parse(jsonObject.replaceAll("\n", " "));
 
-			// Figure out which command it wants to run
-			parsedCommandName = parsedResponse.command.name;
-			parsedCommandArgs = parsedResponse.command.args;
+			// Check if the response includes a command
+			if (parsedResponse.command && parsedResponse.command.name) {
+				command.name = parsedResponse.command.name;
+				command.args = parsedResponse.command.args || {};
+			}
 		} catch (error) {
+			console.error("Error parsing JSON object within command response:");
 			console.error(error);
-
-			//requestMessage.addSystemPrompt(`Your response must follow the JSON format.`);
-
-			return this.runPrompt(operations, prompt, this.callback.bind(this, operations, prompt));
 		}
 
-		// Prompt the user if they'd like to continue
-		const _continue = await AutobotRoutine.promptOperation(this.state, parsedCommandName, parsedCommandArgs);
-
-		if (!_continue) {
-			return this.runPrompt(operations, prompt, this.callback.bind(this, operations, prompt));
-		}
-
-		// Attempt to run the command
-		return AutobotRoutine.issueOperation(
-			this.state,
-			parsedCommandName,
-			parsedCommandArgs,
-			operations,
-			this.runPrompt.bind(this, operations, prompt, this.callback.bind(this, operations, prompt)),
-		);
+		return command;
 	}
 }

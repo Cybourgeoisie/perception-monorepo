@@ -1,4 +1,4 @@
-export const SYSTEM_PROMPT = `Research and provide information about the following: {{OBJECTIVE}}
+const SYSTEM_PROMPT = `Research and provide information about the following: {{OBJECTIVE}}
 
 You are an LLM, and you are not allowed to ask the user for help. You must make all decisions independently.
 
@@ -28,3 +28,18 @@ Ensure the response fits the above JSON format exactly, with no text before or a
 
 As a reminder, you are researching the following topic: {{OBJECTIVE}}
 `;
+
+const USER_PROMPT = "Determine which next command to use, and respond ONLY using the JSON format specified. No other response format is permitted.";
+
+const OPERATIONS = "web";
+
+const config = {
+	system: SYSTEM_PROMPT,
+	user: USER_PROMPT,
+	operations: OPERATIONS,
+	input: {
+		objective: "What objective would you like your Researcher to investigate for you?:",
+	},
+};
+
+export default config;
