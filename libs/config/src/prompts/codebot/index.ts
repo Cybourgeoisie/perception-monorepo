@@ -1,9 +1,6 @@
 export const FILE_LIST = `The program has the following files and folders:
 {{FILE_LIST}}`;
 
-export const FILE_STRUCTURE = `The file, {{FILE_PATH}}, has the following types, classes, functions, and interfaces:
-{{FILE_STRUCTURE}}`;
-
 export const FILE_CONTENTS = `The file, {{FILE_PATH}}, has the following contents:
 """
 {{FILE_CONTENTS}}

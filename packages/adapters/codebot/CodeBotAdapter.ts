@@ -1,5 +1,6 @@
 import fs from "fs";
-import { Config } from "@config";
+import path from "path";
+import { Config, Prompts } from "@config";
 import { PromptCLI } from "@prompt-cli";
 import { DirectoryList, Git, FileWrite } from "@operations";
 import { CodeAnalysisRoutine } from "@routines";
@@ -7,11 +8,9 @@ import { BaseBotAdapter } from "../BaseBotAdapter";
 import { OpenAI } from "@openai";
 import { RequestMessage } from "libs/openai/src/request";
 import OpenAIClass from "openai";
-import { Prompts } from "@config";
 import highlight from "cli-highlight";
-import path from "path";
 
-export default class PerceptionBotAdapter extends BaseBotAdapter {
+export default class CodeBotAdapter extends BaseBotAdapter {
 	public static getName(): string {
 		return "Code Bot";
 	}
@@ -216,7 +215,6 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 		const codeBlock: string = this.cleanCodeResponse(response);
 
 		// Report the response to the user
-		this.clearConsole();
 		this.printCode(codeBlock);
 
 		// Enter the operation loop
@@ -276,7 +274,6 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 		const codeBlock: string = this.cleanCodeResponse(response);
 
 		// Report the response to the user
-		this.clearConsole();
 		this.printCode(codeBlock);
 
 		// Enter the operation loop
@@ -432,10 +429,6 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 
 	private static printCode(code: string): void {
 		console.log(highlight(code, { language: "typescript", ignoreIllegals: true }));
-	}
-
-	private static clearConsole(): void {
-		//console.clear();
 	}
 
 	private static async promptFileSave(content: string, filepath?: string, filename?: string): Promise<void> {
