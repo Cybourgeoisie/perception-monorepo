@@ -1,4 +1,6 @@
-export { default as chat } from "./chat";
-export { default as classic } from "./classic";
-export { default as perception } from "./perception";
-export { default as researcher } from "./researcher";
+import { default as chat } from "./chat";
+import { default as classic } from "./classic";
+import { default as perception } from "./perception";
+import { default as researcher } from "./researcher";
+
+export { chat, classic, perception, researcher };

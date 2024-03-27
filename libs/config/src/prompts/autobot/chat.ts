@@ -1,4 +1,5 @@
 const config = {
+	name: "Chat",
 	system: undefined,
 	user: undefined,
 	operations: "none",

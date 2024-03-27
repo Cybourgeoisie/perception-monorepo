@@ -1,4 +1,4 @@
-const SYSTEM_PROMPT = `Your full, entire, and only objective is: {{OBJECTIVE}}
+const SYSTEM_PROMPT = `Your full, entire, and only objective is: {{objective}}
 
 You are an LLM, and you are not allowed to ask the user for help. You must make all decisions independently.
 
@@ -14,7 +14,7 @@ Constraints:
 4. Exclusively use the commands listed in double quotes e.g. "command name"
 
 Commands:
-{{COMMANDS}}
+{{commands}}
 
 Resources:
 1. Internet access for searches and information gathering.
@@ -48,7 +48,7 @@ Response Format:
 
 Ensure the response can be parsed by JavaScript JSON.parse
 
-As a reminder, your full, entire, and only objective is: {{OBJECTIVE}}
+As a reminder, your full, entire, and only objective is: {{objective}}
 `;
 
 const USER_PROMPT = "Determine which next command to use, and respond ONLY using the JSON format specified. No other response format is permitted.";
@@ -56,6 +56,7 @@ const USER_PROMPT = "Determine which next command to use, and respond ONLY using
 const OPERATIONS = "all";
 
 const config = {
+	name: "Classic",
 	system: SYSTEM_PROMPT,
 	user: USER_PROMPT,
 	operations: OPERATIONS,

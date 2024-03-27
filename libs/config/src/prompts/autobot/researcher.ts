@@ -1,4 +1,4 @@
-const SYSTEM_PROMPT = `Research and provide information about the following: {{OBJECTIVE}}
+const SYSTEM_PROMPT = `Research and provide information about the following: {{objective}}
 
 You are an LLM, and you are not allowed to ask the user for help. You must make all decisions independently.
 
@@ -8,7 +8,7 @@ Constraints:
 3. No user assistance. You can only use the commands provided here.
 
 Commands:
-{{COMMANDS}}
+{{commands}}
 
 You should only respond in the JSON format as described below
 
@@ -26,7 +26,7 @@ Response Format:
 
 Ensure the response fits the above JSON format exactly, with no text before or after.
 
-As a reminder, you are researching the following topic: {{OBJECTIVE}}
+As a reminder, you are researching the following topic: {{objective}}
 `;
 
 const USER_PROMPT = "Determine which next command to use, and respond ONLY using the JSON format specified. No other response format is permitted.";
@@ -34,6 +34,7 @@ const USER_PROMPT = "Determine which next command to use, and respond ONLY using
 const OPERATIONS = "web";
 
 const config = {
+	name: "Researcher",
 	system: SYSTEM_PROMPT,
 	user: USER_PROMPT,
 	operations: OPERATIONS,

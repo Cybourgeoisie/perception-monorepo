@@ -17,41 +17,32 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 	}
 
 	public static async run(): Promise<void> {
-		// Get the user's version preference
-		const version = await PromptCLI.select(`Which version of AutoBot would you like to run?:`, [
-			{
-				title: "Perception",
-				value: "perception",
-			},
-			{
-				title: "Classic",
-				value: "classic",
-			},
-			{
-				title: "Researcher",
-				value: "researcher",
-			},
-			{
-				title: "Chat",
-				value: "chat",
-			},
-			{
-				title: "↩ Exit",
-				value: "back",
-			},
-		]);
+		// Get all the usable prompts
+		const autobotPrompts = Object.keys(Prompts.autobot).map((key) => {
+			return {
+				title: Prompts.autobot[key].name,
+				value: key,
+			};
+		});
+		autobotPrompts.push({
+			title: "Back",
+			value: "back",
+		});
 
-		if (version == "back") {
+		// Get the user's autobot preference
+		const autobotPromptKey = await PromptCLI.select(`Which AutoBot prompt would you like to run?:`, autobotPrompts);
+
+		if (autobotPromptKey == "back") {
 			process.exit();
 		}
 
 		const prompts = {
-			system: Prompts.autobot[version].system,
-			user: Prompts.autobot[version].user,
+			system: Prompts.autobot[autobotPromptKey].system,
+			user: Prompts.autobot[autobotPromptKey].user,
 		};
 
-		let operations = [];
-		switch (Prompts.autobot[version].operations) {
+		let operations: Array<typeof BaseOperation> = [];
+		switch (Prompts.autobot[autobotPromptKey].operations) {
 			case "web":
 				operations = WebOperations;
 				break;
@@ -63,24 +54,38 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 				break;
 		}
 
-		// Report the commands from the operations folder
+		// Get the commands from the operations folder
 		if (operations && operations.length > 0) {
 			const commands = AutobotRoutine.listOperations(operations);
+
+			// Store the commands in the program state
+			this.state.setProgramState("autobot", { operations });
+			this.state.setProgramState("autobot", { commands: commands.join("\n") });
 
 			// Report the state of the program to the user
 			console.log(`Commands enabled:\n${commands.join("\n")}`);
 		}
 
+		// Store the initial prompts & input variables
+		this.state.setProgramState("autobot", { prompts });
+		this.state.setProgramState("autobot", { input: Prompts.autobot[autobotPromptKey].input });
+
 		// Start the AutoBot routine
-		return this.loop(Prompts.autobot[version].input, operations, prompts);
+		return this.loop();
 	}
 
-	private static async loop(
-		input?: Record<string, string>,
-		operations?: Array<typeof BaseOperation>,
-		prompts?: { user: string; system?: string },
-	): Promise<void> {
+	private static async loop(): Promise<void> {
+		const input: Record<string, string> = this.state.getProgramState("autobot").input || {};
+		const prompts: { user: string; system?: string } = this.state.getProgramState("autobot").prompts || {};
+
 		const responses = await this.promptInputs(input);
+
+		for (const key in responses) {
+			const response = responses[key];
+
+			// Store the input in the program state
+			this.state.setProgramState("autobot", { [key]: response });
+		}
 
 		// If we have an override for the user prompt, use that instead
 		if (responses && responses.user) {
@@ -88,48 +93,18 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		}
 
 		// Start the AutoBot routine
-		return this.runPrompt(operations, prompts, this.callback.bind(this, input, operations, prompts));
+		return this.runPrompt();
 	}
 
-	private static async promptInputs(input: Record<string, string>): Promise<Record<string, string>> {
-		// Get the user's inputs
-		const responses = {};
-		for (const key in input) {
-			const question = input[key];
-			const response = await PromptCLI.text(question);
-			if (PromptCLI.quitCommands.includes(response)) {
-				process.exit();
-			}
+	private static async runPrompt(operationResult?: string): Promise<void> {
+		// Get the program prompts
+		const prompts: { user: string; system?: string } = this.state.getProgramState("autobot").prompts || {};
 
-			console.log(`\n${key}: ${response}\n`);
-
-			// Store the input in the program state
-			this.state.setProgramState("autobot", { [key]: response });
-
-			// Save the response
-			responses[key] = response;
-		}
-
-		return responses;
-	}
-
-	private static async runPrompt(
-		operations: Array<typeof BaseOperation>,
-		prompts: { user: string; system?: string },
-		callback: (s: OpenAIClass.ChatCompletionMessageParam) => void,
-		operationResult?: string,
-	): Promise<void> {
 		// Set up the system prompts
 		const systemPrompts = [];
 
 		if (prompts.system) {
-			// Get the program state data
-			const { objective } = this.state.getProgramState("autobot");
-
-			// Collect all of the commands from the operations folder
-			const commands = AutobotRoutine.listOperations(operations);
-
-			systemPrompts.push(prompts.system.replaceAll("{{OBJECTIVE}}", objective).replaceAll("{{COMMANDS}}", commands.join("\n")));
+			systemPrompts.push(prompts.system);
 			systemPrompts.push(`The current time is ${new Date().toLocaleString()}.`);
 
 			if (operationResult) {
@@ -137,22 +112,35 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 			}
 		}
 
+		// Get all state variables
+		const state = this.state.getProgramState("autobot");
+
+		// For all state variables, replace any variables with the program state data
+		for (const key in state) {
+			const value = state[key];
+
+			if (!value || typeof value !== "string") {
+				continue;
+			}
+
+			for (let i = 0; i < systemPrompts.length; i++) {
+				systemPrompts[i] = systemPrompts[i].replaceAll(`{{${key}}}`, value);
+			}
+
+			prompts.user = prompts.user.replaceAll(`{{${key}}}`, value);
+		}
+
 		const args: OpenAIRoutinePromptArgs = {
 			state: this.state,
 			systemPrompts,
 			userPrompt: prompts.user,
-			callback,
+			callback: this.callback.bind(this),
 		};
 
 		OpenAIRoutine.promptWithHistory(args);
 	}
 
-	private static async callback(
-		input: Record<string, string> | undefined,
-		operations: Array<typeof BaseOperation>,
-		prompts: { user: string; system?: string },
-		response: OpenAIClass.ChatCompletionMessage,
-	) {
+	private static async callback(response: OpenAIClass.ChatCompletionMessage) {
 		let content = response.content;
 
 		// If we received a JSON response with a command back, parse it
@@ -166,7 +154,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 			const _continue = await AutobotRoutine.promptOperation(this.state, parsedCommandName, parsedCommandArgs);
 
 			if (!_continue) {
-				return this.runPrompt(operations, prompts, this.callback.bind(this, input, operations, prompts));
+				return this.runPrompt();
 			}
 
 			// Attempt to run the command
@@ -174,13 +162,34 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 				this.state,
 				parsedCommandName,
 				parsedCommandArgs,
-				operations,
-				this.runPrompt.bind(this, operations, prompts, this.callback.bind(this, input, operations, prompts)),
+				this.state.getProgramState("autobot").operations,
+				this.runPrompt.bind(this),
 			);
 		}
 
 		// Back to the user
-		this.loop(input, operations, prompts);
+		this.loop();
+	}
+
+	/**
+	 * Standalone functions without side effects
+	 */
+
+	private static async promptInputs(input: Record<string, string>): Promise<Record<string, string>> {
+		// Get the user's inputs
+		const responses = {};
+		for (const key in input) {
+			const question = input[key];
+			const response = await PromptCLI.text(question);
+			if (PromptCLI.quitCommands.includes(response)) {
+				process.exit();
+			}
+
+			// Save the response
+			responses[key] = response;
+		}
+
+		return responses;
 	}
 
 	private static getResponseCommand(content: string): { name?: string; args?: Record<string, string> } {
