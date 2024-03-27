@@ -7,7 +7,7 @@ import { BaseBotAdapter } from "../BaseBotAdapter";
 import { OpenAI } from "@openai";
 import { RequestMessage } from "libs/openai/src/request";
 import OpenAIClass from "openai";
-import { FILE_LIST, FILE_CONTENTS, CREATE_OPERATION, EDIT_OPERATION } from "./config/prompts";
+import { Prompts } from "@config";
 import highlight from "cli-highlight";
 import path from "path";
 
@@ -217,7 +217,7 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 		const systemPrompts: string[] = await this.constructSystemPrompts(referenceFiles);
 
 		// Construct the request message
-		const response = await this.callOpenAi(systemPrompts, CREATE_OPERATION.replaceAll("{{DETAILS}}", details));
+		const response = await this.callOpenAi(systemPrompts, Prompts.codebot.CREATE_OPERATION.replaceAll("{{DETAILS}}", details));
 
 		// Clean the code result
 		const codeBlock: string = this.cleanCodeResponse(response);
@@ -277,7 +277,7 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 		const systemPrompts: string[] = await this.constructSystemPrompts(referenceFiles);
 
 		// Construct the request message
-		const response = await this.callOpenAi(systemPrompts, EDIT_OPERATION.replaceAll("{{EDITS}}", edits).replaceAll("{{CODE}}", content));
+		const response = await this.callOpenAi(systemPrompts, Prompts.codebot.EDIT_OPERATION.replaceAll("{{EDITS}}", edits).replaceAll("{{CODE}}", content));
 
 		// Clean the code result
 		const codeBlock: string = this.cleanCodeResponse(response);
@@ -292,13 +292,16 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 
 	private static async constructSystemPrompts(referenceFiles?: string[]): Promise<string[]> {
 		// Construct system messages
-		const systemPrompts: string[] = [FILE_LIST.replaceAll("{{FILE_LIST}}", await this.getFiles())];
+		const systemPrompts: string[] = [Prompts.codebot.FILE_LIST.replaceAll("{{FILE_LIST}}", await this.getFiles())];
 
 		if (referenceFiles) {
 			for (const referenceFile of referenceFiles) {
 				// Get the file contents for the reference file
 				systemPrompts.push(
-					FILE_CONTENTS.replaceAll("{{FILE_PATH}}", referenceFile).replaceAll("{{FILE_CONTENTS}}", fs.readFileSync(referenceFile, "utf-8")),
+					Prompts.codebot.FILE_CONTENTS.replaceAll("{{FILE_PATH}}", referenceFile).replaceAll(
+						"{{FILE_CONTENTS}}",
+						fs.readFileSync(referenceFile, "utf-8"),
+					),
 				);
 			}
 		}
