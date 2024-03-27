@@ -1,4 +1,4 @@
-import { DirectoryList, AnalyzeTSFile, TSFileStructure } from "@operations";
+import { DirectoryList } from "@operations";
 
 export class CodeAnalysisRoutine {
 	private static rootDirectory: string;
@@ -31,13 +31,5 @@ export class CodeAnalysisRoutine {
 		}
 
 		return compressedFiles;
-	}
-
-	public static getCodeAnalysis(filepath: string): TSFileStructure {
-		return AnalyzeTSFile.analyzeTSFile(filepath);
-	}
-
-	public static listCodeAnalysis(filepath: string): object {
-		return AnalyzeTSFile.compressTSFileStructure(AnalyzeTSFile.analyzeTSFile(filepath));
 	}
 }

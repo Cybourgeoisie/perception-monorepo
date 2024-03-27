@@ -132,19 +132,12 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 			{ title: "Create new file", value: "create-file" },
 			{ title: "Edit existing file", value: "edit-file" },
 			{ title: "Debug: Get file structure", value: "view-files" },
-			{ title: "Debug: Get code analysis for file", value: "view-code-analysis" },
 			{ title: "Go back", value: "back" },
 		]);
-
-		// Get the repository directory from the state
-		const { repositoryDirectory } = this.state.getProgramState("codebot");
 
 		switch (prompt) {
 			case "view-files":
 				this.viewFiles();
-				break;
-			case "view-code-analysis":
-				this.navigateFileStructure(repositoryDirectory, true, this.viewCodeAnalysis.bind(this));
 				break;
 			case "create-file":
 				this.createOperation();
@@ -397,16 +390,6 @@ export default class PerceptionBotAdapter extends BaseBotAdapter {
 
 	private static async viewFiles(): Promise<void> {
 		console.log(await this.getFiles());
-
-		this.viewCodeOptions();
-	}
-
-	private static async getCodeAnalysis(filePath: string): Promise<object> {
-		return CodeAnalysisRoutine.listCodeAnalysis(filePath);
-	}
-
-	private static async viewCodeAnalysis(filePath: string): Promise<void> {
-		console.log(JSON.stringify(await this.getCodeAnalysis(filePath), null, 2));
 
 		this.viewCodeOptions();
 	}

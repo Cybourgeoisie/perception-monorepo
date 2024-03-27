@@ -1,5 +1,4 @@
 import BaseOperation from "./src/base/base_operation";
-import AnalyzeTSFile, { TSClass, TSFileStructure, TSFunction, TSInterface, TSType, TSVariable } from "./src/analyze_ts_file";
 import DirectoryList from "./src/directory_list";
 import FileRead from "./src/file_read";
 import FileWrite from "./src/file_write";
@@ -11,27 +10,7 @@ import ShellCommand from "./src/shellcmd";
 import DoNothing from "./src/do_nothing";
 import TaskComplete from "./src/task_complete";
 
-export {
-	BaseOperation,
-	AnalyzeTSFile,
-	TSClass,
-	TSFileStructure,
-	TSFunction,
-	TSInterface,
-	TSType,
-	TSVariable,
-	DirectoryList,
-	FileRead,
-	FileWrite,
-	Git,
-	Google,
-	GoogleSearchResult,
-	NpmHelper,
-	Selenium,
-	ShellCommand,
-	DoNothing,
-	TaskComplete,
-};
+export { BaseOperation, DirectoryList, FileRead, FileWrite, Git, Google, GoogleSearchResult, NpmHelper, Selenium, ShellCommand, DoNothing, TaskComplete };
 
 // Provide different subsets of Operations to different adapters
 export const Operations = [DirectoryList, FileRead, FileWrite, Git, Google, NpmHelper, Selenium, ShellCommand, DoNothing, TaskComplete];
