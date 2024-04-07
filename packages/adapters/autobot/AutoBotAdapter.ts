@@ -17,7 +17,10 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		return "Give GPT an automated task";
 	}
 
-	public static async run(): Promise<void> {
+	public static async run(params: any): Promise<void> {
+		// Save the params
+		this.state.setProgramState("autobot", { params });
+
 		// Get all the usable prompts
 		const autobotPrompts = Object.keys(Prompts.autobot).map((key) => {
 			return {
@@ -31,7 +34,10 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		});
 
 		// Get the user's autobot preference
-		const autobotPromptKey = await PromptCLI.select(`Which AutoBot prompt would you like to run?:`, autobotPrompts);
+		let autobotPromptKey = params.promptKey || null;
+		if (!autobotPromptKey) {
+			autobotPromptKey = await PromptCLI.select(`Which AutoBot prompt would you like to run?:`, autobotPrompts);
+		}
 
 		if (autobotPromptKey == "back") {
 			process.exit();
@@ -76,14 +82,14 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		this.state.setProgramState("autobot", { input: Prompts.autobot[autobotPromptKey].input });
 
 		// Start the AutoBot routine
-		return this.loop();
+		return this.loop(params);
 	}
 
-	private static async loop(): Promise<void> {
+	private static async loop(params: any): Promise<void> {
 		const input: Record<string, string> = this.state.getProgramState("autobot").input || {};
 		const prompts: { user: string; system?: string } = this.state.getProgramState("autobot").prompts || {};
 
-		const responses = await this.promptInputs(input);
+		const responses = await this.promptInputs(input, params);
 
 		for (const key in responses) {
 			const response = responses[key];
@@ -185,18 +191,25 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		}
 
 		// Back to the user
-		this.loop();
+		this.loop(this.state.getProgramState("autobot").params || null);
 	}
 
 	/**
 	 * Standalone functions without side effects
 	 */
 
-	private static async promptInputs(input: Record<string, string>): Promise<Record<string, string>> {
+	private static async promptInputs(input: Record<string, string>, params: any): Promise<Record<string, string>> {
 		// Get the user's inputs
 		const responses = {};
 		for (const key in input) {
 			const question = input[key];
+
+			// If the user passed in a parameter, use that
+			if (params && params[key]) {
+				responses[key] = params[key];
+				continue;
+			}
+
 			const response = await PromptCLI.text(question);
 			if (PromptCLI.quitCommands.includes(response)) {
 				process.exit();

@@ -22,7 +22,7 @@ export class BaseBotAdapter {
 		return [];
 	}
 
-	public static async run(): Promise<void> {
+	public static async run(_: any | null | undefined): Promise<void> {
 		throw new Error("run not implemented.");
 	}
 
