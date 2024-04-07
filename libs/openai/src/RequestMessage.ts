@@ -44,7 +44,6 @@ export class RequestMessage {
 			startDate: this.startDate,
 			currentPrompts: this.currentPrompts,
 			log: this.log,
-			history: this.history,
 			includeHistory: this.includeHistory,
 		});
 	}
@@ -56,7 +55,7 @@ export class RequestMessage {
 		this.startDate = new Date(data.startDate);
 		this.currentPrompts = data.currentPrompts;
 		this.log = data.log;
-		this.history = data.history;
+		this.history = structuredClone(data.log);
 		this.includeHistory = data.includeHistory;
 	}
 

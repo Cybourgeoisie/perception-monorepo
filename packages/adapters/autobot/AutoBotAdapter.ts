@@ -6,6 +6,7 @@ import { BaseBotAdapter } from "../BaseBotAdapter";
 import { Prompts } from "@config";
 import dJSON from "dirty-json";
 import { AutobotRoutine } from "@routines";
+import fs from "fs";
 
 export default class AutoBotAdapter extends BaseBotAdapter {
 	public static getName(): string {
@@ -121,10 +122,22 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 
 		// For all state variables, replace any variables with the program state data
 		for (const key in state) {
-			const value = state[key];
+			let value = state[key];
 
 			if (!value || typeof value !== "string") {
 				continue;
+			}
+
+			// Special case, if the key is "path", read the file
+			if (key === "path") {
+				try {
+					const filePath = value;
+					const fileContents = fs.readFileSync(filePath, "utf8");
+					value = fileContents;
+				} catch (error) {
+					console.error(`Error reading file at path: ${value}`);
+					console.error(error);
+				}
 			}
 
 			for (let i = 0; i < systemPrompts.length; i++) {
