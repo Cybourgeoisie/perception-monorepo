@@ -99,10 +99,14 @@ export class OpenAIRoutine {
 			apiKey: Config.LLM_API_ENDPOINT === "OpenRouter" ? Config.OPENROUTER_API_KEY : Config.OPENAI_API_KEY,
 		});
 
+		// Get the model
+		const model = openAI.getDefaultFastModel();
+		const contextSize = openAI.getModelContextLength(model);
+
 		// Get the request message from the state
 		const requestMessage = state.getRequestMessage();
 
-		const chunks = this.splitSentencesUsingNLP(text, 8192 * 2); // Trying a 32k context model
+		const chunks = this.splitSentencesUsingNLP(text, contextSize);
 		const summaries = [];
 
 		for (const index in chunks) {
@@ -118,7 +122,7 @@ export class OpenAIRoutine {
 			console.log(`Submitting chunk ${parseInt(index, 10) + 1} of ${chunks.length} to OpenAI...`);
 			const response = await openAI.getCompletion({
 				messages: messages as OpenAIClass.ChatCompletionMessage[],
-				model: "fast",
+				model,
 				onMessageCallback: (response) => {
 					process.stdout.write(response);
 				},
@@ -145,7 +149,7 @@ export class OpenAIRoutine {
 		console.log(`Summarizing all chunk summaries with OpenAI...`);
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: "fast",
+			model,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

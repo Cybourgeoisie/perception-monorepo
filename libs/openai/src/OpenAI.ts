@@ -66,6 +66,14 @@ export class OpenAI {
 		return Models.openai[LLMConfigs.default.models.openai.large].id;
 	}
 
+	public getModelContextLength(model: string): number {
+		if (this.service === "OpenRouter") {
+			return Models.openrouter[model].context_length;
+		}
+
+		return Models.openai[model].context_length;
+	}
+
 	public async getCompletion(args: OpenAICompletionArguments): Promise<OpenAIClass.ChatCompletionMessage> {
 		// Retrieve the arguments
 		const {
