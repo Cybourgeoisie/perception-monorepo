@@ -62,14 +62,14 @@ export class OpenAIRoutine {
 
 	public static async getSummarization(state: State, text: string, question: string): Promise<string> {
 		const openAI = new OpenAI({
-			baseUrl: "https://openrouter.ai/api/v1",
-			apiKey: Config.OPENROUTER_API_KEY,
+			baseUrl: Config.LLM_API_ENDPOINT === "OpenRouter" ? "https://openrouter.ai/api/v1" : undefined,
+			apiKey: Config.LLM_API_ENDPOINT === "OpenRouter" ? Config.OPENROUTER_API_KEY : Config.OPENAI_API_KEY,
 		});
 
 		// Get the request message from the state
 		const requestMessage = state.getRequestMessage();
 
-		const chunks = this.splitSentencesUsingNLP(text, 8192);
+		const chunks = this.splitSentencesUsingNLP(text, 8192 * 2); // Trying a 32k context model
 		const summaries = [];
 
 		for (const index in chunks) {
@@ -85,7 +85,7 @@ export class OpenAIRoutine {
 			console.log(`Submitting chunk ${parseInt(index, 10) + 1} of ${chunks.length} to OpenAI...`);
 			const response = await openAI.getCompletion({
 				messages: messages as OpenAIClass.ChatCompletionMessage[],
-				model: "best",
+				model: "large",
 				onMessageCallback: (response) => {
 					process.stdout.write(response);
 				},
@@ -112,7 +112,7 @@ export class OpenAIRoutine {
 		console.log(`Summarizing all chunk summaries with OpenAI...`);
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: "best",
+			model: "large",
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

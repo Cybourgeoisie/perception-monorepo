@@ -1,3 +1,7 @@
+# Data, history, and logs
+data/*
+!data/.gitkeep
+
 # Security
 keys/
 

@@ -132,9 +132,6 @@ export class RequestMessage {
 			}
 		}
 
-		// If using debug mode, print out the messages
-		//console.debug(messages);
-
 		// Return the compiled prompt
 		return messages;
 	}

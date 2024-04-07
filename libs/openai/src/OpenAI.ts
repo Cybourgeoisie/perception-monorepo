@@ -58,6 +58,14 @@ export class OpenAI {
 		return Models.openai[LLMConfigs.default.models.openai.best].id;
 	}
 
+	public getDefaultLargeModel(): string {
+		if (this.service === "OpenRouter") {
+			return Models.openrouter[LLMConfigs.default.models.openrouter.large].id;
+		}
+
+		return Models.openai[LLMConfigs.default.models.openai.large].id;
+	}
+
 	public async getCompletion(args: OpenAICompletionArguments): Promise<OpenAIClass.ChatCompletionMessage> {
 		// Retrieve the arguments
 		const {
@@ -76,6 +84,8 @@ export class OpenAI {
 			model = this.getDefaultBestModel();
 		} else if (model === "fast") {
 			model = this.getDefaultFastModel();
+		} else if (model === "large") {
+			model = this.getDefaultLargeModel();
 		}
 
 		console.log(`Using ${this.service} (${model}, T=${temperature}) to respond...`);
