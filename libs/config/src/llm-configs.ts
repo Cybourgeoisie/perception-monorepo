@@ -7,7 +7,7 @@ export const LLMConfigs = {
 				large: "gpt-4-32k",
 			},
 			openrouter: {
-				fast: "openai/gpt-3.5-turbo-16k", // "anthropic/claude-3-sonnet",
+				fast: "openai/gpt-3.5-turbo-0125", //"openai/gpt-3.5-turbo-16k", // "anthropic/claude-3-sonnet",
 				best: "openai/gpt-4",
 				large: "openai/gpt-4-32k",
 			},

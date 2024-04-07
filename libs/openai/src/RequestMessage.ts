@@ -176,11 +176,13 @@ export class RequestMessage {
 	}
 
 	private formatHistoryItem(item: HistoryItem): string {
-		return `My prompt: ${item.prompt.content}\nYour response: ${item.response.content}\n\n`;
+		return "Your Response: " + item.response.content + "\n\n";
+		//return `My prompt: ${item.prompt.content}\nYour response: ${item.response.content}\n\n`;
 	}
 
 	private buildHistoryContent(): string {
-		const historyContext = `The following is your recent activity history:\n\n`;
+		//const historyContext = `The following is your recent activity history:\n\n`;
+		const historyContext = `The following are your recent responses and decisions related to the initial prompt:\n\n`;
 		const historyStr = this.generateConversationHistory().reduce((acc, item) => acc + this.formatHistoryItem(item), "");
 
 		return historyContext + historyStr;
