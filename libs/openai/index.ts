@@ -1,3 +1,3 @@
 export { OpenAI } from "./src/OpenAI";
-export * from "./src/request";
-export * from "./src/state";
+export * from "./src/RequestMessage";
+export * from "./src/State";

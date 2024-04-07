@@ -33,9 +33,18 @@ export class AutobotRoutine {
 			.filter((command) => command.length);
 	}
 
+	public static async setAutorun(state: State, autorun: boolean): Promise<void> {
+		state.setProgramState("autobot", { autorun: !!autorun });
+	}
+
 	public static async promptOperation(state: State, _commandName: string, _commandArgs: Record<string, string>): Promise<boolean> {
 		// Get the prompts to run remaining from the state
-		let { promptsToRunRemaining = 0 } = state.getProgramState("autobot");
+		let { promptsToRunRemaining = 0, autorun = false } = state.getProgramState("autobot");
+
+		// If we autorun, just return true
+		if (autorun) {
+			return true;
+		}
 
 		// Prompt the user if they'd like to continue
 		if (promptsToRunRemaining <= 0) {

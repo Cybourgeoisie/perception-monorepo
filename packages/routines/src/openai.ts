@@ -2,6 +2,8 @@ import { Config } from "@config";
 import { OpenAI, State } from "@openai";
 import OpenAIClass from "openai";
 import natural from "natural";
+import fs from "fs";
+import path from "path";
 
 export type OpenAIRoutinePromptArgs = {
 	state: State;
@@ -49,15 +51,46 @@ export class OpenAIRoutine {
 
 		openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: "best",
+			model: "fast",
 			onMessageCallback: (content: string) => {
 				process.stdout.write(content);
 			},
 			onCompleteCallback: (response: OpenAIClass.ChatCompletionMessage) => {
+				// Update the request message with the response
 				requestMessage.addGPTResponse(response);
+
+				// Save the log
+				this.saveLog(state);
+
+				// Call the callback with the response
 				callback(response);
 			},
 		});
+	}
+
+	public static saveLog(state: State): void {
+		const requestMessage = state.getRequestMessage();
+		const uuid = requestMessage.getUUID();
+		const startDate = requestMessage.getStartDate();
+
+		// Get day, month, year
+		const year = startDate.getFullYear();
+		const month = startDate.getMonth() + 1;
+		const day = startDate.getDate();
+		const date = `${year}-${month}-${day}`;
+
+		// Create the directory if it doesn't exist
+		if (!fs.existsSync(path.resolve(process.cwd(), "data/", date))) {
+			fs.mkdirSync(path.resolve(process.cwd(), "data/", date), { recursive: true });
+		}
+
+		// Get hour & minute
+		const hour = startDate.getHours().toString().padStart(2, "0");
+		const minute = startDate.getMinutes().toString().padStart(2, "0");
+		const time = `${hour}-${minute}`;
+
+		// Save the log
+		fs.writeFileSync(path.resolve(process.cwd(), "data/", date, `${time}-${uuid}.json`), requestMessage.serialize());
 	}
 
 	public static async getSummarization(state: State, text: string, question: string): Promise<string> {
@@ -85,7 +118,7 @@ export class OpenAIRoutine {
 			console.log(`Submitting chunk ${parseInt(index, 10) + 1} of ${chunks.length} to OpenAI...`);
 			const response = await openAI.getCompletion({
 				messages: messages as OpenAIClass.ChatCompletionMessage[],
-				model: "large",
+				model: "fast",
 				onMessageCallback: (response) => {
 					process.stdout.write(response);
 				},
@@ -112,7 +145,7 @@ export class OpenAIRoutine {
 		console.log(`Summarizing all chunk summaries with OpenAI...`);
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: "large",
+			model: "fast",
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},

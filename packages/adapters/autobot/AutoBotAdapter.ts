@@ -54,6 +54,10 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 				break;
 		}
 
+		// Determine if we autorun
+		const autorun = Prompts.autobot[autobotPromptKey].autorun || false;
+		await AutobotRoutine.setAutorun(this.state, autorun);
+
 		// Get the commands from the operations folder
 		if (operations && operations.length > 0) {
 			const commands = AutobotRoutine.listOperations(operations);

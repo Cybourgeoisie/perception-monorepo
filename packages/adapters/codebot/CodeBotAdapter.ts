@@ -5,8 +5,7 @@ import { PromptCLI } from "@prompt-cli";
 import { DirectoryList, Git, FileWrite } from "@operations";
 import { CodeAnalysisRoutine } from "@routines";
 import { BaseBotAdapter } from "../BaseBotAdapter";
-import { OpenAI } from "@openai";
-import { RequestMessage } from "libs/openai/src/request";
+import { OpenAI, RequestMessage } from "@openai";
 import OpenAIClass from "openai";
 import highlight from "cli-highlight";
 

@@ -1,4 +1,5 @@
 import OpenAIClass from "openai";
+import { v4 as uuidv4 } from "uuid";
 
 type PromptRecord = OpenAIClass.ChatCompletionMessageParam | string;
 
@@ -15,10 +16,23 @@ type HistoryItem = {
 };
 
 export class RequestMessage {
+	// Identifiers
+	private uuid: string = uuidv4();
+	private startDate: Date = new Date();
+
 	private currentPrompts: RequestMessageHistoryBlock = { prompts: [] };
-	private history: RequestMessageHistory = [];
+	private history: RequestMessageHistory = []; // Conversational history
+	private log: RequestMessageHistory = []; // Total log of all messages
 	private includeHistory: boolean = false;
 	private tokenLimit: number = 32000;
+
+	public getUUID(): string {
+		return this.uuid;
+	}
+
+	public getStartDate(): Date {
+		return this.startDate;
+	}
 
 	public setTokenLimit(limit: number): void {
 		this.tokenLimit = limit;
@@ -26,7 +40,10 @@ export class RequestMessage {
 
 	public serialize(): string {
 		return JSON.stringify({
+			uuid: this.uuid,
+			startDate: this.startDate,
 			currentPrompts: this.currentPrompts,
+			log: this.log,
 			history: this.history,
 			includeHistory: this.includeHistory,
 		});
@@ -35,7 +52,10 @@ export class RequestMessage {
 	public deserialize(serialized: string): void {
 		const data = JSON.parse(serialized);
 
+		this.uuid = data.uuid;
+		this.startDate = new Date(data.startDate);
 		this.currentPrompts = data.currentPrompts;
+		this.log = data.log;
 		this.history = data.history;
 		this.includeHistory = data.includeHistory;
 	}
@@ -59,19 +79,12 @@ export class RequestMessage {
 		this.currentPrompts.prompts.push("HISTORY_CONTEXT_HERE");
 	}
 
-	public generateHistoryContext(): OpenAIClass.ChatCompletionMessageParam | void {
-		// Trim history until it fits within the token limit
-		while (this.doesPromptExceedTokens() && this.generateConversationHistory().length > 0) {
-			this.history.shift();
-		}
-
-		// Return the history context if there is any history
-		if (this.generateConversationHistory().length > 0) {
-			return {
-				role: "system",
-				content: this.buildHistoryContent(),
-			};
-		}
+	public addGPTResponse(response: OpenAIClass.ChatCompletionMessage): void {
+		this.currentPrompts.gptResponse = response;
+		this.log.push(structuredClone(this.currentPrompts));
+		this.history.push(structuredClone(this.currentPrompts));
+		this.currentPrompts = { prompts: [] };
+		this.includeHistory = false;
 	}
 
 	public estimateCurrentTokenUse(): number {
@@ -83,37 +96,6 @@ export class RequestMessage {
 		}
 
 		return this.estimateTokens(promptsStr + historyContent);
-	}
-
-	public doesPromptExceedTokens(): boolean {
-		return this.estimateCurrentTokenUse() > this.tokenLimit;
-	}
-
-	public estimateTokens(text: string): number {
-		const wordCount = text.split(" ").length;
-		const charCount = text.length;
-		const tokensCountWordEst = wordCount / 0.75;
-		const tokensCountCharEst = charCount / 4;
-
-		return Math.floor(Math.max(tokensCountWordEst, tokensCountCharEst));
-	}
-
-	private formatHistoryItem(item: HistoryItem): string {
-		return `My prompt: ${item.prompt.content}\nYour response: ${item.response.content}\n\n`;
-	}
-
-	private buildHistoryContent(): string {
-		const historyContext = `The following is your recent activity history:\n\n`;
-		const historyStr = this.generateConversationHistory().reduce((acc, item) => acc + this.formatHistoryItem(item), "");
-
-		return historyContext + historyStr;
-	}
-
-	public addGPTResponse(response: OpenAIClass.ChatCompletionMessage): void {
-		this.currentPrompts.gptResponse = response;
-		this.history.push(this.currentPrompts);
-		this.currentPrompts = { prompts: [] };
-		this.includeHistory = false;
 	}
 
 	public generateMessages(): OpenAIClass.ChatCompletionMessageParam[] {
@@ -136,7 +118,25 @@ export class RequestMessage {
 		return messages;
 	}
 
-	public generateConversationHistory(): { prompt: OpenAIClass.ChatCompletionMessageParam; response: OpenAIClass.ChatCompletionMessage }[] {
+	/**
+	 * Private Methods
+	 */
+	private generateHistoryContext(): OpenAIClass.ChatCompletionMessageParam | void {
+		// Trim history until it fits within the token limit
+		while (this.doesPromptExceedTokens() && this.generateConversationHistory().length > 0) {
+			this.history.shift();
+		}
+
+		// Return the history context if there is any history
+		if (this.generateConversationHistory().length > 0) {
+			return {
+				role: "system",
+				content: this.buildHistoryContent(),
+			};
+		}
+	}
+
+	private generateConversationHistory(): { prompt: OpenAIClass.ChatCompletionMessageParam; response: OpenAIClass.ChatCompletionMessage }[] {
 		const conversationHistory = [];
 
 		for (const item of this.history) {
@@ -161,5 +161,29 @@ export class RequestMessage {
 		}
 
 		return conversationHistory;
+	}
+
+	private doesPromptExceedTokens(): boolean {
+		return this.estimateCurrentTokenUse() > this.tokenLimit;
+	}
+
+	private estimateTokens(text: string): number {
+		const wordCount = text.split(" ").length;
+		const charCount = text.length;
+		const tokensCountWordEst = wordCount / 0.75;
+		const tokensCountCharEst = charCount / 4;
+
+		return Math.floor(Math.max(tokensCountWordEst, tokensCountCharEst));
+	}
+
+	private formatHistoryItem(item: HistoryItem): string {
+		return `My prompt: ${item.prompt.content}\nYour response: ${item.response.content}\n\n`;
+	}
+
+	private buildHistoryContent(): string {
+		const historyContext = `The following is your recent activity history:\n\n`;
+		const historyStr = this.generateConversationHistory().reduce((acc, item) => acc + this.formatHistoryItem(item), "");
+
+		return historyContext + historyStr;
 	}
 }

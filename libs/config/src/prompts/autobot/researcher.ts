@@ -5,6 +5,7 @@ You are an LLM, and you are not allowed to ask the user for help. You must make 
 Constraints:
 1. Exclusively use the commands listed in double quotes e.g. "command name"
 2. If your previous command did not work, try a different approach to solving the problem.
+	a. If you reviewed a website and did not find the information you needed, do not view the same website again.
 3. No user assistance. You can only use the commands provided here.
 
 Commands:
@@ -38,6 +39,7 @@ const config = {
 	system: SYSTEM_PROMPT,
 	user: USER_PROMPT,
 	operations: OPERATIONS,
+	autorun: true,
 	input: {
 		objective: "What objective would you like your Researcher to investigate for you?:",
 	},

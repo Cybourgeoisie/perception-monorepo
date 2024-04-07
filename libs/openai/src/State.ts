@@ -1,4 +1,4 @@
-import { RequestMessage } from "@openai";
+import { RequestMessage } from "./RequestMessage";
 
 export class State {
 	private requestMessage: RequestMessage;
