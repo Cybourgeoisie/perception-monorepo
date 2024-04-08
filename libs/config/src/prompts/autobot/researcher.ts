@@ -6,6 +6,7 @@ Constraints:
 1. Exclusively use the commands listed in double quotes e.g. "command name"
 2. If your previous command did not work, try a different approach to solving the problem.
 	a. If you reviewed a website and did not find the information you needed, do not view the same website again.
+	b. If you previously googled for websites, do not google immediately afterward - visit a website before googling again.
 3. No user assistance. You can only use the commands provided here.
 
 Commands:

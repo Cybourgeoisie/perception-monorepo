@@ -7,6 +7,7 @@ import { Prompts } from "@config";
 import dJSON from "dirty-json";
 import { AutobotRoutine } from "@routines";
 import fs from "fs";
+import { State } from "@openai";
 
 export default class AutoBotAdapter extends BaseBotAdapter {
 	public static getName(): string {
@@ -15,6 +16,10 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 
 	public static getDescription(): string {
 		return "Give GPT an automated task";
+	}
+
+	public static async setExitCallback(callback: (state: State) => void): Promise<void> {
+		this.state.setProgramState("autobot", { onExit: callback });
 	}
 
 	public static async run(params: any): Promise<void> {
@@ -160,10 +165,23 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 			callback: this.callback.bind(this),
 		};
 
+		this.state.setProgramState("autobot", { numRuns: (this.state.getProgramState("autobot").numRuns || 0) + 1 });
 		OpenAIRoutine.promptWithHistory(args);
 	}
 
 	private static async callback(response: OpenAIClass.ChatCompletionMessage) {
+		// Security measure -- if we reach a threshold of messages, stop
+		if (this.state.getProgramState("autobot").numRuns >= 20) {
+			console.log("AutoBot has reached the maximum number of runs.");
+
+			// If we have an onExit callback, run that instead
+			if (this.state.getProgramState("autobot").onExit) {
+				return this.state.getProgramState("autobot").onExit(this.state);
+			}
+
+			return;
+		}
+
 		let content = response.content;
 
 		// If we received a JSON response with a command back, parse it
@@ -178,6 +196,12 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 
 			if (!_continue) {
 				return this.runPrompt();
+			}
+
+			// Special case, task_complete -- if we have an onExit callback, run that instead
+			if (parsedCommandName === "task_complete" && this.state.getProgramState("autobot").onExit) {
+				console.log(`Task completed because ${parsedCommandArgs.reason}`);
+				return this.state.getProgramState("autobot").onExit(this.state);
 			}
 
 			// Attempt to run the command

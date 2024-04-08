@@ -2,7 +2,7 @@ import BaseOperation, { OperationFormat } from "./base/base_operation";
 
 export default class TaskComplete extends BaseOperation {
 	public static getName(): string {
-		return "Task Completed";
+		return "Task Complete";
 	}
 
 	public static getDescription(): string {

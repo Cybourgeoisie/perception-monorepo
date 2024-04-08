@@ -80,8 +80,8 @@ export class OpenAIRoutine {
 		const date = `${year}-${month}-${day}`;
 
 		// Create the directory if it doesn't exist
-		if (!fs.existsSync(path.resolve(process.cwd(), "data/", date))) {
-			fs.mkdirSync(path.resolve(process.cwd(), "data/", date), { recursive: true });
+		if (!fs.existsSync(path.resolve(process.cwd(), "data/logs", date))) {
+			fs.mkdirSync(path.resolve(process.cwd(), "data/logs", date), { recursive: true });
 		}
 
 		// Get hour & minute
@@ -90,7 +90,7 @@ export class OpenAIRoutine {
 		const time = `${hour}-${minute}`;
 
 		// Save the log
-		fs.writeFileSync(path.resolve(process.cwd(), "data/", date, `${time}-${uuid}.json`), requestMessage.serialize());
+		fs.writeFileSync(path.resolve(process.cwd(), "data/logs", date, `${time}-${uuid}.json`), requestMessage.serialize());
 	}
 
 	public static async getSummarization(state: State, text: string, question: string): Promise<string> {

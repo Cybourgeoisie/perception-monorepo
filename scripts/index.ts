@@ -1,4 +1,5 @@
 import { getOpenRouterModels, getOpenRouterLimits, updateOpenRouterModels } from "./openrouter/get-openrouter-models-limits";
+import { executeMultiple } from "./test/execute-multiple";
 
 // From the command line arguments, determine which script to run
 const script = process.argv[2];
@@ -7,6 +8,7 @@ const scripts = {
 	getOpenRouterModels: getOpenRouterModels,
 	getOpenRouterLimits: getOpenRouterLimits,
 	updateOpenRouterModels: updateOpenRouterModels,
+	executeMultiple: executeMultiple,
 };
 
 // Run the appropriate script

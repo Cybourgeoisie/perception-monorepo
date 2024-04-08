@@ -26,7 +26,7 @@ export class BaseBotAdapter {
 		throw new Error("run not implemented.");
 	}
 
-	protected static async setState(state: State): Promise<void> {
+	public static async setState(state: State): Promise<void> {
 		this.state = state;
 	}
 }
