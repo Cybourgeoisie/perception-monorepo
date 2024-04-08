@@ -38,6 +38,16 @@ export class RequestMessage {
 		return this.log;
 	}
 
+	public getAllGptResponses(): OpenAIClass.ChatCompletionMessage[] {
+		return this.log.map((item) => item.gptResponse).filter((item) => item.content);
+	}
+
+	public getLatestGptResponse(): OpenAIClass.ChatCompletionMessage | void {
+		if (this.log.length > 0) {
+			return this.log[this.log.length - 1].gptResponse;
+		}
+	}
+
 	public setTokenLimit(limit: number): void {
 		this.tokenLimit = limit;
 	}

@@ -109,6 +109,12 @@ export class OpenAIRoutine {
 		const chunks = this.splitSentencesUsingNLP(text, contextSize);
 		const summaries = [];
 
+		// If we have a LOT of chunks, then limit to first 25
+		if (chunks.length > 25) {
+			console.log(`Detected ${chunks.length} chunks, limiting to first 25...`);
+			chunks.splice(25);
+		}
+
 		for (const index in chunks) {
 			const chunk = chunks[index];
 
