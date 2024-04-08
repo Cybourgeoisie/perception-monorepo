@@ -36,7 +36,7 @@ async function singleRun(promptIdx: number) {
 	AutoBotAdapter.setState(state);
 
 	// Set the exit callback
-	AutoBotAdapter.setExitCallback(onTaskCompleteCallback.bind(null));
+	AutoBotAdapter.setExitCallback(onTaskCompleteCallback.bind(null, promptIdx));
 
 	// Run the program
 	await AutoBotAdapter.run({
@@ -45,8 +45,18 @@ async function singleRun(promptIdx: number) {
 	});
 }
 
-async function onTaskCompleteCallback(state: State) {
-	console.log(state);
+async function onTaskCompleteCallback(promptIdx: number, state: State) {
+	// Construct program state
+	//AutoBotAdapter.setState(state);
 
-	console.log("Task complete.");
+	// Set the exit callback
+	AutoBotAdapter.setExitCallback(singleRun.bind(null, promptIdx + 1));
+
+	// Run the program
+	await AutoBotAdapter.run({
+		promptKey: "extraction",
+		exitAfterCompletion: true,
+		"path:contents": JSON.stringify(state.getRequestMessage().getLogs()),
+		jsonresponse: "{'date':[date or year],'summary':[string : summary of the event],'imagery':[array : strings of all mentioned iconic imagery]}",
+	});
 }

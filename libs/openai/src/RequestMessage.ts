@@ -34,6 +34,10 @@ export class RequestMessage {
 		return this.startDate;
 	}
 
+	public getLogs(): RequestMessageHistory {
+		return this.log;
+	}
+
 	public setTokenLimit(limit: number): void {
 		this.tokenLimit = limit;
 	}

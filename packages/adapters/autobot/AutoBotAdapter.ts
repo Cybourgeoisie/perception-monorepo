@@ -132,7 +132,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		const state = this.state.getProgramState("autobot");
 
 		// For all state variables, replace any variables with the program state data
-		for (const key in state) {
+		for (let key in state) {
 			let value = state[key];
 
 			if (!value || typeof value !== "string") {
@@ -145,6 +145,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 					const filePath = value;
 					const fileContents = fs.readFileSync(filePath, "utf8");
 					value = fileContents;
+					key = "path:contents";
 				} catch (error) {
 					console.error(`Error reading file at path: ${value}`);
 					console.error(error);
@@ -214,6 +215,15 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 			);
 		}
 
+		// If we're configured to exit after completion, do so
+		if (this.state.getProgramState("autobot").params && this.state.getProgramState("autobot").params.exitAfterCompletion) {
+			if (this.state.getProgramState("autobot").onExit) {
+				return this.state.getProgramState("autobot").onExit(this.state);
+			}
+
+			process.exit();
+		}
+
 		// Back to the user
 		this.loop(this.state.getProgramState("autobot").params || null);
 	}
@@ -229,9 +239,14 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 			const question = input[key];
 
 			// If the user passed in a parameter, use that
-			if (params && params[key]) {
-				responses[key] = params[key];
-				continue;
+			if (params) {
+				if (params[key + ":contents"]) {
+					responses[key + ":contents"] = params[key + ":contents"];
+					continue;
+				} else if (params[key]) {
+					responses[key] = params[key];
+					continue;
+				}
 			}
 
 			const response = await PromptCLI.text(question);

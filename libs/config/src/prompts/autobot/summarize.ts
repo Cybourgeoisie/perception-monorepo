@@ -1,4 +1,4 @@
-const USER_PROMPT = `"""{{path}}"""
+const USER_PROMPT = `"""{{path:contents}}"""
 
 Using the above text, answer the following question: "{{question}}".
 
