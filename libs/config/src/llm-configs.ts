@@ -12,9 +12,9 @@ export const LLMConfigs = {
 				large: "openai/gpt-4-32k",
 			},
 			local: {
-				fast: "ollama/llama3-8b",
-				best: "ollama/llama3-8b",
-				large: "ollama/llama3-8b",
+				fast: "llama3:8b",
+				best: "llama3:8b",
+				large: "llama3:8b",
 			},
 		},
 		maxCompletionAttempts: 3,
