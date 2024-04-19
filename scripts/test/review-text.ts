@@ -3,73 +3,60 @@ import AutoBotAdapter from "packages/adapters/autobot/AutoBotAdapter";
 import fs from "fs";
 import path from "path";
 import dJSON from "dirty-json";
+import natural from "natural";
+
+// Output file
+const outputFilePath = path.resolve(process.cwd(), "data/results/book-output.json");
 
 // For each line in the file, run the program
-const objectiveBase = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "objective-base.txt"), "utf-8");
-const prompts = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "prompts.txt"), "utf-8").split("\n");
+const objectiveBase = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "objective-book.txt"), "utf-8");
+const bookText = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "book.txt"), "utf-8");
 
-/*
-const daisy = {
-	each: prompts,
-	actions: [
-	{
-		promptKey: "researcher",
-		objective: {
-			base: objectiveBase,
-			prompts: prompts
-		},
-		limit: 1,
-		safetyRunLimit: 20
-	},
-	{
-		promptKey: "extraction",
-		exitAfterCompletion: true,
-		"path:contents": "pipe:state.requestMessage.logs",
-		jsonresponse: "{'date':[date or year],'summary':[string : summary of the event],'imagery':[array : strings of all mentioned iconic imagery]}",
-	},
-	{
-		operation: "write",
-		filename: "output.json",
-		contents: "pipe:state.responseMessage",
+function splitSentencesUsingNLP(text: string, chunkSize: number): string[] {
+	const tokenizer = new natural.SentenceTokenizer();
+	const sentences = tokenizer.tokenize(text);
+
+	const chunks = [];
+	let currentChunk = "";
+	while (currentChunk.length < chunkSize) {
+		if (sentences.length === 0) {
+			break;
+		}
+
+		currentChunk += sentences.shift() + " ";
+
+		if (sentences.length === 0) {
+			break;
+		}
+
+		if (currentChunk.length + sentences[0].length > chunkSize) {
+			chunks.push(currentChunk);
+			currentChunk = "";
+		}
 	}
-]}
-*/
 
-const limit = 100;
-let numRuns = 0;
-
-export async function executeMultiple() {
-	const outputFilePath = path.resolve(process.cwd(), "data/results/output.json");
-	if (fs.existsSync(outputFilePath)) {
-		// Read the output file
-		const output = fs.readFileSync(outputFilePath, "utf-8");
-
-		// Get the last prompt index
-		const results = JSON.parse(output);
-		const lastResult = results[results.length - 1];
-		const lastPromptIdx = lastResult.promptIdx;
-
-		// Single run
-		await singleRun(lastPromptIdx + 1);
-	} else {
-		// Single run
-		await singleRun(0);
+	// Get the last bit of text
+	if (currentChunk.length > 0) {
+		chunks.push(currentChunk);
+		currentChunk = "";
 	}
+
+	return chunks;
 }
 
-async function singleRun(promptIdx: number) {
-	if (promptIdx >= prompts.length) {
-		console.log("All prompts have been run.");
-		process.exit();
-	}
+let prompts = [];
+export async function reviewText() {
+	// Split the book text into sections
+	prompts = splitSentencesUsingNLP(bookText, 124576); //Math.floor(4096 * 1.5));
 
-	if (numRuns++ >= limit) {
-		console.log("Prompt limit (" + limit + ") reached.");
-		process.exit();
-	}
+	console.log(`Running the program for each prompt, total of ${prompts.length}:`);
 
+	singleRun(0);
+}
+
+async function singleRun(promptIdx) {
 	// Notify the user of the next prompt
-	console.log("\nNow running prompt " + (promptIdx + 1) + " of " + prompts.length + ":\n" + prompts[promptIdx], "\n------\n");
+	console.log("\nNow running prompt " + (promptIdx + 1) + " of " + prompts.length + "...");
 
 	// Get the prompt
 	const prompt = prompts[promptIdx].replace(/"/g, '\\"');
@@ -83,8 +70,9 @@ async function singleRun(promptIdx: number) {
 
 	// Run the program
 	await AutoBotAdapter.run({
-		promptKey: "researcher",
-		objective: objectiveBase + prompt,
+		promptKey: "chat",
+		user: objectiveBase + prompt,
+		maxRuns: 1,
 	});
 }
 
@@ -98,7 +86,7 @@ async function onTaskCompleteCallback(promptIdx: number, state: State) {
 		exitAfterCompletion: true,
 		"path:contents": JSON.stringify(state.getRequestMessage().getAllGptResponses()),
 		jsonresponse:
-			"{'date':[a date in Month, Day, Year format; or year if not provided],'summary':[string : brief summary of the event],'sources':[array : URLs or paper citations],'imagery':[array : strings of all mentioned iconic imagery]}",
+			"{'date':[a date in Month, Day, Year format; or year if not provided],'summary':[string : brief summary of the event],'imagery':[array : strings of all mentioned iconic imagery]}",
 	});
 }
 
@@ -113,7 +101,6 @@ async function onTaskReviewCallback(promptIdx: number, state: State) {
 	let results = [];
 
 	// Check if the output file exists
-	const outputFilePath = path.resolve(process.cwd(), "data/results/output.json");
 	if (fs.existsSync(outputFilePath)) {
 		// Read the output file
 		const output = fs.readFileSync(outputFilePath, "utf-8");
