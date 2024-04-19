@@ -21,6 +21,27 @@ export class OpenAIRoutine {
 		return "Submit prompts to OpenAI's chat completion API";
 	}
 
+	public static getOpenAiParameters(): { baseUrl: string; apiKey: string } {
+		if (Config.LLM_API_ENDPOINT === "OpenRouter") {
+			return {
+				baseUrl: "https://openrouter.ai/api/v1",
+				apiKey: Config.OPENROUTER_API_KEY,
+			};
+		} else if (Config.LLM_API_ENDPOINT === "OpenAI") {
+			return {
+				baseUrl: undefined,
+				apiKey: Config.OPENAI_API_KEY,
+			};
+		} else if (Config.LLM_API_ENDPOINT === "local") {
+			return {
+				baseUrl: Config.LOCAL_API_ENDPOINT,
+				apiKey: Config.LOCAL_API_KEY,
+			};
+		}
+
+		throw new Error("Invalid LLM_API_ENDPOINT: `" + Config.LLM_API_ENDPOINT + "`");
+	}
+
 	public static async promptWithHistory(args: OpenAIRoutinePromptArgs): Promise<void> {
 		// Get the arguments
 		const { state, systemPrompts, userPrompt, callback } = args;
@@ -44,10 +65,7 @@ export class OpenAIRoutine {
 		// Submit the request to OpenAI, and cycle back to handle the response
 		const messages = requestMessage.generateMessages();
 
-		const openAI = new OpenAI({
-			baseUrl: Config.LLM_API_ENDPOINT === "OpenRouter" ? "https://openrouter.ai/api/v1" : undefined,
-			apiKey: Config.LLM_API_ENDPOINT === "OpenRouter" ? Config.OPENROUTER_API_KEY : Config.OPENAI_API_KEY,
-		});
+		const openAI = new OpenAI(this.getOpenAiParameters());
 
 		openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
@@ -94,10 +112,7 @@ export class OpenAIRoutine {
 	}
 
 	public static async getSummarization(state: State, text: string, question: string): Promise<string> {
-		const openAI = new OpenAI({
-			baseUrl: Config.LLM_API_ENDPOINT === "OpenRouter" ? "https://openrouter.ai/api/v1" : undefined,
-			apiKey: Config.LLM_API_ENDPOINT === "OpenRouter" ? Config.OPENROUTER_API_KEY : Config.OPENAI_API_KEY,
-		});
+		const openAI = new OpenAI(this.getOpenAiParameters());
 
 		// Get the model
 		const model = openAI.getDefaultFastModel();

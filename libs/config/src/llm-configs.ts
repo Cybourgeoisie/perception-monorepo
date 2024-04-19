@@ -11,6 +11,11 @@ export const LLMConfigs = {
 				best: "openai/gpt-4",
 				large: "openai/gpt-4-32k",
 			},
+			local: {
+				fast: "ollama/llama3-8b",
+				best: "ollama/llama3-8b",
+				large: "ollama/llama3-8b",
+			},
 		},
 		maxCompletionAttempts: 3,
 		temperature: 0.5,

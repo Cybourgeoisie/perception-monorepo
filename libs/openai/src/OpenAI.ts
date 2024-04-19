@@ -20,7 +20,7 @@ export type OpenAIConfig = {
 export class OpenAI {
 	private openai: OpenAIClass;
 	private apiKey: string;
-	private service: "OpenAI" | "OpenRouter" = "OpenAI";
+	private service: "OpenAI" | "OpenRouter" | "local" = "OpenAI";
 	private maxCompletionAttempts: number = 3;
 
 	constructor(config: OpenAIConfig) {
@@ -29,7 +29,7 @@ export class OpenAI {
 			throw new Error('OpenAI config "apiKey" must be set to start the program.');
 		}
 
-		this.service = config.baseUrl?.includes("openrouter") ? "OpenRouter" : "OpenAI";
+		this.service = config.baseUrl?.includes("openrouter") ? "OpenRouter" : !config.baseUrl ? "OpenAI" : "local";
 		this.apiKey = config.apiKey;
 		this.maxCompletionAttempts = LLMConfigs.default.maxCompletionAttempts || 3;
 		this.openai = new OpenAIClass({
@@ -45,6 +45,8 @@ export class OpenAI {
 	public getDefaultFastModel(): string {
 		if (this.service === "OpenRouter") {
 			return Models.openrouter[LLMConfigs.default.models.openrouter.fast].id;
+		} else if (this.service === "local") {
+			return Models.local[LLMConfigs.default.models.local.fast].id;
 		}
 
 		return Models.openai[LLMConfigs.default.models.openai.fast].id;
@@ -53,6 +55,8 @@ export class OpenAI {
 	public getDefaultBestModel(): string {
 		if (this.service === "OpenRouter") {
 			return Models.openrouter[LLMConfigs.default.models.openrouter.best].id;
+		} else if (this.service === "local") {
+			return Models.local[LLMConfigs.default.models.local.best].id;
 		}
 
 		return Models.openai[LLMConfigs.default.models.openai.best].id;
@@ -61,6 +65,8 @@ export class OpenAI {
 	public getDefaultLargeModel(): string {
 		if (this.service === "OpenRouter") {
 			return Models.openrouter[LLMConfigs.default.models.openrouter.large].id;
+		} else if (this.service === "local") {
+			return Models.local[LLMConfigs.default.models.local.large].id;
 		}
 
 		return Models.openai[LLMConfigs.default.models.openai.large].id;
@@ -69,6 +75,8 @@ export class OpenAI {
 	public getModelContextLength(model: string): number {
 		if (this.service === "OpenRouter") {
 			return Models.openrouter[model].context_length;
+		} else if (this.service === "local") {
+			return Models.local[model].context_length;
 		}
 
 		return Models.openai[model].context_length;
