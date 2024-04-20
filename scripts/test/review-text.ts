@@ -1,9 +1,9 @@
 import { State } from "@openai";
+import { TextPreprocessor } from "@common";
 import AutoBotAdapter from "packages/adapters/autobot/AutoBotAdapter";
 import fs from "fs";
 import path from "path";
 import dJSON from "dirty-json";
-import natural from "natural";
 
 // Output file
 const outputFilePath = path.resolve(process.cwd(), "data/results/book-output.json");
@@ -12,42 +12,10 @@ const outputFilePath = path.resolve(process.cwd(), "data/results/book-output.jso
 const objectiveBase = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "objective-book.txt"), "utf-8");
 const bookText = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "book.txt"), "utf-8");
 
-function splitSentencesUsingNLP(text: string, chunkSize: number): string[] {
-	const tokenizer = new natural.SentenceTokenizer();
-	const sentences = tokenizer.tokenize(text);
-
-	const chunks = [];
-	let currentChunk = "";
-	while (currentChunk.length < chunkSize) {
-		if (sentences.length === 0) {
-			break;
-		}
-
-		currentChunk += sentences.shift() + " ";
-
-		if (sentences.length === 0) {
-			break;
-		}
-
-		if (currentChunk.length + sentences[0].length > chunkSize) {
-			chunks.push(currentChunk);
-			currentChunk = "";
-		}
-	}
-
-	// Get the last bit of text
-	if (currentChunk.length > 0) {
-		chunks.push(currentChunk);
-		currentChunk = "";
-	}
-
-	return chunks;
-}
-
 let prompts = [];
 export async function reviewText() {
 	// Split the book text into sections
-	prompts = splitSentencesUsingNLP(bookText, 124576); //Math.floor(4096 * 1.5));
+	prompts = TextPreprocessor.splitSentencesUsingNLP(bookText, 124576); //Math.floor(4096 * 1.5));
 
 	console.log(`Running the program for each prompt, total of ${prompts.length}:`);
 
