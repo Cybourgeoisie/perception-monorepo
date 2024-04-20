@@ -1,6 +1,7 @@
 import OpenAIClass from "openai";
-import { Models, LLMConfigs } from "@config";
+import { LLMConfigs } from "@config";
 import { IncomingMessage } from "http";
+import { ModelFactory } from "./ModelFactory";
 
 export type OpenAICompletionArguments = {
 	messages: OpenAIClass.ChatCompletionMessage[];
@@ -38,50 +39,6 @@ export class OpenAI {
 		});
 	}
 
-	public getDefaultModel(): string {
-		return this.getDefaultFastModel();
-	}
-
-	public getDefaultFastModel(): string {
-		if (this.service === "OpenRouter") {
-			return Models.openrouter[LLMConfigs.default.models.openrouter.fast].id;
-		} else if (this.service === "local") {
-			return Models.local[LLMConfigs.default.models.local.fast].id;
-		}
-
-		return Models.openai[LLMConfigs.default.models.openai.fast].id;
-	}
-
-	public getDefaultBestModel(): string {
-		if (this.service === "OpenRouter") {
-			return Models.openrouter[LLMConfigs.default.models.openrouter.best].id;
-		} else if (this.service === "local") {
-			return Models.local[LLMConfigs.default.models.local.best].id;
-		}
-
-		return Models.openai[LLMConfigs.default.models.openai.best].id;
-	}
-
-	public getDefaultLargeModel(): string {
-		if (this.service === "OpenRouter") {
-			return Models.openrouter[LLMConfigs.default.models.openrouter.large].id;
-		} else if (this.service === "local") {
-			return Models.local[LLMConfigs.default.models.local.large].id;
-		}
-
-		return Models.openai[LLMConfigs.default.models.openai.large].id;
-	}
-
-	public getModelContextLength(model: string): number {
-		if (this.service === "OpenRouter") {
-			return Models.openrouter[model].context_length;
-		} else if (this.service === "local") {
-			return Models.local[model].context_length;
-		}
-
-		return Models.openai[model].context_length;
-	}
-
 	public async getCompletion(args: OpenAICompletionArguments): Promise<OpenAIClass.ChatCompletionMessage> {
 		// Retrieve the arguments
 		const {
@@ -93,15 +50,10 @@ export class OpenAI {
 			onCompleteCallback,
 		} = args;
 
-		let { model = args.model || this.getDefaultModel() } = args;
-
-		// Parse the model further
-		if (model === "best") {
-			model = this.getDefaultBestModel();
-		} else if (model === "fast") {
-			model = this.getDefaultFastModel();
-		} else if (model === "large") {
-			model = this.getDefaultLargeModel();
+		// Parse the model
+		let { model } = args;
+		if (model === "best" || model === "fast" || model === "large") {
+			model = ModelFactory.getDefaultModel(this.service, model);
 		}
 
 		console.log(`Using ${this.service} (${model}, T=${temperature}) to respond...`);

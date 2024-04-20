@@ -1,5 +1,5 @@
 import { Config } from "@config";
-import { OpenAI, State } from "@openai";
+import { OpenAI, State, ModelFactory } from "@openai";
 import { TextPreprocessor } from "@common";
 import OpenAIClass from "openai";
 import fs from "fs";
@@ -121,8 +121,8 @@ export class OpenAIRoutine {
 		const openAI = new OpenAI(this.getOpenAiParameters(llm));
 
 		// Get the model
-		const model = llm?.model || openAI.getDefaultFastModel();
-		const contextSize = openAI.getModelContextLength(model);
+		const model = llm?.model || ModelFactory.getDefaultModel(llm.provider, "fast");
+		const contextSize = ModelFactory.getModelContextLength(llm.provider, model);
 
 		// Get the request message from the state
 		const requestMessage = state.getRequestMessage();

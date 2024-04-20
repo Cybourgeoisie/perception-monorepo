@@ -1,4 +1,4 @@
-import { State } from "@openai";
+import { State, ModelFactory } from "@openai";
 import { TextPreprocessor } from "@common";
 import AutoBotAdapter from "packages/adapters/autobot/AutoBotAdapter";
 import fs from "fs";
@@ -13,13 +13,24 @@ const outputFilePath = path.resolve(process.cwd(), "data/results/book-output-" +
 const objectiveBase = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "objective-book.txt"), "utf-8");
 const bookText = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "book.txt"), "utf-8");
 
+const readBookLlm = {
+	provider: "OpenRouter",
+	model: "fast",
+};
+
+const genJsonLlm = {
+	provider: "OpenRouter",
+	model: "openai/gpt-4-turbo", // This seems to be the best model for JSON extraction for price-performance tradeoff
+};
+
 let prompts = [];
 export async function reviewText() {
-	// TODO - Pull the model context length from the selected model information
+	// Pull the model context length from the selected model information
 	// Use that to determine the length of the chunks
+	const contextSize = ModelFactory.getModelContextLength(readBookLlm.provider, readBookLlm.model);
 
 	// Split the book text into sections
-	prompts = TextPreprocessor.splitSentencesUsingNLP(bookText, Math.floor(4096 * 1.5));
+	prompts = TextPreprocessor.splitSentencesUsingNLP(bookText, Math.floor(contextSize * 0.75));
 
 	console.log(`Running the program for each prompt, total of ${prompts.length}:`);
 
@@ -52,10 +63,7 @@ async function singleRun(promptIdx) {
 
 	// Run the program
 	await AutoBotAdapter.run({
-		llm: {
-			"provider": "local",
-			"model": "fast",
-		},
+		llm: readBookLlm,
 		promptKey: "chat",
 		user: objectiveBase + prompt,
 		maxRuns: 1,
@@ -68,10 +76,7 @@ async function onTaskCompleteCallback(promptIdx: number, state: State) {
 
 	// Run the program
 	await AutoBotAdapter.run({
-		llm: {
-			"provider": "OpenRouter",
-			"model": "fast",
-		},
+		llm: genJsonLlm,
 		promptKey: "extraction",
 		exitAfterCompletion: true,
 		"path:contents": JSON.stringify(state.getRequestMessage().getAllGptResponses()),

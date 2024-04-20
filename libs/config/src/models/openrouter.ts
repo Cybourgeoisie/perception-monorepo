@@ -217,8 +217,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "50200000",
-            "completion_tokens": "50200000"
+            "prompt_tokens": "26408346",
+            "completion_tokens": "26408346"
         }
     },
     "koboldai/psyfighter-13b-2": {
@@ -242,8 +242,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "50200000",
-            "completion_tokens": "50200000"
+            "prompt_tokens": "26408346",
+            "completion_tokens": "26408346"
         }
     },
     "intel/neural-chat-7b": {
@@ -267,8 +267,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "10040000",
-            "completion_tokens": "10040000"
+            "prompt_tokens": "5281669",
+            "completion_tokens": "5281669"
         }
     },
     "haotian-liu/llava-13b": {
@@ -292,8 +292,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "10040000",
-            "completion_tokens": "10040000"
+            "prompt_tokens": "5281669",
+            "completion_tokens": "5281669"
         }
     },
     "nousresearch/nous-hermes-2-vision-7b": {
@@ -317,8 +317,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "10040000",
-            "completion_tokens": "10040000"
+            "prompt_tokens": "5281669",
+            "completion_tokens": "5281669"
         }
     },
     "meta-llama/llama-2-13b-chat": {
@@ -342,8 +342,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "416252072",
-            "completion_tokens": "416252072"
+            "prompt_tokens": "218974678",
+            "completion_tokens": "218974678"
         }
     },
     "pygmalionai/mythalion-13b": {
@@ -367,8 +367,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "44622222",
-            "completion_tokens": "44622222"
+            "prompt_tokens": "23474085",
+            "completion_tokens": "23474085"
         }
     },
     "xwin-lm/xwin-lm-70b": {
@@ -392,8 +392,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "13386666",
-            "completion_tokens": "13386666"
+            "prompt_tokens": "7042225",
+            "completion_tokens": "7042225"
         }
     },
     "alpindale/goliath-120b": {
@@ -417,8 +417,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "5354666",
-            "completion_tokens": "5354666"
+            "prompt_tokens": "2816890",
+            "completion_tokens": "2816890"
         }
     },
     "neversleep/noromaid-20b": {
@@ -442,8 +442,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "22311111",
-            "completion_tokens": "22311111"
+            "prompt_tokens": "11737042",
+            "completion_tokens": "11737042"
         }
     },
     "gryphe/mythomist-7b": {
@@ -467,8 +467,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "133866666",
-            "completion_tokens": "133866666"
+            "prompt_tokens": "70422256",
+            "completion_tokens": "70422256"
         }
     },
     "sophosympatheia/midnight-rose-70b": {
@@ -492,8 +492,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "5577777",
-            "completion_tokens": "5577777"
+            "prompt_tokens": "2934260",
+            "completion_tokens": "2934260"
         }
     },
     "undi95/remm-slerp-l2-13b:extended": {
@@ -517,8 +517,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "44622222",
-            "completion_tokens": "44622222"
+            "prompt_tokens": "23474085",
+            "completion_tokens": "23474085"
         }
     },
     "mancer/weaver": {
@@ -542,8 +542,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "14874074",
-            "completion_tokens": "14874074"
+            "prompt_tokens": "7824695",
+            "completion_tokens": "7824695"
         }
     },
     "mistralai/mixtral-8x7b-instruct": {
@@ -567,8 +567,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "200808032",
-            "completion_tokens": "120484819"
+            "prompt_tokens": "105637610",
+            "completion_tokens": "63382566"
         }
     },
     "nousresearch/nous-hermes-llama2-13b": {
@@ -592,8 +592,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "185925925",
-            "completion_tokens": "185925925"
+            "prompt_tokens": "97808689",
+            "completion_tokens": "97808689"
         }
     },
     "nousresearch/nous-capybara-7b": {
@@ -617,8 +617,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "278888888",
-            "completion_tokens": "278888888"
+            "prompt_tokens": "146713034",
+            "completion_tokens": "146713034"
         }
     },
     "meta-llama/codellama-34b-instruct": {
@@ -642,8 +642,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "69722222",
-            "completion_tokens": "69722222"
+            "prompt_tokens": "36678258",
+            "completion_tokens": "36678258"
         }
     },
     "codellama/codellama-70b-instruct": {
@@ -667,8 +667,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "61975308",
-            "completion_tokens": "61975308"
+            "prompt_tokens": "32602896",
+            "completion_tokens": "32602896"
         }
     },
     "phind/phind-codellama-34b": {
@@ -692,8 +692,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "69722222",
-            "completion_tokens": "69722222"
+            "prompt_tokens": "36678258",
+            "completion_tokens": "36678258"
         }
     },
     "teknium/openhermes-2-mistral-7b": {
@@ -717,8 +717,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "278888888",
-            "completion_tokens": "278888888"
+            "prompt_tokens": "146713034",
+            "completion_tokens": "146713034"
         }
     },
     "teknium/openhermes-2.5-mistral-7b": {
@@ -742,8 +742,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "278888888",
-            "completion_tokens": "278888888"
+            "prompt_tokens": "146713034",
+            "completion_tokens": "146713034"
         }
     },
     "undi95/remm-slerp-l2-13b": {
@@ -767,8 +767,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "185925925",
-            "completion_tokens": "185925925"
+            "prompt_tokens": "97808689",
+            "completion_tokens": "97808689"
         }
     },
     "openrouter/cinematika-7b": {
@@ -792,8 +792,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "278888888",
-            "completion_tokens": "278888888"
+            "prompt_tokens": "146713034",
+            "completion_tokens": "146713034"
         }
     },
     "01-ai/yi-34b-chat": {
@@ -817,8 +817,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "69722222",
-            "completion_tokens": "69722222"
+            "prompt_tokens": "36678258",
+            "completion_tokens": "36678258"
         }
     },
     "01-ai/yi-34b": {
@@ -842,8 +842,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "69722222",
-            "completion_tokens": "69722222"
+            "prompt_tokens": "36678258",
+            "completion_tokens": "36678258"
         }
     },
     "01-ai/yi-6b": {
@@ -867,8 +867,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "398412698",
-            "completion_tokens": "398412698"
+            "prompt_tokens": "209590049",
+            "completion_tokens": "209590049"
         }
     },
     "togethercomputer/stripedhyena-nous-7b": {
@@ -892,8 +892,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "278888888",
-            "completion_tokens": "278888888"
+            "prompt_tokens": "146713034",
+            "completion_tokens": "146713034"
         }
     },
     "togethercomputer/stripedhyena-hessian-7b": {
@@ -917,8 +917,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "278888888",
-            "completion_tokens": "278888888"
+            "prompt_tokens": "146713034",
+            "completion_tokens": "146713034"
         }
     },
     "mistralai/mixtral-8x7b": {
@@ -942,8 +942,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "92962962",
-            "completion_tokens": "92962962"
+            "prompt_tokens": "48904344",
+            "completion_tokens": "48904344"
         }
     },
     "nousresearch/nous-hermes-yi-34b": {
@@ -967,8 +967,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "69722222",
-            "completion_tokens": "69722222"
+            "prompt_tokens": "36678258",
+            "completion_tokens": "36678258"
         }
     },
     "nousresearch/nous-hermes-2-mixtral-8x7b-sft": {
@@ -992,8 +992,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "92962962",
-            "completion_tokens": "92962962"
+            "prompt_tokens": "48904344",
+            "completion_tokens": "48904344"
         }
     },
     "nousresearch/nous-hermes-2-mistral-7b-dpo": {
@@ -1017,8 +1017,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "278888888",
-            "completion_tokens": "278888888"
+            "prompt_tokens": "146713034",
+            "completion_tokens": "146713034"
         }
     },
     "open-orca/mistral-7b-openorca": {
@@ -1042,8 +1042,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "352280701",
-            "completion_tokens": "352280701"
+            "prompt_tokens": "185321728",
+            "completion_tokens": "185321728"
         }
     },
     "huggingfaceh4/zephyr-7b-beta": {
@@ -1067,8 +1067,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "352280701",
-            "completion_tokens": "352280701"
+            "prompt_tokens": "185321728",
+            "completion_tokens": "185321728"
         }
     },
     "openai/gpt-3.5-turbo": {
@@ -1092,8 +1092,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "100400000",
-            "completion_tokens": "33466666"
+            "prompt_tokens": "52816692",
+            "completion_tokens": "17605564"
         }
     },
     "openai/gpt-3.5-turbo-0125": {
@@ -1117,8 +1117,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "100400000",
-            "completion_tokens": "33466666"
+            "prompt_tokens": "52816692",
+            "completion_tokens": "17605564"
         }
     },
     "openai/gpt-3.5-turbo-1106": {
@@ -1142,8 +1142,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "50200000",
-            "completion_tokens": "25100000"
+            "prompt_tokens": "26408346",
+            "completion_tokens": "13204173"
         }
     },
     "openai/gpt-3.5-turbo-0613": {
@@ -1167,8 +1167,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "50200000",
-            "completion_tokens": "25100000"
+            "prompt_tokens": "26408346",
+            "completion_tokens": "13204173"
         }
     },
     "openai/gpt-3.5-turbo-0301": {
@@ -1192,8 +1192,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "50200000",
-            "completion_tokens": "25100000"
+            "prompt_tokens": "26408346",
+            "completion_tokens": "13204173"
         }
     },
     "openai/gpt-3.5-turbo-16k": {
@@ -1217,8 +1217,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "16733333",
-            "completion_tokens": "12550000"
+            "prompt_tokens": "8802782",
+            "completion_tokens": "6602086"
         }
     },
     "openai/gpt-4-turbo": {
@@ -1242,8 +1242,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "5020000",
-            "completion_tokens": "1673333"
+            "prompt_tokens": "2640834",
+            "completion_tokens": "880278"
         }
     },
     "openai/gpt-4-turbo-preview": {
@@ -1267,8 +1267,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "5020000",
-            "completion_tokens": "1673333"
+            "prompt_tokens": "2640834",
+            "completion_tokens": "880278"
         }
     },
     "openai/gpt-4-1106-preview": {
@@ -1292,8 +1292,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "5020000",
-            "completion_tokens": "1673333"
+            "prompt_tokens": "2640834",
+            "completion_tokens": "880278"
         }
     },
     "openai/gpt-4": {
@@ -1317,8 +1317,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "1673333",
-            "completion_tokens": "836666"
+            "prompt_tokens": "880278",
+            "completion_tokens": "440139"
         }
     },
     "openai/gpt-4-0314": {
@@ -1342,8 +1342,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "1673333",
-            "completion_tokens": "836666"
+            "prompt_tokens": "880278",
+            "completion_tokens": "440139"
         }
     },
     "openai/gpt-4-32k": {
@@ -1367,8 +1367,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "836666",
-            "completion_tokens": "418333"
+            "prompt_tokens": "440139",
+            "completion_tokens": "220069"
         }
     },
     "openai/gpt-4-32k-0314": {
@@ -1392,8 +1392,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "836666",
-            "completion_tokens": "418333"
+            "prompt_tokens": "440139",
+            "completion_tokens": "220069"
         }
     },
     "openai/gpt-4-vision-preview": {
@@ -1417,8 +1417,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "5020000",
-            "completion_tokens": "1673333"
+            "prompt_tokens": "2640834",
+            "completion_tokens": "880278"
         }
     },
     "openai/gpt-3.5-turbo-instruct": {
@@ -1442,8 +1442,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "33466666",
-            "completion_tokens": "25100000"
+            "prompt_tokens": "17605564",
+            "completion_tokens": "13204173"
         }
     },
     "google/palm-2-chat-bison": {
@@ -1467,8 +1467,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "200800000",
-            "completion_tokens": "100400000"
+            "prompt_tokens": "105633385",
+            "completion_tokens": "52816692"
         }
     },
     "google/palm-2-codechat-bison": {
@@ -1492,8 +1492,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "200800000",
-            "completion_tokens": "100400000"
+            "prompt_tokens": "105633385",
+            "completion_tokens": "52816692"
         }
     },
     "google/palm-2-chat-bison-32k": {
@@ -1517,8 +1517,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "200800000",
-            "completion_tokens": "100400000"
+            "prompt_tokens": "105633385",
+            "completion_tokens": "52816692"
         }
     },
     "google/palm-2-codechat-bison-32k": {
@@ -1542,8 +1542,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "200800000",
-            "completion_tokens": "100400000"
+            "prompt_tokens": "105633385",
+            "completion_tokens": "52816692"
         }
     },
     "google/gemini-pro": {
@@ -1567,8 +1567,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "401600000",
-            "completion_tokens": "133866666"
+            "prompt_tokens": "211266770",
+            "completion_tokens": "70422256"
         }
     },
     "google/gemini-pro-vision": {
@@ -1592,8 +1592,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "401600000",
-            "completion_tokens": "133866666"
+            "prompt_tokens": "211266770",
+            "completion_tokens": "70422256"
         }
     },
     "google/gemini-pro-1.5": {
@@ -1617,8 +1617,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "20080000",
-            "completion_tokens": "6693333"
+            "prompt_tokens": "10563338",
+            "completion_tokens": "3521112"
         }
     },
     "perplexity/pplx-70b-online": {
@@ -1642,8 +1642,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "50200000",
-            "completion_tokens": "50200000"
+            "prompt_tokens": "26408346",
+            "completion_tokens": "26408346"
         }
     },
     "perplexity/pplx-7b-online": {
@@ -1667,8 +1667,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "251000000",
-            "completion_tokens": "251000000"
+            "prompt_tokens": "132041731",
+            "completion_tokens": "132041731"
         }
     },
     "perplexity/pplx-7b-chat": {
@@ -1692,8 +1692,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "251000000",
-            "completion_tokens": "251000000"
+            "prompt_tokens": "132041731",
+            "completion_tokens": "132041731"
         }
     },
     "perplexity/pplx-70b-chat": {
@@ -1717,8 +1717,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "50200000",
-            "completion_tokens": "50200000"
+            "prompt_tokens": "26408346",
+            "completion_tokens": "26408346"
         }
     },
     "perplexity/sonar-small-chat": {
@@ -1742,8 +1742,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "251000000",
-            "completion_tokens": "251000000"
+            "prompt_tokens": "132041731",
+            "completion_tokens": "132041731"
         }
     },
     "perplexity/sonar-medium-chat": {
@@ -1767,8 +1767,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "83666666",
-            "completion_tokens": "83666666"
+            "prompt_tokens": "44013910",
+            "completion_tokens": "44013910"
         }
     },
     "perplexity/sonar-small-online": {
@@ -1792,8 +1792,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "251000000",
-            "completion_tokens": "251000000"
+            "prompt_tokens": "132041731",
+            "completion_tokens": "132041731"
         }
     },
     "perplexity/sonar-medium-online": {
@@ -1817,8 +1817,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "83666666",
-            "completion_tokens": "83666666"
+            "prompt_tokens": "44013910",
+            "completion_tokens": "44013910"
         }
     },
     "anthropic/claude-3-opus": {
@@ -1842,8 +1842,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "3346666",
-            "completion_tokens": "669333"
+            "prompt_tokens": "1760556",
+            "completion_tokens": "352111"
         }
     },
     "anthropic/claude-3-sonnet": {
@@ -1867,8 +1867,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "16733333",
-            "completion_tokens": "3346666"
+            "prompt_tokens": "8802782",
+            "completion_tokens": "1760556"
         }
     },
     "anthropic/claude-3-haiku": {
@@ -1892,8 +1892,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "200800000",
-            "completion_tokens": "40160000"
+            "prompt_tokens": "105633385",
+            "completion_tokens": "21126677"
         }
     },
     "anthropic/claude-3-opus:beta": {
@@ -1917,8 +1917,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "3346666",
-            "completion_tokens": "669333"
+            "prompt_tokens": "1760556",
+            "completion_tokens": "352111"
         }
     },
     "anthropic/claude-3-sonnet:beta": {
@@ -1942,8 +1942,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "16733333",
-            "completion_tokens": "3346666"
+            "prompt_tokens": "8802782",
+            "completion_tokens": "1760556"
         }
     },
     "anthropic/claude-3-haiku:beta": {
@@ -1967,8 +1967,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "200800000",
-            "completion_tokens": "40160000"
+            "prompt_tokens": "105633385",
+            "completion_tokens": "21126677"
         }
     },
     "meta-llama/llama-2-70b-chat": {
@@ -1992,8 +1992,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "83666666",
-            "completion_tokens": "26421052"
+            "prompt_tokens": "44013910",
+            "completion_tokens": "13899129"
         }
     },
     "nousresearch/nous-capybara-34b": {
@@ -2017,8 +2017,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "55777777",
-            "completion_tokens": "55777777"
+            "prompt_tokens": "29342606",
+            "completion_tokens": "29342606"
         }
     },
     "jondurbin/airoboros-l2-70b": {
@@ -2042,8 +2042,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "71714285",
-            "completion_tokens": "55777777"
+            "prompt_tokens": "37726208",
+            "completion_tokens": "29342606"
         }
     },
     "jondurbin/bagel-34b": {
@@ -2067,8 +2067,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "8730434",
-            "completion_tokens": "8730434"
+            "prompt_tokens": "4592755",
+            "completion_tokens": "4592755"
         }
     },
     "austism/chronos-hermes-13b": {
@@ -2092,8 +2092,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "278888888",
-            "completion_tokens": "278888888"
+            "prompt_tokens": "146713034",
+            "completion_tokens": "146713034"
         }
     },
     "mistralai/mistral-7b-instruct": {
@@ -2117,8 +2117,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "502000000",
-            "completion_tokens": "200800000"
+            "prompt_tokens": "264083462",
+            "completion_tokens": "105633385"
         }
     },
     "gryphe/mythomax-l2-13b": {
@@ -2142,8 +2142,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "278888888",
-            "completion_tokens": "278888888"
+            "prompt_tokens": "146713034",
+            "completion_tokens": "146713034"
         }
     },
     "openchat/openchat-7b": {
@@ -2167,8 +2167,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "386153846",
-            "completion_tokens": "386153846"
+            "prompt_tokens": "203141125",
+            "completion_tokens": "203141125"
         }
     },
     "undi95/toppy-m-7b": {
@@ -2192,8 +2192,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "334666666",
-            "completion_tokens": "334666666"
+            "prompt_tokens": "176055641",
+            "completion_tokens": "176055641"
         }
     },
     "lizpreciatior/lzlv-70b-fp16-hf": {
@@ -2202,7 +2202,7 @@ export const OpenRouterModels = {
         "description": "A Mythomax/MLewd_13B-style merge of selected 70B models.\nA multi-model merge of several LLaMA2 70B finetunes for roleplaying and creative work. The goal was to create a model that combines creativity with intelligence for an enhanced experience.\n\n#merge #uncensored",
         "pricing": {
             "prompt": "0.0000007",
-            "completion": "0.0000009",
+            "completion": "0.0000008",
             "image": "0",
             "request": "0"
         },
@@ -2217,8 +2217,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "71714285",
-            "completion_tokens": "55777777"
+            "prompt_tokens": "37726208",
+            "completion_tokens": "33010432"
         }
     },
     "cognitivecomputations/dolphin-mixtral-8x7b": {
@@ -2242,8 +2242,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "100400000",
-            "completion_tokens": "100400000"
+            "prompt_tokens": "52816692",
+            "completion_tokens": "52816692"
         }
     },
     "neversleep/noromaid-mixtral-8x7b-instruct": {
@@ -2267,8 +2267,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "6275000",
-            "completion_tokens": "6275000"
+            "prompt_tokens": "3301043",
+            "completion_tokens": "3301043"
         }
     },
     "nousresearch/nous-hermes-2-mixtral-8x7b-dpo": {
@@ -2292,8 +2292,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "167333333",
-            "completion_tokens": "100400000"
+            "prompt_tokens": "88027820",
+            "completion_tokens": "52816692"
         }
     },
     "rwkv/rwkv-5-world-3b": {
@@ -2392,8 +2392,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "502000000",
-            "completion_tokens": "502000000"
+            "prompt_tokens": "264083462",
+            "completion_tokens": "264083462"
         }
     },
     "databricks/dbrx-instruct": {
@@ -2417,8 +2417,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "83666666",
-            "completion_tokens": "83666666"
+            "prompt_tokens": "44013910",
+            "completion_tokens": "44013910"
         }
     },
     "huggingfaceh4/zephyr-orpo-141b-a35b": {
@@ -2442,8 +2442,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "77230769",
-            "completion_tokens": "77230769"
+            "prompt_tokens": "40628225",
+            "completion_tokens": "40628225"
         }
     },
     "meta-llama/llama-3-8b-instruct": {
@@ -2467,8 +2467,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "502000000",
-            "completion_tokens": "502000000"
+            "prompt_tokens": "264083462",
+            "completion_tokens": "264083462"
         }
     },
     "meta-llama/llama-3-70b-instruct": {
@@ -2492,8 +2492,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "62750000",
-            "completion_tokens": "62750000"
+            "prompt_tokens": "33010432",
+            "completion_tokens": "33010432"
         }
     },
     "microsoft/wizardlm-2-8x22b": {
@@ -2517,8 +2517,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "77230769",
-            "completion_tokens": "77230769"
+            "prompt_tokens": "40628225",
+            "completion_tokens": "40628225"
         }
     },
     "microsoft/wizardlm-2-7b": {
@@ -2542,8 +2542,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "502000000",
-            "completion_tokens": "502000000"
+            "prompt_tokens": "264083462",
+            "completion_tokens": "264083462"
         }
     },
     "mistralai/mixtral-8x22b": {
@@ -2567,8 +2567,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "55777777",
-            "completion_tokens": "55777777"
+            "prompt_tokens": "29342606",
+            "completion_tokens": "29342606"
         }
     },
     "mistralai/mixtral-8x22b-instruct": {
@@ -2592,8 +2592,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "77230769",
-            "completion_tokens": "77230769"
+            "prompt_tokens": "40628225",
+            "completion_tokens": "40628225"
         }
     },
     "anthropic/claude-2": {
@@ -2617,8 +2617,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "6275000",
-            "completion_tokens": "2091666"
+            "prompt_tokens": "3301043",
+            "completion_tokens": "1100347"
         }
     },
     "anthropic/claude-2.1": {
@@ -2642,8 +2642,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "6275000",
-            "completion_tokens": "2091666"
+            "prompt_tokens": "3301043",
+            "completion_tokens": "1100347"
         }
     },
     "anthropic/claude-2.0": {
@@ -2667,8 +2667,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "6275000",
-            "completion_tokens": "2091666"
+            "prompt_tokens": "3301043",
+            "completion_tokens": "1100347"
         }
     },
     "anthropic/claude-instant-1": {
@@ -2692,8 +2692,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "62750000",
-            "completion_tokens": "20916666"
+            "prompt_tokens": "33010432",
+            "completion_tokens": "11003477"
         }
     },
     "anthropic/claude-instant-1.2": {
@@ -2717,8 +2717,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "62750000",
-            "completion_tokens": "20916666"
+            "prompt_tokens": "33010432",
+            "completion_tokens": "11003477"
         }
     },
     "anthropic/claude-1": {
@@ -2742,8 +2742,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "6275000",
-            "completion_tokens": "2091666"
+            "prompt_tokens": "3301043",
+            "completion_tokens": "1100347"
         }
     },
     "anthropic/claude-1.2": {
@@ -2767,8 +2767,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "6275000",
-            "completion_tokens": "2091666"
+            "prompt_tokens": "3301043",
+            "completion_tokens": "1100347"
         }
     },
     "anthropic/claude-instant-1.0": {
@@ -2792,8 +2792,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "62750000",
-            "completion_tokens": "20916666"
+            "prompt_tokens": "33010432",
+            "completion_tokens": "11003477"
         }
     },
     "anthropic/claude-instant-1.1": {
@@ -2817,8 +2817,8 @@ export const OpenRouterModels = {
             "is_moderated": true
         },
         "per_request_limits": {
-            "prompt_tokens": "62750000",
-            "completion_tokens": "20916666"
+            "prompt_tokens": "33010432",
+            "completion_tokens": "11003477"
         }
     },
     "anthropic/claude-2:beta": {
@@ -2842,8 +2842,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "6275000",
-            "completion_tokens": "2091666"
+            "prompt_tokens": "3301043",
+            "completion_tokens": "1100347"
         }
     },
     "anthropic/claude-2.1:beta": {
@@ -2867,8 +2867,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "6275000",
-            "completion_tokens": "2091666"
+            "prompt_tokens": "3301043",
+            "completion_tokens": "1100347"
         }
     },
     "anthropic/claude-2.0:beta": {
@@ -2892,8 +2892,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "6275000",
-            "completion_tokens": "2091666"
+            "prompt_tokens": "3301043",
+            "completion_tokens": "1100347"
         }
     },
     "anthropic/claude-instant-1:beta": {
@@ -2917,8 +2917,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "62750000",
-            "completion_tokens": "20916666"
+            "prompt_tokens": "33010432",
+            "completion_tokens": "11003477"
         }
     },
     "huggingfaceh4/zephyr-7b-beta:free": {
@@ -2967,8 +2967,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "100400000",
-            "completion_tokens": "100400000"
+            "prompt_tokens": "52816692",
+            "completion_tokens": "52816692"
         }
     },
     "meta-llama/llama-2-70b-chat:nitro": {
@@ -2992,8 +2992,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "55777777",
-            "completion_tokens": "55777777"
+            "prompt_tokens": "29342606",
+            "completion_tokens": "29342606"
         }
     },
     "gryphe/mythomax-l2-13b:nitro": {
@@ -3017,8 +3017,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "251000000",
-            "completion_tokens": "251000000"
+            "prompt_tokens": "132041731",
+            "completion_tokens": "132041731"
         }
     },
     "mistralai/mistral-7b-instruct:nitro": {
@@ -3042,8 +3042,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "251000000",
-            "completion_tokens": "251000000"
+            "prompt_tokens": "132041731",
+            "completion_tokens": "132041731"
         }
     },
     "google/gemma-7b-it:nitro": {
@@ -3067,8 +3067,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "251000000",
-            "completion_tokens": "251000000"
+            "prompt_tokens": "132041731",
+            "completion_tokens": "132041731"
         }
     },
     "databricks/dbrx-instruct:nitro": {
@@ -3092,8 +3092,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "55777777",
-            "completion_tokens": "55777777"
+            "prompt_tokens": "29342606",
+            "completion_tokens": "29342606"
         }
     },
     "undi95/toppy-m-7b:nitro": {
@@ -3117,8 +3117,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "334666666",
-            "completion_tokens": "334666666"
+            "prompt_tokens": "176055641",
+            "completion_tokens": "176055641"
         }
     },
     "microsoft/wizardlm-2-8x22b:nitro": {
@@ -3142,8 +3142,58 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "50200000",
-            "completion_tokens": "50200000"
+            "prompt_tokens": "26408346",
+            "completion_tokens": "26408346"
+        }
+    },
+    "meta-llama/llama-3-8b-instruct:nitro": {
+        "id": "meta-llama/llama-3-8b-instruct:nitro",
+        "name": "Meta: Llama 3 8B Instruct (nitro)",
+        "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 8B instruct-tuned version was optimized for high quality dialogue usecases.\n\nIt has demonstrated strong performance compared to leading closed-source models in human evaluations.\n\nTo read more about the model release, [click here](https://ai.meta.com/blog/meta-llama-3/). Usage of this model is subject to [Meta's Acceptable Use Policy](https://llama.meta.com/llama3/use-policy/).\n\nNote: this is a higher-throughput version of [this model](/models/meta-llama/llama-3-8b-instruct), and may have higher prices and slightly different outputs.",
+        "pricing": {
+            "prompt": "0.0000002",
+            "completion": "0.0000002",
+            "image": "0",
+            "request": "0"
+        },
+        "context_length": 8192,
+        "architecture": {
+            "modality": "text",
+            "tokenizer": "Llama3",
+            "instruct_type": "llama3"
+        },
+        "top_provider": {
+            "max_completion_tokens": null,
+            "is_moderated": false
+        },
+        "per_request_limits": {
+            "prompt_tokens": "132041731",
+            "completion_tokens": "132041731"
+        }
+    },
+    "meta-llama/llama-3-70b-instruct:nitro": {
+        "id": "meta-llama/llama-3-70b-instruct:nitro",
+        "name": "Meta: Llama 3 70B Instruct (nitro)",
+        "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 70B instruct-tuned version was optimized for high quality dialogue usecases.\n\nIt has demonstrated strong performance compared to leading closed-source models in human evaluations.\n\nTo read more about the model release, [click here](https://ai.meta.com/blog/meta-llama-3/). Usage of this model is subject to [Meta's Acceptable Use Policy](https://llama.meta.com/llama3/use-policy/).\n\nNote: this is a higher-throughput version of [this model](/models/meta-llama/llama-3-70b-instruct), and may have higher prices and slightly different outputs.",
+        "pricing": {
+            "prompt": "0.0000009",
+            "completion": "0.0000009",
+            "image": "0",
+            "request": "0"
+        },
+        "context_length": 8192,
+        "architecture": {
+            "modality": "text",
+            "tokenizer": "Llama3",
+            "instruct_type": "llama3"
+        },
+        "top_provider": {
+            "max_completion_tokens": null,
+            "is_moderated": false
+        },
+        "per_request_limits": {
+            "prompt_tokens": "29342606",
+            "completion_tokens": "29342606"
         }
     },
     "gryphe/mythomax-l2-13b:extended": {
@@ -3167,8 +3217,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "167333333",
-            "completion_tokens": "167333333"
+            "prompt_tokens": "88027820",
+            "completion_tokens": "88027820"
         }
     },
     "mistralai/mistral-tiny": {
@@ -3192,8 +3242,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "200800000",
-            "completion_tokens": "200800000"
+            "prompt_tokens": "105633385",
+            "completion_tokens": "105633385"
         }
     },
     "mistralai/mistral-small": {
@@ -3217,8 +3267,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "25100000",
-            "completion_tokens": "8366666"
+            "prompt_tokens": "13204173",
+            "completion_tokens": "4401391"
         }
     },
     "mistralai/mistral-medium": {
@@ -3242,8 +3292,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "18592592",
-            "completion_tokens": "6197530"
+            "prompt_tokens": "9780868",
+            "completion_tokens": "3260289"
         }
     },
     "mistralai/mistral-large": {
@@ -3267,8 +3317,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "6275000",
-            "completion_tokens": "2091666"
+            "prompt_tokens": "3301043",
+            "completion_tokens": "1100347"
         }
     },
     "cohere/command": {
@@ -3292,8 +3342,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "50200000",
-            "completion_tokens": "25100000"
+            "prompt_tokens": "26408346",
+            "completion_tokens": "13204173"
         }
     },
     "cohere/command-r": {
@@ -3317,8 +3367,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "100400000",
-            "completion_tokens": "33466666"
+            "prompt_tokens": "52816692",
+            "completion_tokens": "17605564"
         }
     },
     "cohere/command-r-plus": {
@@ -3342,8 +3392,8 @@ export const OpenRouterModels = {
             "is_moderated": false
         },
         "per_request_limits": {
-            "prompt_tokens": "16733333",
-            "completion_tokens": "3346666"
+            "prompt_tokens": "8802782",
+            "completion_tokens": "1760556"
         }
     }
 };
