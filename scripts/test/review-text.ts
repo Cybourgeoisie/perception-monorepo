@@ -12,17 +12,28 @@ const outputFilePath = path.resolve(process.cwd(), "data/results/book-output-" +
 const objectiveBase = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "objective-book.txt"), "utf-8");
 const bookText = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "book.txt"), "utf-8");
 
+// Good readers:
+// OpenAI: gpt-4-32k
+// OpenAI: gpt-4-turbo-2024-04-09
+// OpenRouter: google/gemini-pro-1.5 (maybe better than gpt-4-turbo-2024-04-09, on par with gpt-4-32k)
+
 const readBookLlm = {
 	// The results are fine, the context is just small
 	//provider: "OpenRouter",
 	//model: "meta-llama/llama-3-70b-instruct",
-	provider: "OpenAI",
-	model: "gpt-4-turbo-2024-04-09",
+	//provider: "OpenAI",
+	//model: "gpt-4-turbo-2024-04-09",
+	provider: "OpenRouter",
+	model: "google/gemini-pro-1.5",
 };
+
+// Good JSON gen:
+// Really only gpt-4 variants
+// gpt-4-turbo-2024-04-09 seems to be the best model for JSON extraction for price-performance tradeoff
 
 const genJsonLlm = {
 	provider: "OpenAI",
-	model: "gpt-4-turbo-2024-04-09", // This seems to be the best model for JSON extraction for price-performance tradeoff
+	model: "gpt-4-turbo-2024-04-09",
 };
 
 let prompts = [];

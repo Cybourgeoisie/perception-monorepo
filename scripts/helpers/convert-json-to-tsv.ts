@@ -6,7 +6,8 @@ interface DataObject {
 }
 
 // Example JSON data
-const jsonData = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../data/results/book-output.gpt4-32k.json"), "utf8"));
+const filename = "book-output-2024-04-20T13-09-19.600Z";
+const jsonData = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../../data/results/${filename}.json`), "utf8"));
 
 function jsonToTabDelimited(jsonData: DataObject[]): string {
 	const headers = Object.keys(jsonData[0]);
@@ -17,7 +18,7 @@ function jsonToTabDelimited(jsonData: DataObject[]): string {
 const tabDelimitedString = jsonToTabDelimited(jsonData);
 
 // Writing to a file
-fs.writeFile(path.resolve(__dirname, "../../data/results/book-output.gpt4-32k.tsv"), tabDelimitedString, (err) => {
+fs.writeFile(path.resolve(__dirname, `../../data/results/${filename}.tsv`), tabDelimitedString, (err) => {
 	if (err) {
 		console.error("Error writing file:", err);
 	} else {
