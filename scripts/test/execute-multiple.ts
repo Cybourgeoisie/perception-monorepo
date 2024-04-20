@@ -1,8 +1,8 @@
 import { State } from "@openai";
+import { TextPostprocessor } from "@common";
 import AutoBotAdapter from "packages/adapters/autobot/AutoBotAdapter";
 import fs from "fs";
 import path from "path";
-import dJSON from "dirty-json";
 
 // For each line in the file, run the program
 const objectiveBase = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "objective-base.txt"), "utf-8");
@@ -123,7 +123,7 @@ async function onTaskReviewCallback(promptIdx: number, state: State) {
 	}
 
 	// Append the result
-	const jsonResponse = dirtyJsonParse(gptResponse.content);
+	const jsonResponse = await TextPostprocessor.dirtyJsonParse(gptResponse.content);
 	if (jsonResponse) {
 		jsonResponse.promptIdx = promptIdx;
 		results.push(jsonResponse);
@@ -133,26 +133,4 @@ async function onTaskReviewCallback(promptIdx: number, state: State) {
 
 	// Run the program again
 	singleRun(promptIdx + 1);
-}
-
-function dirtyJsonParse(content: string): any {
-	// Find the first and last curly bracket to denote the JSON object
-	const firstBracket = content.indexOf("{");
-	const lastBracket = content.lastIndexOf("}");
-	if (firstBracket === -1 || lastBracket === -1) {
-		return {};
-	}
-
-	// Extract the JSON object
-	const jsonObject = content.substring(firstBracket, lastBracket + 1);
-
-	try {
-		// Parse and clean the JSON
-		return dJSON.parse(jsonObject.replaceAll("\n", " "));
-	} catch (error) {
-		console.error("Error parsing JSON object within command response:");
-		console.error(error);
-	}
-
-	return {};
 }

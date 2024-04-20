@@ -1,9 +1,8 @@
 import { State, ModelFactory } from "@openai";
-import { TextPreprocessor } from "@common";
+import { TextPreprocessor, TextPostprocessor } from "@common";
 import AutoBotAdapter from "packages/adapters/autobot/AutoBotAdapter";
 import fs from "fs";
 import path from "path";
-import dJSON from "dirty-json";
 
 // Output file
 const currentDateTime = new Date().toISOString().replace(/:/g, "-");
@@ -14,13 +13,16 @@ const objectiveBase = fs.readFileSync(path.resolve(process.cwd(), "data/prompts"
 const bookText = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "book.txt"), "utf-8");
 
 const readBookLlm = {
-	provider: "OpenRouter",
-	model: "fast",
+	// The results are fine, the context is just small
+	//provider: "OpenRouter",
+	//model: "meta-llama/llama-3-70b-instruct",
+	provider: "OpenAI",
+	model: "gpt-4-turbo-2024-04-09",
 };
 
 const genJsonLlm = {
-	provider: "OpenRouter",
-	model: "openai/gpt-4-turbo", // This seems to be the best model for JSON extraction for price-performance tradeoff
+	provider: "OpenAI",
+	model: "gpt-4-turbo-2024-04-09", // This seems to be the best model for JSON extraction for price-performance tradeoff
 };
 
 let prompts = [];
@@ -29,8 +31,8 @@ export async function reviewText() {
 	// Use that to determine the length of the chunks
 	const contextSize = ModelFactory.getModelContextLength(readBookLlm.provider, readBookLlm.model);
 
-	// Split the book text into sections
-	prompts = TextPreprocessor.splitSentencesUsingNLP(bookText, Math.floor(contextSize * 0.75));
+	// Split the book text into sections - max value because comprehension drops off as context size increases
+	prompts = TextPreprocessor.splitSentencesUsingNLP(bookText, Math.min(Math.floor(contextSize * 0.75), 2 ** 15));
 
 	console.log(`Running the program for each prompt, total of ${prompts.length}:`);
 
@@ -41,10 +43,6 @@ async function singleRun(promptIdx) {
 	// Validate that we have more prompts to run
 	if (promptIdx >= prompts.length) {
 		console.log("All prompts have been completed.");
-		return;
-	}
-
-	if (promptIdx > 1) {
 		return;
 	}
 
@@ -105,36 +103,17 @@ async function onTaskReviewCallback(promptIdx: number, state: State) {
 	}
 
 	// Append the result
-	const jsonResponse = dirtyJsonParse(gptResponse.content);
+	const jsonResponse = await TextPostprocessor.dirtyJsonParse(gptResponse.content);
 	if (jsonResponse) {
-		jsonResponse.promptIdx = promptIdx;
-		results.push(jsonResponse);
+		if (Array.isArray(jsonResponse) && jsonResponse.length > 0) {
+			results.push(...jsonResponse);
+		} else {
+			results.push(jsonResponse);
+		}
 
 		fs.writeFileSync(outputFilePath, JSON.stringify(results));
 	}
 
 	// Run the program again
 	singleRun(promptIdx + 1);
-}
-
-function dirtyJsonParse(content: string): any {
-	// Find the first and last curly bracket to denote the JSON object
-	const firstBracket = content.indexOf("{");
-	const lastBracket = content.lastIndexOf("}");
-	if (firstBracket === -1 || lastBracket === -1) {
-		return {};
-	}
-
-	// Extract the JSON object
-	const jsonObject = content.substring(firstBracket, lastBracket + 1);
-
-	try {
-		// Parse and clean the JSON
-		return dJSON.parse(jsonObject.replaceAll("\n", " "));
-	} catch (error) {
-		console.error("Error parsing JSON object within command response:");
-		console.error(error);
-	}
-
-	return {};
 }
