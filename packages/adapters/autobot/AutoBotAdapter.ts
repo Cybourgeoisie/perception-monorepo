@@ -160,6 +160,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		}
 
 		const args: OpenAIRoutinePromptArgs = {
+			llm: state.params?.llm || {},
 			state: this.state,
 			systemPrompts,
 			userPrompts: [prompts.user],
@@ -172,7 +173,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 
 	private static async callback(response: OpenAIClass.ChatCompletionMessage) {
 		// Security measure -- if we reach a threshold of messages, stop
-		if (this.state.getProgramState("autobot").numRuns >= (this.state.getProgramState("autobot").maxRuns || 20)) {
+		if (this.state.getProgramState("autobot").numRuns >= (this.state.getProgramState("autobot").params?.maxRuns || 20)) {
 			console.log("AutoBot has reached the maximum number of runs.");
 
 			// If we have an onExit callback, run that instead

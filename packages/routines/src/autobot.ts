@@ -101,7 +101,7 @@ export class AutobotRoutine {
 		_Operations: Array<typeof BaseOperation>,
 		callback: (result?: string) => Promise<void>,
 	): Promise<void> {
-		const { objective } = state.getProgramState("autobot");
+		const { objective, params } = state.getProgramState("autobot");
 		let callbackResponse = "";
 		for (const operation of _Operations) {
 			for (const cmd of operation.getOperations()) {
@@ -149,7 +149,7 @@ export class AutobotRoutine {
 					// If the content is too long, iterate through summarization
 					if (output.length > 2048) {
 						console.log(`Output was too long, summarizing...`);
-						const summary = await OpenAIRoutine.getSummarization(state, output, objective);
+						const summary = await OpenAIRoutine.getSummarization(state, output, objective, params?.llm);
 						console.log(`Summary:\n${summary}\n`);
 						callbackResponse = `You just ran the command "${_commandName}" with the arguments ${JSON.stringify(
 							_commandArgs,

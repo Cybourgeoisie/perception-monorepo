@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 
 export type OpenAIRoutinePromptArgs = {
+	llm?: { provider: string; model: string };
 	state: State;
 	systemPrompts?: string[];
 	userPrompts: string[];
@@ -21,25 +22,28 @@ export class OpenAIRoutine {
 		return "Submit prompts to OpenAI's chat completion API";
 	}
 
-	public static getOpenAiParameters(): { baseUrl: string; apiKey: string } {
-		if (Config.LLM_API_ENDPOINT === "OpenRouter") {
+	public static getOpenAiParameters(llm?: OpenAIRoutinePromptArgs["llm"]): { baseUrl: string; apiKey: string } {
+		// If we have a specific LLM Provider, use that
+		const llm_api_endpoint = llm?.provider || Config.LLM_API_ENDPOINT;
+
+		if (llm_api_endpoint === "OpenRouter") {
 			return {
 				baseUrl: "https://openrouter.ai/api/v1",
 				apiKey: Config.OPENROUTER_API_KEY,
 			};
-		} else if (Config.LLM_API_ENDPOINT === "OpenAI") {
+		} else if (llm_api_endpoint === "OpenAI") {
 			return {
 				baseUrl: undefined,
 				apiKey: Config.OPENAI_API_KEY,
 			};
-		} else if (Config.LLM_API_ENDPOINT === "local") {
+		} else if (llm_api_endpoint === "local") {
 			return {
 				baseUrl: Config.LOCAL_API_ENDPOINT,
 				apiKey: Config.LOCAL_API_KEY,
 			};
 		}
 
-		throw new Error("Invalid LLM_API_ENDPOINT: `" + Config.LLM_API_ENDPOINT + "`");
+		throw new Error("Invalid LLM_API_ENDPOINT: `" + llm_api_endpoint + "`");
 	}
 
 	public static async promptWithHistory(args: OpenAIRoutinePromptArgs): Promise<void> {
@@ -67,11 +71,11 @@ export class OpenAIRoutine {
 		// Submit the request to OpenAI, and cycle back to handle the response
 		const messages = requestMessage.generateMessages();
 
-		const openAI = new OpenAI(this.getOpenAiParameters());
+		const openAI = new OpenAI(this.getOpenAiParameters(args.llm));
 
 		openAI.getCompletion({
 			messages: messages as OpenAIClass.ChatCompletionMessage[],
-			model: "fast",
+			model: args.llm?.model || "fast",
 			onMessageCallback: (content: string) => {
 				process.stdout.write(content);
 			},
@@ -113,11 +117,11 @@ export class OpenAIRoutine {
 		fs.writeFileSync(path.resolve(process.cwd(), "data/logs", date, `${time}-${uuid}.json`), requestMessage.serialize());
 	}
 
-	public static async getSummarization(state: State, text: string, question: string): Promise<string> {
-		const openAI = new OpenAI(this.getOpenAiParameters());
+	public static async getSummarization(state: State, text: string, question: string, llm?: { provider: string; model: string }): Promise<string> {
+		const openAI = new OpenAI(this.getOpenAiParameters(llm));
 
 		// Get the model
-		const model = openAI.getDefaultFastModel();
+		const model = llm?.model || openAI.getDefaultFastModel();
 		const contextSize = openAI.getModelContextLength(model);
 
 		// Get the request message from the state

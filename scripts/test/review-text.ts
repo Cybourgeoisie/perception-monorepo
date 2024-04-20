@@ -6,7 +6,8 @@ import path from "path";
 import dJSON from "dirty-json";
 
 // Output file
-const outputFilePath = path.resolve(process.cwd(), "data/results/book-output.json");
+const currentDateTime = new Date().toISOString().replace(/:/g, "-");
+const outputFilePath = path.resolve(process.cwd(), "data/results/book-output-" + currentDateTime + ".json");
 
 // For each line in the file, run the program
 const objectiveBase = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "objective-book.txt"), "utf-8");
@@ -14,8 +15,11 @@ const bookText = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "bo
 
 let prompts = [];
 export async function reviewText() {
+	// TODO - Pull the model context length from the selected model information
+	// Use that to determine the length of the chunks
+
 	// Split the book text into sections
-	prompts = TextPreprocessor.splitSentencesUsingNLP(bookText, 124576); //Math.floor(4096 * 1.5));
+	prompts = TextPreprocessor.splitSentencesUsingNLP(bookText, Math.floor(4096 * 1.5));
 
 	console.log(`Running the program for each prompt, total of ${prompts.length}:`);
 
@@ -23,6 +27,16 @@ export async function reviewText() {
 }
 
 async function singleRun(promptIdx) {
+	// Validate that we have more prompts to run
+	if (promptIdx >= prompts.length) {
+		console.log("All prompts have been completed.");
+		return;
+	}
+
+	if (promptIdx > 1) {
+		return;
+	}
+
 	// Notify the user of the next prompt
 	console.log("\nNow running prompt " + (promptIdx + 1) + " of " + prompts.length + "...");
 
@@ -38,6 +52,10 @@ async function singleRun(promptIdx) {
 
 	// Run the program
 	await AutoBotAdapter.run({
+		llm: {
+			"provider": "local",
+			"model": "fast",
+		},
 		promptKey: "chat",
 		user: objectiveBase + prompt,
 		maxRuns: 1,
@@ -50,6 +68,10 @@ async function onTaskCompleteCallback(promptIdx: number, state: State) {
 
 	// Run the program
 	await AutoBotAdapter.run({
+		llm: {
+			"provider": "OpenRouter",
+			"model": "fast",
+		},
 		promptKey: "extraction",
 		exitAfterCompletion: true,
 		"path:contents": JSON.stringify(state.getRequestMessage().getAllGptResponses()),
