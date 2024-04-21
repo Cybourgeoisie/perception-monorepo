@@ -4,32 +4,33 @@ import AutoBotAdapter from "packages/adapters/autobot/AutoBotAdapter";
 import fs from "fs";
 import path from "path";
 
-// Output file
-const currentDateTime = new Date().toISOString().replace(/:/g, "-");
-const outputFilePath = path.resolve(process.cwd(), "data/results/book-output-" + currentDateTime + ".json");
-
-// For each line in the file, run the program
-const objectiveBase = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "objective-book.txt"), "utf-8");
-const bookText = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "book.txt"), "utf-8");
-
 // Good readers:
 // OpenAI: gpt-4-32k
 // OpenAI: gpt-4-turbo-2024-04-09
 // OpenRouter: google/gemini-pro-1.5 (maybe better than gpt-4-turbo-2024-04-09, on par with gpt-4-32k)
 
-const readBookLlm = {
-	// The results are fine, the context is just small
-	//provider: "OpenRouter",
-	//model: "meta-llama/llama-3-70b-instruct",
-	//provider: "OpenAI",
-	//model: "gpt-4-turbo-2024-04-09",
-	provider: "OpenRouter",
-	model: "google/gemini-pro-1.5",
-};
+// Needs larger context:
+// OpenRouter: meta-llama/llama-3-70b-instruct
 
 // Good JSON gen:
 // Really only gpt-4 variants
 // gpt-4-turbo-2024-04-09 seems to be the best model for JSON extraction for price-performance tradeoff
+
+let bookIdx = 0;
+const bookDir = path.resolve(process.cwd(), "data/prompts/books");
+const books = fs
+	.readdirSync(bookDir)
+	.filter((file) => file.endsWith(".txt"))
+	.map((file) => file.replace(".txt", ""));
+
+// Filter out any non-text files
+console.log("Books to review:");
+console.log(books);
+
+const readBookLlm = {
+	provider: "OpenRouter",
+	model: "google/gemini-pro-1.5",
+};
 
 const genJsonLlm = {
 	provider: "OpenAI",
@@ -43,8 +44,10 @@ export async function reviewText() {
 	const contextSize = ModelFactory.getModelContextLength(readBookLlm.provider, readBookLlm.model);
 
 	// Split the book text into sections - max value because comprehension drops off as context size increases
+	const bookText = fs.readFileSync(path.resolve(bookDir, `${books[bookIdx]}.txt`), "utf-8");
 	prompts = TextPreprocessor.splitSentencesUsingNLP(bookText, Math.min(Math.floor(contextSize * 0.75), 2 ** 15));
 
+	console.log(`Book: ${books[bookIdx]} - #${bookIdx + 1} of ${books.length}`);
 	console.log(`Running the program for each prompt, total of ${prompts.length}:`);
 
 	singleRun(0);
@@ -54,13 +57,18 @@ async function singleRun(promptIdx) {
 	// Validate that we have more prompts to run
 	if (promptIdx >= prompts.length) {
 		console.log("All prompts have been completed.");
+		bookIdx++;
+		if (bookIdx < books.length) {
+			reviewText();
+		}
 		return;
 	}
 
 	// Notify the user of the next prompt
 	console.log("\nNow running prompt " + (promptIdx + 1) + " of " + prompts.length + "...");
 
-	// Get the prompt
+	// Get the base & prompt
+	const objectiveBase = fs.readFileSync(path.resolve(process.cwd(), "data/prompts", "objective-book.txt"), "utf-8");
 	const prompt = prompts[promptIdx].replace(/"/g, '\\"');
 
 	// Construct program state
@@ -103,6 +111,8 @@ async function onTaskReviewCallback(promptIdx: number, state: State) {
 	}
 
 	let results = [];
+
+	const outputFilePath = path.resolve(process.cwd(), `data/results/${books[bookIdx]}.gemini.json`);
 
 	// Check if the output file exists
 	if (fs.existsSync(outputFilePath)) {
