@@ -6,22 +6,24 @@ interface DataObject {
 }
 
 // Example JSON data
-const filename = "book-output-2024-04-20T13-09-19.600Z";
-const jsonData = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../../data/results/${filename}.json`), "utf8"));
+const files = fs.readdirSync(path.resolve(__dirname, "../../data/results/keep"));
+for (const filename of files) {
+	const jsonData = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../../data/results/keep/${filename}`), "utf8"));
 
-function jsonToTabDelimited(jsonData: DataObject[]): string {
-	const headers = Object.keys(jsonData[0]);
-	const tabDelimitedData = jsonData.map((row) => headers.map((header) => `"${row[header]}"`).join("\t"));
-	return headers.join("\t") + "\n" + tabDelimitedData.join("\n");
-}
-
-const tabDelimitedString = jsonToTabDelimited(jsonData);
-
-// Writing to a file
-fs.writeFile(path.resolve(__dirname, `../../data/results/${filename}.tsv`), tabDelimitedString, (err) => {
-	if (err) {
-		console.error("Error writing file:", err);
-	} else {
-		console.log("File successfully written.");
+	function jsonToTabDelimited(jsonData: DataObject[]): string {
+		const headers = Object.keys(jsonData[0]);
+		const tabDelimitedData = jsonData.map((row) => headers.map((header) => `"${row[header]}"`).join("\t"));
+		return headers.join("\t") + "\n" + tabDelimitedData.join("\n");
 	}
-});
+
+	const tabDelimitedString = jsonToTabDelimited(jsonData);
+
+	// Writing to a file
+	fs.writeFile(path.resolve(__dirname, `../../data/results/${filename}.tsv`), tabDelimitedString, (err) => {
+		if (err) {
+			console.error("Error writing file:", err);
+		} else {
+			console.log("File successfully written.");
+		}
+	});
+}

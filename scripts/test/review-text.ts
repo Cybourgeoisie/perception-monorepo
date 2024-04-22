@@ -23,10 +23,6 @@ const books = fs
 	.filter((file) => file.endsWith(".txt"))
 	.map((file) => file.replace(".txt", ""));
 
-// Filter out any non-text files
-console.log("Books to review:");
-console.log(books);
-
 const readBookLlm = {
 	provider: "OpenRouter",
 	model: "google/gemini-pro-1.5",
@@ -46,6 +42,10 @@ export async function reviewText() {
 	// Split the book text into sections - max value because comprehension drops off as context size increases
 	const bookText = fs.readFileSync(path.resolve(bookDir, `${books[bookIdx]}.txt`), "utf-8");
 	prompts = TextPreprocessor.splitSentencesUsingNLP(bookText, Math.min(Math.floor(contextSize * 0.75), 2 ** 15));
+
+	// Filter out any non-text files
+	console.log("Books to review:");
+	console.log(books);
 
 	console.log(`Book: ${books[bookIdx]} - #${bookIdx + 1} of ${books.length}`);
 	console.log(`Running the program for each prompt, total of ${prompts.length}:`);

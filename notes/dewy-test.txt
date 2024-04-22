@@ -1,0 +1,39 @@
+import { State } from "@openai";
+import { OpenAIRoutine, OpenAIRoutinePromptArgs } from "@routines";
+import { Dewy } from "dewy-ts";
+import { OpenAI as OpenAIClass } from "openai";
+
+const llm = {
+	provider: "OpenRouter",
+	model: "google/gemini-pro-1.5",
+};
+
+export async function dewyTest() {
+	const dewy = new Dewy({ BASE: "http://0.0.0.0:8000" });
+
+	const prompt = "who is spice?";
+
+	const context = await dewy.kb.retrieveChunks({
+		collection: "cyberbrokers-lore",
+		query: prompt,
+		n: 10,
+	});
+
+	//console.log(!!context);
+
+	const state = new State();
+
+	const args: OpenAIRoutinePromptArgs = {
+		llm,
+		state,
+		systemPrompts: [
+			`The following is context to help answer the user's prompt.\nSTART CONTEXT BLOCK\n${context.text_results.map((c: any) => c.text).join("\n")}\nEND OF CONTEXT BLOCK`,
+		],
+		userPrompts: [prompt],
+		callback: (_: OpenAIClass.ChatCompletionMessage) => {
+			process.exit(0);
+		},
+	};
+
+	OpenAIRoutine.promptWithHistory(args);
+}

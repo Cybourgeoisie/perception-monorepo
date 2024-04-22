@@ -1,6 +1,7 @@
 import { getOpenRouterModels, getOpenRouterLimits, updateOpenRouterModels } from "./openrouter/get-openrouter-models-limits";
 import { executeMultiple } from "./test/execute-multiple";
 import { reviewText } from "./test/review-text";
+import { vectraAddTest, vectraQueryTest } from "./test/vectra-test";
 
 // From the command line arguments, determine which script to run
 const script = process.argv[2];
@@ -11,6 +12,8 @@ const scripts = {
 	updateOpenRouterModels: updateOpenRouterModels,
 	executeMultiple: executeMultiple,
 	reviewText: reviewText,
+	vectraAddTest: vectraAddTest,
+	vectraQueryTest: vectraQueryTest,
 };
 
 // Run the appropriate script
