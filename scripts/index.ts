@@ -20,8 +20,8 @@ const scripts = {
 if (scripts[script]) {
 	scripts[script]();
 } else {
-	console.error(`Unknown script: ${script}`);
-	console.error(`Available scripts: ${Object.keys(scripts).join(", ")}`);
-	console.error(`Usage: npm run script [script]`);
+	console.error(`Unknown script: ${script}\n`);
+	console.error(`Available scripts:\n\t- ${Object.keys(scripts).join("\n\t- ")}\n`);
+	console.error(`Usage: npm run script [script]\n`);
 	process.exit(1);
 }
