@@ -35,5 +35,5 @@
 			"@adapters": ["packages/adapters/index"]
 		}
 	},
-	"include": ["apps/**/*", "packages/**/*", "tools/**/*", "test/**/*", "libs/**/*", "scripts/**/*"]
+	"include": ["apps/**/*", "packages/**/*", "tools/**/*", "test/**/*", "libs/**/*", "scripts/**/*", "data/**/*"]
 }
