@@ -3,11 +3,7 @@ import { LLMConfigs } from "@config";
 import { IncomingMessage } from "http";
 import { ModelFactory } from "./ModelFactory";
 
-export type OpenAICompletionArguments = {
-	messages: OpenAIClass.ChatCompletionMessage[];
-	model?: string;
-	temperature?: number;
-	n?: number;
+export type OpenAICompletionArguments = OpenAIClass.ChatCompletionCreateParams & {
 	onMessageCallback?: (response: string) => void;
 	onCompleteCallback?: (response: OpenAIClass.ChatCompletionMessage) => void;
 	numCompletionAttempts?: number;
@@ -41,29 +37,22 @@ export class OpenAI {
 
 	public async getCompletion(args: OpenAICompletionArguments): Promise<OpenAIClass.ChatCompletionMessage> {
 		// Retrieve the arguments
-		const {
-			messages,
-			numCompletionAttempts = 0,
-			temperature = args.temperature || LLMConfigs.default.temperature,
-			n = args.n || LLMConfigs.default.n,
-			onMessageCallback,
-			onCompleteCallback,
-		} = args;
+		const { numCompletionAttempts = 0, onMessageCallback, onCompleteCallback } = args;
+
+		// Defaults
+		args.temperature = args.temperature || LLMConfigs.default.temperature;
+		args.n = args.n || LLMConfigs.default.n;
 
 		// Parse the model
-		let { model } = args;
-		if (model === "best" || model === "fast" || model === "large") {
-			model = ModelFactory.getDefaultModel(this.service, model);
+		if (args.model === "best" || args.model === "fast" || args.model === "large") {
+			args.model = ModelFactory.getDefaultModel(this.service, args.model);
 		}
 
-		console.log(`Using ${this.service} (${model}, T=${temperature}) to respond...`);
+		console.log(`Using ${this.service} (${args.model}, T=${args.temperature}) to respond...`);
 
 		try {
 			const response = await this.openai.chat.completions.create({
-				model: model,
-				messages: messages,
-				temperature: temperature,
-				n: n,
+				...args,
 				stream: true,
 			});
 
