@@ -4,6 +4,7 @@ import { reviewText } from "./test/review-text";
 import { vectraAddTest, vectraQueryTest } from "./test/vectra-test";
 import { rssify } from "./test/rssify";
 import { rssified } from "./test/rssified";
+import { summarizePage } from "./test/summarize-page";
 
 // From the command line arguments, determine which script to run
 const script = process.argv[2];
@@ -16,6 +17,7 @@ const scripts = {
 	reviewText: reviewText,
 	rssify: rssify,
 	rssified: rssified,
+	summarizePage: summarizePage,
 	vectraAddTest: vectraAddTest,
 	vectraQueryTest: vectraQueryTest,
 };
