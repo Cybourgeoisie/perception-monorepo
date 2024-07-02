@@ -392,6 +392,7 @@ export default class CodeBotAdapter extends BaseBotAdapter {
 
 	private static async callOpenAi(systemPrompts: string[], userPrompt: string): Promise<OpenAI.ChatCompletionMessage> {
 		const openAI = new LlmApi({
+			service: "openai",
 			apiKey: Config.OPENAI_API_KEY,
 		});
 
@@ -415,6 +416,7 @@ export default class CodeBotAdapter extends BaseBotAdapter {
 		// Get the response and handle it
 		const response = await openAI.getCompletion({
 			messages: messages as OpenAI.ChatCompletionMessage[],
+			model: "gpt-4o",
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},
