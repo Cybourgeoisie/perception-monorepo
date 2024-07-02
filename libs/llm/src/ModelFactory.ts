@@ -2,7 +2,7 @@ import { Models, LLMConfigs } from "@config";
 
 export class ModelFactory {
 	public static getDefaultModel(provider: string, _default?: string): string {
-		const providerKey = provider === "OpenRouter" ? "openrouter" : provider === "local" ? "local" : "openai";
+		const providerKey = provider.toLowerCase();
 		const modelKey = this.getLlmDefaultModelKey(provider, _default);
 
 		if (!modelKey) {
@@ -14,8 +14,8 @@ export class ModelFactory {
 	}
 
 	public static getLlmDefaultModelKey(provider: string, _default: string): string {
-		const providerKey = provider === "OpenRouter" ? "openrouter" : provider === "local" ? "local" : "openai";
-		const modelKey = LLMConfigs.default.models[providerKey][_default];
+		const providerKey = provider.toLowerCase();
+		const modelKey = LLMConfigs.models[providerKey][_default];
 
 		if (!modelKey) {
 			return null;
@@ -33,7 +33,7 @@ export class ModelFactory {
 	}
 
 	public static getModelContextLength(provider: string, modelKey: string): number {
-		const providerKey = provider === "OpenRouter" ? "openrouter" : provider === "local" ? "local" : "openai";
+		const providerKey = provider.toLowerCase();
 		if (this.isDefaultModelKey(modelKey)) {
 			modelKey = this.getLlmDefaultModelKey(provider, modelKey);
 		}

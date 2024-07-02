@@ -143,7 +143,7 @@ export class RequestMessage {
 		// Return the history context if there is any history
 		if (this.generateConversationHistory().length > 0) {
 			return {
-				role: "system",
+				role: "user",
 				content: this.buildHistoryContent(),
 			};
 		}

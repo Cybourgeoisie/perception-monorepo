@@ -1,5 +1,5 @@
 import { BaseOperation } from "@operations";
-import { OpenAIRoutine } from "./openai";
+import { LlmApiRoutine } from "./llmapi";
 import { PromptCLI } from "@prompt-cli";
 import { State } from "libs/llm";
 
@@ -77,9 +77,9 @@ export class AutobotRoutine {
 		}
 
 		if (promptsToRunRemaining == 0) {
-			// Get the request message from the state, add the system prompt
+			// Get the request message from the state, add the user prompt
 			const requestMessage = state.getRequestMessage();
-			requestMessage.addSystemPrompt(`User rejected your suggested command. Re-evaluate your options and try again.`);
+			requestMessage.addUserPrompt(`User rejected your suggested command. Re-evaluate your options and try again.`);
 			return false;
 		} else if (promptsToRunRemaining < 0) {
 			process.exit();
@@ -149,7 +149,7 @@ export class AutobotRoutine {
 					// If the content is too long, iterate through summarization
 					if (output.length > 2048) {
 						console.log(`Output was too long, summarizing...`);
-						const summary = await OpenAIRoutine.getSummarization(state, output, objective, params?.llm);
+						const summary = await LlmApiRoutine.getSummarization(state, output, objective, params?.llm);
 						console.log(`Summary:\n${summary}\n`);
 						callbackResponse = `You just ran the command "${_commandName}" with the arguments ${JSON.stringify(
 							_commandArgs,

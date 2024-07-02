@@ -1,17 +1,9 @@
 //import { State } from "@llm";
-//import { OpenAIRoutine, OpenAIRoutinePromptArgs } from "@routines";
 import { OpenAI } from "openai";
 import { Config } from "@config";
 import path from "path";
 
 import { LocalIndex } from "vectra";
-
-/*
-const llm = {
-	provider: "OpenRouter",
-	model: "google/gemini-pro-1.5",
-};
-*/
 
 const api = new OpenAI({
 	apiKey: Config.OPENAI_API_KEY,
@@ -67,30 +59,4 @@ export async function vectraQueryTest() {
 	const prompt = "who is spice?";
 
 	await query(prompt);
-
-	/*
-	const context = await dewy.kb.retrieveChunks({
-		collection: "cyberbrokers-lore",
-		query: prompt,
-		n: 10,
-	});
-
-	//console.log(!!context);
-
-	const state = new State();
-
-	const args: OpenAIRoutinePromptArgs = {
-		llm,
-		state,
-		systemPrompts: [
-			`The following is context to help answer the user's prompt.\nSTART CONTEXT BLOCK\n${context.text_results.map((c: any) => c.text).join("\n")}\nEND OF CONTEXT BLOCK`,
-		],
-		userPrompts: [prompt],
-		callback: (_: OpenAI.ChatCompletionMessage) => {
-			process.exit(0);
-		},
-	};
-
-	OpenAIRoutine.promptWithHistory(args);
-    */
 }

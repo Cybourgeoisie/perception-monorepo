@@ -27,8 +27,8 @@ export class TextPostprocessor {
 				}
 			}
 		} catch (error) {
-			console.error("Error parsing JSON object within command response:");
-			console.error(error);
+			//console.error("Error parsing JSON object within command response:");
+			//console.error(error);
 		}
 
 		return {};

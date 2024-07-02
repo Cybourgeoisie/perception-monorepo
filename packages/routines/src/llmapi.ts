@@ -5,7 +5,7 @@ import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
 
-export type OpenAIRoutinePromptArgs = {
+export type LlmApiRoutinePromptArgs = {
 	llm?: { provider: string; model: string };
 	state: State;
 	systemPrompts?: string[];
@@ -13,7 +13,7 @@ export type OpenAIRoutinePromptArgs = {
 	callback: (s: OpenAI.ChatCompletionMessageParam) => void;
 };
 
-export class OpenAIRoutine {
+export class LlmApiRoutine {
 	public static getName(): string {
 		return "OpenAI chat completion";
 	}
@@ -22,23 +22,32 @@ export class OpenAIRoutine {
 		return "Submit prompts to OpenAI's chat completion API";
 	}
 
-	public static getOpenAiParameters(llm?: OpenAIRoutinePromptArgs["llm"]): { baseUrl: string; apiKey: string } {
+	public static getLlmApiParameters(llm?: LlmApiRoutinePromptArgs["llm"]): { service: string; baseURL: string; apiKey: string } {
 		// If we have a specific LLM Provider, use that
 		const llm_api_endpoint = llm?.provider || Config.LLM_API_ENDPOINT;
 
 		if (llm_api_endpoint === "OpenRouter") {
 			return {
-				baseUrl: "https://openrouter.ai/api/v1",
+				service: "OpenRouter",
+				baseURL: "https://openrouter.ai/api/v1",
 				apiKey: Config.OPENROUTER_API_KEY,
 			};
 		} else if (llm_api_endpoint === "OpenAI") {
 			return {
-				baseUrl: undefined,
+				service: "OpenAI",
+				baseURL: undefined,
 				apiKey: Config.OPENAI_API_KEY,
+			};
+		} else if (llm_api_endpoint === "Anthropic") {
+			return {
+				service: "Anthropic",
+				baseURL: undefined,
+				apiKey: Config.ANTHROPIC_API_KEY,
 			};
 		} else if (llm_api_endpoint === "local") {
 			return {
-				baseUrl: Config.LOCAL_API_ENDPOINT,
+				service: "local",
+				baseURL: Config.LOCAL_API_ENDPOINT,
 				apiKey: Config.LOCAL_API_KEY,
 			};
 		}
@@ -46,7 +55,7 @@ export class OpenAIRoutine {
 		throw new Error("Invalid LLM_API_ENDPOINT: `" + llm_api_endpoint + "`");
 	}
 
-	public static async promptWithHistory(args: OpenAIRoutinePromptArgs): Promise<void> {
+	public static async promptWithHistory(args: LlmApiRoutinePromptArgs): Promise<void> {
 		// Get the arguments
 		const { state, systemPrompts, userPrompts, callback } = args;
 
@@ -71,9 +80,9 @@ export class OpenAIRoutine {
 		// Submit the request to OpenAI, and cycle back to handle the response
 		const messages = requestMessage.generateMessages();
 
-		const openAI = new LlmApi(this.getOpenAiParameters(args.llm));
+		const llmApi = new LlmApi(this.getLlmApiParameters(args.llm));
 
-		openAI.getCompletion({
+		llmApi.getCompletion({
 			messages: messages as OpenAI.ChatCompletionMessage[],
 			model: args.llm?.model || "fast",
 			onMessageCallback: (content: string) => {
@@ -118,7 +127,7 @@ export class OpenAIRoutine {
 	}
 
 	public static async getSummarization(state: State, text: string, question: string, llm?: { provider: string; model: string }): Promise<string> {
-		const openAI = new LlmApi(this.getOpenAiParameters(llm));
+		const llmApi = new LlmApi(this.getLlmApiParameters(llm));
 
 		// Get the model
 		const model = llm?.model || ModelFactory.getDefaultModel(llm.provider, "fast");
@@ -143,11 +152,11 @@ export class OpenAIRoutine {
 
 			requestMessage.addUserPrompt(prompt);
 
-			// Submit the request to OpenAI, and cycle back to handle the response
+			// Submit the request to the LLM, and cycle back to handle the response
 			const messages = requestMessage.generateMessages();
 
-			console.log(`Submitting chunk ${parseInt(index, 10) + 1} of ${chunks.length} to OpenAI...`);
-			const response = await openAI.getCompletion({
+			console.log(`Submitting chunk ${parseInt(index, 10) + 1} of ${chunks.length} to LLM...`);
+			const response = await llmApi.getCompletion({
 				messages: messages as OpenAI.ChatCompletionMessage[],
 				model,
 				onMessageCallback: (response) => {
@@ -170,11 +179,11 @@ export class OpenAIRoutine {
 
 		requestMessage.addUserPrompt(prompt);
 
-		// Submit the request to OpenAI, and cycle back to handle the response
+		// Submit the request to the LLM, and cycle back to handle the response
 		const messages = requestMessage.generateMessages();
 
-		console.log(`Summarizing all chunk summaries with OpenAI...`);
-		const response = await openAI.getCompletion({
+		console.log(`Summarizing all chunk summaries with LLM...`);
+		const response = await llmApi.getCompletion({
 			messages: messages as OpenAI.ChatCompletionMessage[],
 			model,
 			onMessageCallback: (response) => {

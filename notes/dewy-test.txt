@@ -1,5 +1,5 @@
 import { State } from "@llm";
-import { OpenAIRoutine, OpenAIRoutinePromptArgs } from "@routines";
+import { LlmApiRoutine, LlmApiRoutinePromptArgs } from "@routines";
 import { Dewy } from "dewy-ts";
 import { OpenAI } from "openai";
 
@@ -23,7 +23,7 @@ export async function dewyTest() {
 
 	const state = new State();
 
-	const args: OpenAIRoutinePromptArgs = {
+	const args: LlmApiRoutinePromptArgs = {
 		llm,
 		state,
 		systemPrompts: [
@@ -35,5 +35,5 @@ export async function dewyTest() {
 		},
 	};
 
-	OpenAIRoutine.promptWithHistory(args);
+	LlmApiRoutine.promptWithHistory(args);
 }

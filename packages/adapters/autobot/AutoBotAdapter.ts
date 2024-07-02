@@ -1,10 +1,10 @@
-import { OpenAIRoutine, OpenAIRoutinePromptArgs } from "@routines";
+import { LlmApiRoutine, LlmApiRoutinePromptArgs } from "@routines";
 import OpenAI from "openai";
 import { PromptCLI } from "@prompt-cli";
 import { BaseOperation, Operations, WebOperations } from "@operations";
 import { BaseBotAdapter } from "../BaseBotAdapter";
 import { Prompts } from "@config";
-import dJSON from "dirty-json";
+import { TextPostprocessor } from "@common";
 import { AutobotRoutine } from "@routines";
 import fs from "fs";
 import { State } from "libs/llm";
@@ -159,7 +159,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 			prompts.user = prompts.user.replaceAll(`{{${key}}}`, value);
 		}
 
-		const args: OpenAIRoutinePromptArgs = {
+		const args: LlmApiRoutinePromptArgs = {
 			llm: state.params?.llm || {},
 			state: this.state,
 			systemPrompts,
@@ -168,7 +168,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		};
 
 		this.state.setProgramState("autobot", { numRuns: (this.state.getProgramState("autobot").numRuns || 0) + 1 });
-		OpenAIRoutine.promptWithHistory(args);
+		LlmApiRoutine.promptWithHistory(args);
 	}
 
 	private static async callback(response: OpenAI.ChatCompletionMessage) {
@@ -187,7 +187,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		let content = response.content;
 
 		// If we received a JSON response with a command back, parse it
-		const responseCommand = this.getResponseCommand(content);
+		const responseCommand = await this.getResponseCommand(content);
 
 		if (responseCommand && responseCommand.name) {
 			// For now, for simplicity, just run the first command we find
@@ -262,7 +262,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		return responses;
 	}
 
-	private static getResponseCommand(content: string): { name?: string; args?: Record<string, string> } {
+	private static async getResponseCommand(content: string): Promise<{ name?: string; args?: Record<string, string> }> {
 		// Iterate through all JSON objects returned in this response,
 		// and check if the response includes a command, in JSON format
 		const command = {
@@ -270,28 +270,12 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 			args: {},
 		};
 
-		// Find the first and last curly bracket to denote the JSON object
-		const firstBracket = content.indexOf("{");
-		const lastBracket = content.lastIndexOf("}");
-		if (firstBracket === -1 || lastBracket === -1) {
-			return command;
-		}
+		const response = await TextPostprocessor.dirtyJsonParse(content);
 
-		// Extract the JSON object
-		const jsonObject = content.substring(firstBracket, lastBracket + 1);
-
-		try {
-			// Parse and clean the JSON
-			const parsedResponse = dJSON.parse(jsonObject.replaceAll("\n", " "));
-
-			// Check if the response includes a command
-			if (parsedResponse.command && parsedResponse.command.name) {
-				command.name = parsedResponse.command.name;
-				command.args = parsedResponse.command.args || {};
-			}
-		} catch (error) {
-			console.error("Error parsing JSON object within command response:");
-			console.error(error);
+		// Check if the response includes a command
+		if (response.command && response.command.name) {
+			command.name = response.command.name;
+			command.args = response.command.args || {};
 		}
 
 		return command;
