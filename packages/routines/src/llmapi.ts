@@ -1,4 +1,3 @@
-import { Config } from "@config";
 import { LlmApi, State, ModelFactory } from "libs/llm";
 import { TextPreprocessor } from "@common";
 import OpenAI from "openai";
@@ -20,39 +19,6 @@ export class LlmApiRoutine {
 
 	public static getDescription(): string {
 		return "Submit prompts to OpenAI's chat completion API";
-	}
-
-	public static getLlmApiParameters(llm?: LlmApiRoutinePromptArgs["llm"]): { service: string; baseURL: string; apiKey: string } {
-		// If we have a specific LLM Provider, use that
-		const llm_api_endpoint = llm?.provider || Config.LLM_API_ENDPOINT;
-
-		if (llm_api_endpoint === "OpenRouter") {
-			return {
-				service: "OpenRouter",
-				baseURL: "https://openrouter.ai/api/v1",
-				apiKey: Config.OPENROUTER_API_KEY,
-			};
-		} else if (llm_api_endpoint === "OpenAI") {
-			return {
-				service: "OpenAI",
-				baseURL: undefined,
-				apiKey: Config.OPENAI_API_KEY,
-			};
-		} else if (llm_api_endpoint === "Anthropic") {
-			return {
-				service: "Anthropic",
-				baseURL: undefined,
-				apiKey: Config.ANTHROPIC_API_KEY,
-			};
-		} else if (llm_api_endpoint === "local") {
-			return {
-				service: "local",
-				baseURL: Config.LOCAL_API_ENDPOINT,
-				apiKey: Config.LOCAL_API_KEY,
-			};
-		}
-
-		throw new Error("Invalid LLM_API_ENDPOINT: `" + llm_api_endpoint + "`");
 	}
 
 	public static async promptWithHistory(args: LlmApiRoutinePromptArgs): Promise<void> {
@@ -80,7 +46,7 @@ export class LlmApiRoutine {
 		// Submit the request to OpenAI, and cycle back to handle the response
 		const messages = requestMessage.generateMessages();
 
-		const llmApi = new LlmApi(this.getLlmApiParameters(args.llm));
+		const llmApi = new LlmApi(args.llm);
 
 		llmApi.getCompletion({
 			messages: messages as OpenAI.ChatCompletionMessage[],
@@ -127,7 +93,7 @@ export class LlmApiRoutine {
 	}
 
 	public static async getSummarization(state: State, text: string, question: string, llm?: { provider: string; model: string }): Promise<string> {
-		const llmApi = new LlmApi(this.getLlmApiParameters(llm));
+		const llmApi = new LlmApi(llm);
 
 		// Get the model
 		const model = llm?.model || ModelFactory.getDefaultModel(llm.provider, "fast");

@@ -1,6 +1,6 @@
 import OpenAI, { type ClientOptions } from "openai";
 import Anthropic from "@anthropic-ai/sdk";
-import { LLMConfigs } from "@config";
+import { Config, LLMConfigs } from "@config";
 import { IncomingMessage } from "http";
 import { ModelFactory } from "./ModelFactory";
 import { MessageCreateParamsBase } from "@anthropic-ai/sdk/resources/messages.mjs";
@@ -16,45 +16,84 @@ export type AnthropicCompletionArguments = MessageCreateParamsBase & LlmApiChatC
 
 export class LlmApi {
 	private config: ClientOptions;
-	private service: "OpenAI" | "OpenRouter" | "Anthropic" | "local" = "OpenAI";
+	private provider: "OpenAI" | "OpenRouter" | "Anthropic" | "local" = "OpenAI";
 	private maxCompletionAttempts: number = 3;
 
-	constructor(config: ClientOptions & { service: string }) {
-		// Verify that we have an API key
-		if (!config.apiKey) {
-			throw new Error('OpenAI config "apiKey" must be set to start the program.');
+	constructor(config: ClientOptions & { provider?: string }) {
+		// If we have a specific LLM Provider, or if we don't have an API Key (use .env setting), pull the config from the LLM API
+		if (config.provider || !config.apiKey) {
+			const llmApiParameters = this.getLlmApiConfig(config.provider);
+			config = { ...llmApiParameters, ...config };
 		}
 
-		this.service = config.service as "OpenAI" | "OpenRouter" | "Anthropic" | "local";
-		delete config.service;
+		// Verify that we have an API key
+		if (!config.apiKey) {
+			throw new Error('LLM config "apiKey" must be set to start the program.');
+		}
+
+		this.provider = (config.provider || "local") as "OpenAI" | "OpenRouter" | "Anthropic" | "local";
+		delete config.provider;
 
 		this.config = config;
 		this.maxCompletionAttempts = LLMConfigs.maxCompletionAttempts || 3;
 	}
 
-	public async getCompletion(args: OpenAICompletionArguments | AnthropicCompletionArguments): Promise<OpenAI.ChatCompletionMessage> {
-		// Apply Defaults
-		let serviceDefaults: any;
-		if (this.service === "OpenAI" || this.service === "OpenRouter" || this.service === "local") {
-			serviceDefaults = LLMConfigs.default.openai;
-		} else if (this.service === "Anthropic") {
-			serviceDefaults = LLMConfigs.default.anthropic;
+	public getLlmApiConfig(provider?: string): { provider: string; baseURL: string; apiKey: string } {
+		// If we have a specific LLM Provider, use that
+		const llm_api_endpoint = provider || Config.LLM_API_ENDPOINT;
+
+		if (llm_api_endpoint === "OpenRouter") {
+			return {
+				provider: "OpenRouter",
+				baseURL: "https://openrouter.ai/api/v1",
+				apiKey: Config.OPENROUTER_API_KEY,
+			};
+		} else if (llm_api_endpoint === "OpenAI") {
+			return {
+				provider: "OpenAI",
+				baseURL: undefined,
+				apiKey: Config.OPENAI_API_KEY,
+			};
+		} else if (llm_api_endpoint === "Anthropic") {
+			return {
+				provider: "Anthropic",
+				baseURL: undefined,
+				apiKey: Config.ANTHROPIC_API_KEY,
+			};
+		} else if (llm_api_endpoint === "local") {
+			return {
+				provider: "local",
+				baseURL: Config.LOCAL_API_ENDPOINT,
+				apiKey: Config.LOCAL_API_KEY,
+			};
 		}
 
-		for (const key in serviceDefaults) {
+		throw new Error("Invalid LLM_API_ENDPOINT: `" + llm_api_endpoint + "`");
+	}
+
+	public async getCompletion(args: OpenAICompletionArguments | AnthropicCompletionArguments): Promise<OpenAI.ChatCompletionMessage> {
+		// Apply Defaults
+		let defaults: any;
+		if (this.provider === "OpenAI" || this.provider === "OpenRouter" || this.provider === "local") {
+			defaults = LLMConfigs.default.openai;
+		} else if (this.provider === "Anthropic") {
+			defaults = LLMConfigs.default.anthropic;
+		}
+
+		for (const key in defaults) {
 			if (args[key] === undefined) {
-				args[key] = serviceDefaults[key];
+				args[key] = defaults[key];
 			}
 		}
 
 		// Parse the model
 		if (args.model === "best" || args.model === "fast" || args.model === "large") {
-			args.model = ModelFactory.getDefaultModel(this.service, args.model);
+			args.model = ModelFactory.getDefaultModel(this.provider, args.model);
 		}
 
-		console.log(`Using ${this.service} (${args.model}, T=${args.temperature}) to respond...`);
+		console.log(`Using ${this.provider} (${args.model}, T=${args.temperature}) to respond...`);
 
-		if (this.service === "Anthropic") {
+		if (this.provider === "Anthropic") {
 			return await this.anthropicCompletion(args as AnthropicCompletionArguments);
 		}
 

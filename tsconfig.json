@@ -23,7 +23,6 @@
 		"strictNullChecks": false,
 		"baseUrl": ".",
 		"paths": {
-			"@modules/*": ["apps/modules/*"],
 			"@cli/*": ["apps/cli/*"],
 			"@server/*": ["apps/server/*"],
 			"@config": ["libs/config/index"],
