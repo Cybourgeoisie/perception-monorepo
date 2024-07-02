@@ -1,8 +1,8 @@
 /* Classes */
-import { OpenAI, RequestMessage } from "@openai";
+import { LlmApi, RequestMessage } from "libs/llm";
 
 /* Routines */
 import { AutobotRoutine, CodeAnalysisRoutine, OpenAIRoutine } from "@routines";
 
 /* Export everything we want to expose */
-export { OpenAI, RequestMessage, AutobotRoutine, CodeAnalysisRoutine, OpenAIRoutine };
+export { LlmApi, RequestMessage, AutobotRoutine, CodeAnalysisRoutine, OpenAIRoutine };

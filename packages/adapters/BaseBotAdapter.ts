@@ -1,4 +1,4 @@
-import { State } from "@openai";
+import { State } from "libs/llm";
 import express from "express";
 
 export type AdapterRoute = {

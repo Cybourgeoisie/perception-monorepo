@@ -1,4 +1,4 @@
-import { OpenAI } from "@openai";
+import { LlmApi } from "libs/llm";
 import { Config } from "@config";
 import fs from "fs";
 

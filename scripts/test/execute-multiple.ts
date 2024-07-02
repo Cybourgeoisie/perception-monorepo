@@ -1,4 +1,4 @@
-import { State } from "@openai";
+import { State } from "libs/llm";
 import { TextPostprocessor } from "@common";
 import AutoBotAdapter from "packages/adapters/autobot/AutoBotAdapter";
 import fs from "fs";

@@ -1,7 +1,7 @@
 import { BaseOperation } from "@operations";
 import { OpenAIRoutine } from "./openai";
 import { PromptCLI } from "@prompt-cli";
-import { State } from "@openai";
+import { State } from "libs/llm";
 
 export class AutobotRoutine {
 	public static getName(): string {

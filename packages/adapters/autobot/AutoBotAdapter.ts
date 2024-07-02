@@ -1,5 +1,5 @@
 import { OpenAIRoutine, OpenAIRoutinePromptArgs } from "@routines";
-import OpenAIClass from "openai";
+import OpenAI from "openai";
 import { PromptCLI } from "@prompt-cli";
 import { BaseOperation, Operations, WebOperations } from "@operations";
 import { BaseBotAdapter } from "../BaseBotAdapter";
@@ -7,7 +7,7 @@ import { Prompts } from "@config";
 import dJSON from "dirty-json";
 import { AutobotRoutine } from "@routines";
 import fs from "fs";
-import { State } from "@openai";
+import { State } from "libs/llm";
 
 export default class AutoBotAdapter extends BaseBotAdapter {
 	public static getName(): string {
@@ -171,7 +171,7 @@ export default class AutoBotAdapter extends BaseBotAdapter {
 		OpenAIRoutine.promptWithHistory(args);
 	}
 
-	private static async callback(response: OpenAIClass.ChatCompletionMessage) {
+	private static async callback(response: OpenAI.ChatCompletionMessage) {
 		// Security measure -- if we reach a threshold of messages, stop
 		if (this.state.getProgramState("autobot").numRuns >= (this.state.getProgramState("autobot").params?.maxRuns || 20)) {
 			console.log("AutoBot has reached the maximum number of runs.");

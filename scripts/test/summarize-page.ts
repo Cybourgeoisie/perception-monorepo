@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 import { exec } from "child_process";
 import puppeteer, { Page, Browser } from "puppeteer";
 import { setTimeout as delay } from "timers/promises";
-import { OpenAI } from "@openai";
+import { LlmApi } from "libs/llm";
 import fs from "fs";
-import OpenAIClass from "openai";
+import OpenAI from "openai";
 
 dotenv.config();
 
-const openai = new OpenAI({
+const openai = new LlmApi({
 	baseUrl: "https://openrouter.ai/api/v1",
 	apiKey: process.env.OPENROUTER_API_KEY,
 });
@@ -80,7 +80,7 @@ async function getCleanCode(page: Page): Promise<string> {
 }
 
 // Step 3: Send code to LLM to determine how to get that info
-async function getImportantInformationWithLlm(code: string, img: string): Promise<OpenAIClass.ChatCompletionMessage> {
+async function getImportantInformationWithLlm(code: string, img: string): Promise<OpenAI.ChatCompletionMessage> {
 	console.log("Sending code to LLM...");
 
 	// Prompt

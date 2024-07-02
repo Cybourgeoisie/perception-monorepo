@@ -1,7 +1,7 @@
 import { Config } from "@config";
-import { OpenAI, State, ModelFactory } from "@openai";
+import { LlmApi, State, ModelFactory } from "libs/llm";
 import { TextPreprocessor } from "@common";
-import OpenAIClass from "openai";
+import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
 
@@ -10,7 +10,7 @@ export type OpenAIRoutinePromptArgs = {
 	state: State;
 	systemPrompts?: string[];
 	userPrompts: string[];
-	callback: (s: OpenAIClass.ChatCompletionMessageParam) => void;
+	callback: (s: OpenAI.ChatCompletionMessageParam) => void;
 };
 
 export class OpenAIRoutine {
@@ -71,15 +71,15 @@ export class OpenAIRoutine {
 		// Submit the request to OpenAI, and cycle back to handle the response
 		const messages = requestMessage.generateMessages();
 
-		const openAI = new OpenAI(this.getOpenAiParameters(args.llm));
+		const openAI = new LlmApi(this.getOpenAiParameters(args.llm));
 
 		openAI.getCompletion({
-			messages: messages as OpenAIClass.ChatCompletionMessage[],
+			messages: messages as OpenAI.ChatCompletionMessage[],
 			model: args.llm?.model || "fast",
 			onMessageCallback: (content: string) => {
 				process.stdout.write(content);
 			},
-			onCompleteCallback: (response: OpenAIClass.ChatCompletionMessage) => {
+			onCompleteCallback: (response: OpenAI.ChatCompletionMessage) => {
 				// Update the request message with the response
 				requestMessage.addGPTResponse(response);
 
@@ -118,7 +118,7 @@ export class OpenAIRoutine {
 	}
 
 	public static async getSummarization(state: State, text: string, question: string, llm?: { provider: string; model: string }): Promise<string> {
-		const openAI = new OpenAI(this.getOpenAiParameters(llm));
+		const openAI = new LlmApi(this.getOpenAiParameters(llm));
 
 		// Get the model
 		const model = llm?.model || ModelFactory.getDefaultModel(llm.provider, "fast");
@@ -148,7 +148,7 @@ export class OpenAIRoutine {
 
 			console.log(`Submitting chunk ${parseInt(index, 10) + 1} of ${chunks.length} to OpenAI...`);
 			const response = await openAI.getCompletion({
-				messages: messages as OpenAIClass.ChatCompletionMessage[],
+				messages: messages as OpenAI.ChatCompletionMessage[],
 				model,
 				onMessageCallback: (response) => {
 					process.stdout.write(response);
@@ -175,7 +175,7 @@ export class OpenAIRoutine {
 
 		console.log(`Summarizing all chunk summaries with OpenAI...`);
 		const response = await openAI.getCompletion({
-			messages: messages as OpenAIClass.ChatCompletionMessage[],
+			messages: messages as OpenAI.ChatCompletionMessage[],
 			model,
 			onMessageCallback: (response) => {
 				process.stdout.write(response);

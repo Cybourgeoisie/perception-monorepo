@@ -1,6 +1,6 @@
 import { PromptCLI } from "@prompt-cli";
 import { Adapters } from "packages/adapters";
-import { State } from "@openai";
+import { State } from "libs/llm";
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 

@@ -1,11 +1,11 @@
-import OpenAIClass from "openai";
+import OpenAI from "openai";
 import { LLMConfigs } from "@config";
 import { IncomingMessage } from "http";
 import { ModelFactory } from "./ModelFactory";
 
-export type OpenAICompletionArguments = OpenAIClass.ChatCompletionCreateParams & {
+export type OpenAICompletionArguments = OpenAI.ChatCompletionCreateParams & {
 	onMessageCallback?: (response: string) => void;
-	onCompleteCallback?: (response: OpenAIClass.ChatCompletionMessage) => void;
+	onCompleteCallback?: (response: OpenAI.ChatCompletionMessage) => void;
 	numCompletionAttempts?: number;
 };
 
@@ -14,8 +14,8 @@ export type OpenAIConfig = {
 	apiKey: string;
 };
 
-export class OpenAI {
-	private openai: OpenAIClass;
+export class LlmApi {
+	private openai: OpenAI;
 	private apiKey: string;
 	private service: "OpenAI" | "OpenRouter" | "local" = "OpenAI";
 	private maxCompletionAttempts: number = 3;
@@ -29,13 +29,13 @@ export class OpenAI {
 		this.service = config.baseUrl?.includes("openrouter") ? "OpenRouter" : !config.baseUrl ? "OpenAI" : "local";
 		this.apiKey = config.apiKey;
 		this.maxCompletionAttempts = LLMConfigs.default.maxCompletionAttempts || 3;
-		this.openai = new OpenAIClass({
+		this.openai = new OpenAI({
 			baseURL: config.baseUrl,
 			apiKey: config.apiKey,
 		});
 	}
 
-	public async getCompletion(args: OpenAICompletionArguments): Promise<OpenAIClass.ChatCompletionMessage> {
+	public async getCompletion(args: OpenAICompletionArguments): Promise<OpenAI.ChatCompletionMessage> {
 		// Retrieve the arguments
 		const { numCompletionAttempts = 0, onMessageCallback, onCompleteCallback } = args;
 
@@ -95,7 +95,7 @@ export class OpenAI {
 				}
 
 				// Construct the ChatCompletionResponseMessage
-				const response: OpenAIClass.ChatCompletionMessage = {
+				const response: OpenAI.ChatCompletionMessage = {
 					content: contentChunks.join(""),
 					role: "assistant",
 				};

@@ -1,6 +1,6 @@
-//import { State } from "@openai";
+//import { State } from "@llm";
 //import { OpenAIRoutine, OpenAIRoutinePromptArgs } from "@routines";
-import { OpenAI as OpenAIClass } from "openai";
+import { OpenAI } from "openai";
 import { Config } from "@config";
 import path from "path";
 
@@ -13,7 +13,7 @@ const llm = {
 };
 */
 
-const api = new OpenAIClass({
+const api = new OpenAI({
 	apiKey: Config.OPENAI_API_KEY,
 });
 
@@ -86,7 +86,7 @@ export async function vectraQueryTest() {
 			`The following is context to help answer the user's prompt.\nSTART CONTEXT BLOCK\n${context.text_results.map((c: any) => c.text).join("\n")}\nEND OF CONTEXT BLOCK`,
 		],
 		userPrompts: [prompt],
-		callback: (_: OpenAIClass.ChatCompletionMessage) => {
+		callback: (_: OpenAI.ChatCompletionMessage) => {
 			process.exit(0);
 		},
 	};

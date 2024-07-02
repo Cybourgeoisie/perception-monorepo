@@ -1,7 +1,7 @@
-import { State } from "@openai";
+import { State } from "@llm";
 import { OpenAIRoutine, OpenAIRoutinePromptArgs } from "@routines";
 import { Dewy } from "dewy-ts";
-import { OpenAI as OpenAIClass } from "openai";
+import { OpenAI } from "openai";
 
 const llm = {
 	provider: "OpenRouter",
@@ -30,7 +30,7 @@ export async function dewyTest() {
 			`The following is context to help answer the user's prompt.\nSTART CONTEXT BLOCK\n${context.text_results.map((c: any) => c.text).join("\n")}\nEND OF CONTEXT BLOCK`,
 		],
 		userPrompts: [prompt],
-		callback: (_: OpenAIClass.ChatCompletionMessage) => {
+		callback: (_: OpenAI.ChatCompletionMessage) => {
 			process.exit(0);
 		},
 	};

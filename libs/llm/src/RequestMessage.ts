@@ -1,18 +1,18 @@
-import OpenAIClass from "openai";
+import OpenAI from "openai";
 import { v4 as uuidv4 } from "uuid";
 
-type PromptRecord = OpenAIClass.ChatCompletionMessageParam | string;
+type PromptRecord = OpenAI.ChatCompletionMessageParam | string;
 
 type RequestMessageHistoryBlock = {
 	prompts: PromptRecord[];
-	gptResponse?: OpenAIClass.ChatCompletionMessage;
+	gptResponse?: OpenAI.ChatCompletionMessage;
 };
 
 type RequestMessageHistory = RequestMessageHistoryBlock[];
 
 type HistoryItem = {
-	prompt: OpenAIClass.ChatCompletionMessageParam;
-	response: OpenAIClass.ChatCompletionMessage;
+	prompt: OpenAI.ChatCompletionMessageParam;
+	response: OpenAI.ChatCompletionMessage;
 };
 
 export class RequestMessage {
@@ -38,11 +38,11 @@ export class RequestMessage {
 		return this.log;
 	}
 
-	public getAllGptResponses(): OpenAIClass.ChatCompletionMessage[] {
+	public getAllGptResponses(): OpenAI.ChatCompletionMessage[] {
 		return this.log.map((item) => item.gptResponse).filter((item) => item.content);
 	}
 
-	public getLatestGptResponse(): OpenAIClass.ChatCompletionMessage | void {
+	public getLatestGptResponse(): OpenAI.ChatCompletionMessage | void {
 		if (this.log.length > 0) {
 			return this.log[this.log.length - 1].gptResponse;
 		}
@@ -92,7 +92,7 @@ export class RequestMessage {
 		this.currentPrompts.prompts.push("HISTORY_CONTEXT_HERE");
 	}
 
-	public addGPTResponse(response: OpenAIClass.ChatCompletionMessage): void {
+	public addGPTResponse(response: OpenAI.ChatCompletionMessage): void {
 		this.currentPrompts.gptResponse = response;
 		this.log.push(structuredClone(this.currentPrompts));
 		this.history.push(structuredClone(this.currentPrompts));
@@ -111,7 +111,7 @@ export class RequestMessage {
 		return this.estimateTokens(promptsStr + historyContent);
 	}
 
-	public generateMessages(): OpenAIClass.ChatCompletionMessageParam[] {
+	public generateMessages(): OpenAI.ChatCompletionMessageParam[] {
 		// Compile everything into a single prompt
 		const messages = [];
 		for (const item of this.currentPrompts.prompts) {
@@ -134,7 +134,7 @@ export class RequestMessage {
 	/**
 	 * Private Methods
 	 */
-	private generateHistoryContext(): OpenAIClass.ChatCompletionMessageParam | void {
+	private generateHistoryContext(): OpenAI.ChatCompletionMessageParam | void {
 		// Trim history until it fits within the token limit
 		while (this.doesPromptExceedTokens() && this.generateConversationHistory().length > 0) {
 			this.history.shift();
@@ -149,7 +149,7 @@ export class RequestMessage {
 		}
 	}
 
-	private generateConversationHistory(): { prompt: OpenAIClass.ChatCompletionMessageParam; response: OpenAIClass.ChatCompletionMessage }[] {
+	private generateConversationHistory(): { prompt: OpenAI.ChatCompletionMessageParam; response: OpenAI.ChatCompletionMessage }[] {
 		const conversationHistory = [];
 
 		for (const item of this.history) {

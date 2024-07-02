@@ -5,8 +5,8 @@ import { PromptCLI } from "@prompt-cli";
 import { DirectoryList, Git, FileWrite } from "@operations";
 import { CodeAnalysisRoutine } from "@routines";
 import { BaseBotAdapter } from "../BaseBotAdapter";
-import { OpenAI, RequestMessage } from "@openai";
-import OpenAIClass from "openai";
+import { LlmApi, RequestMessage } from "libs/llm";
+import { OpenAI } from "openai";
 import highlight from "cli-highlight";
 
 export default class CodeBotAdapter extends BaseBotAdapter {
@@ -253,7 +253,7 @@ export default class CodeBotAdapter extends BaseBotAdapter {
 		referenceFiles?: string[],
 		filepath?: string,
 		filename?: string,
-	): Promise<OpenAIClass.ChatCompletionMessage | void> {
+	): Promise<OpenAI.ChatCompletionMessage | void> {
 		// Prompt the user for the edits they want to make
 		const edits: string = await PromptCLI.multiline("What edits would you like to make? (Enter nothing to return to previous menu)");
 
@@ -298,7 +298,7 @@ export default class CodeBotAdapter extends BaseBotAdapter {
 		return systemPrompts;
 	}
 
-	private static cleanCodeResponse(response: OpenAIClass.ChatCompletionMessage): string {
+	private static cleanCodeResponse(response: OpenAI.ChatCompletionMessage): string {
 		// Extract the codeblock if it was wrapped in a code block
 		let codeBlock = response.content;
 
@@ -390,8 +390,8 @@ export default class CodeBotAdapter extends BaseBotAdapter {
 		this.viewCodeOptions();
 	}
 
-	private static async callOpenAi(systemPrompts: string[], userPrompt: string): Promise<OpenAIClass.ChatCompletionMessage> {
-		const openAI = new OpenAI({
+	private static async callOpenAi(systemPrompts: string[], userPrompt: string): Promise<OpenAI.ChatCompletionMessage> {
+		const openAI = new LlmApi({
 			apiKey: Config.OPENAI_API_KEY,
 		});
 
@@ -414,7 +414,7 @@ export default class CodeBotAdapter extends BaseBotAdapter {
 
 		// Get the response and handle it
 		const response = await openAI.getCompletion({
-			messages: messages as OpenAIClass.ChatCompletionMessage[],
+			messages: messages as OpenAI.ChatCompletionMessage[],
 			onMessageCallback: (response) => {
 				process.stdout.write(response);
 			},
